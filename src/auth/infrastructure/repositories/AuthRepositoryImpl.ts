@@ -17,6 +17,7 @@ import {
   ResetPasswordConfirmData,
   VerifyEmailData
 } from '../../domain/entities/User';
+import { UpdateUserData } from '../../domain/entities/UpdateUserData';
 
 export class AuthRepositoryImpl implements IAuthRepository {
   private baseURL: string = '/api/auth';
@@ -70,6 +71,13 @@ export class AuthRepositoryImpl implements IAuthRepository {
   async getCurrentUser(): Promise<User> {
     return this.request<User>('/me', {
       method: 'GET',
+    });
+  }
+
+  async updateUser(data: UpdateUserData): Promise<User> {
+    return this.request<User>('/update-profile', {
+      method: 'PUT',
+      body: JSON.stringify(data),
     });
   }
 

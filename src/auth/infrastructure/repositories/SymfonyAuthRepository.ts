@@ -17,6 +17,7 @@ import {
   ResetPasswordConfirmData,
   VerifyEmailData
 } from '../../domain/entities/User';
+import { UpdateUserData } from '../../domain/entities/UpdateUserData';
 import { apiClient } from '../api/apiClient';
 
 export class SymfonyAuthRepository implements IAuthRepository {
@@ -25,6 +26,7 @@ export class SymfonyAuthRepository implements IAuthRepository {
       '/login',
       credentials
     );
+
     return {
       token: response.token,
       user: response.user,
@@ -50,6 +52,10 @@ export class SymfonyAuthRepository implements IAuthRepository {
 
   async getCurrentUser(): Promise<User> {
     return await apiClient.get<User>('/me');
+  }
+
+  async updateUser(data: UpdateUserData): Promise<User> {
+    return await apiClient.patch<User>('/me', data);
   }
 
   async changePassword(data: ChangePasswordData): Promise<void> {

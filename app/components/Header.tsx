@@ -98,7 +98,6 @@ export default function Header() {
                                 🔐 Connexion
                             </Link>
                         )}
-                        👤 Mon Compte
 
                         <Link
                             href="/panier"
@@ -215,13 +214,6 @@ export default function Header() {
                         </Link>
 
                         <div className="border-t border-red-700 pt-2 mt-2">
-                            <Link
-                                href="/compte"
-                                className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                👤 Mon Compte
-                            </Link>
 
                             <Link
                                 href="/panier"
