@@ -5,6 +5,8 @@ import Header from "./components/Header";
 import { AuthProvider } from "@/src/auth/presentation/context/AuthContext";
 import { SymfonyAuthRepository } from "@/src/auth/infrastructure/repositories/SymfonyAuthRepository";
 import { User } from "@/src/auth/domain/entities/User";
+import { CartProvider } from "@/src/ecommerce/presentation/context/CartContext";
+import { EcommerceProvider } from "@/src/ecommerce/presentation/context/EcommerceContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,8 +47,12 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
       >
         <AuthProvider initialUser={initialUser}>
-          <Header />
-          {children}
+          <EcommerceProvider>
+            <CartProvider>
+              <Header />
+              {children}
+            </CartProvider>
+          </EcommerceProvider>
         </AuthProvider>
       </body>
     </html>

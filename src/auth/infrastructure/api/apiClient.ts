@@ -57,10 +57,7 @@ export class ApiClient {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.error('API Error:', {
-                    status: response.status,
-                    data: errorData,
-                });
+
                 throw new ApiError(
                     errorData.message || 'Une erreur est survenue',
                     response.status,
