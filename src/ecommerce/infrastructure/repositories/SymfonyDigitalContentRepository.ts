@@ -1,7 +1,7 @@
 import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
 import { IDigitalContentRepository } from '../../domain/repositories/IDigitalContentRepository';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 import { DigitalContent } from '../../domain/entities/DigitalContent';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class SymfonyDigitalContentRepository implements IDigitalContentRepository {
   async getDigitalContents(page?: number): Promise<PaginatedResponse<DigitalContent>> {

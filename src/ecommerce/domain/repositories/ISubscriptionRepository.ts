@@ -1,5 +1,5 @@
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 import { Subscription, SubscribeData, RenewSubscriptionData } from '../entities/Subscription';
-import { PaginatedResponse } from './IProductRepository';
 
 export interface ISubscriptionRepository {
   getSubscriptions(page?: number): Promise<PaginatedResponse<Subscription>>;

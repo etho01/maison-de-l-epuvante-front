@@ -1,4 +1,15 @@
-
+export interface PaginatedResponse<T> {
+  'member': T[];
+  'totalItems': number;
+  'hydra:view'?: {
+    '@id': string;
+    'hydra:first'?: string;
+    'hydra:last'?: string;
+    'hydra:previous'?: string;
+    'hydra:next'?: string;
+  };
+  pagination : Pagination;
+}
 
 export class Pagination {
     hasNextPage: boolean;

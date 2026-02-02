@@ -1,6 +1,6 @@
 import { ICategoryRepository } from '../../domain/repositories/ICategoryRepository';
 import { Category } from '../../domain/entities/Category';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class GetCategoriesUseCase {
   constructor(private categoryRepository: ICategoryRepository) {}

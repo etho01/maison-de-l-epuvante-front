@@ -1,6 +1,6 @@
 import { ISubscriptionPlanRepository } from '../../domain/repositories/ISubscriptionPlanRepository';
 import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../../domain/entities/SubscriptionPlan';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class ClientSubscriptionPlanRepository implements ISubscriptionPlanRepository {
   private baseURL: string;

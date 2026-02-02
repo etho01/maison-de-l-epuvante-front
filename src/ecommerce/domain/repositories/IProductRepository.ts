@@ -1,19 +1,6 @@
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../entities/Product';
 
-export interface PaginatedResponse<T> {
-  'member': T[];
-  'totalItems': number;
-  'hydra:view'?: {
-    '@id': string;
-    'hydra:first'?: string;
-    'hydra:last'?: string;
-    'hydra:previous'?: string;
-    'hydra:next'?: string;
-  };
-  pagination : Pagination;
-}
-
 export interface IProductRepository {
   getProducts(filters?: ProductFilters): Promise<PaginatedResponse<Product>>;
   getById(id: number): Promise<Product>;

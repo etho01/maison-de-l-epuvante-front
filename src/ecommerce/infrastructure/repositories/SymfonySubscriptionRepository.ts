@@ -1,7 +1,7 @@
 import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
 import { ISubscriptionRepository } from '../../domain/repositories/ISubscriptionRepository';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 import { Subscription, SubscribeData, RenewSubscriptionData } from '../../domain/entities/Subscription';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class SymfonySubscriptionRepository implements ISubscriptionRepository {
   async getSubscriptions(page?: number): Promise<PaginatedResponse<Subscription>> {

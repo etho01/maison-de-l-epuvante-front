@@ -1,6 +1,6 @@
 import { ICategoryRepository } from '../../domain/repositories/ICategoryRepository';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../domain/entities/Category';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class ClientCategoryRepository implements ICategoryRepository {
   private baseURL: string;

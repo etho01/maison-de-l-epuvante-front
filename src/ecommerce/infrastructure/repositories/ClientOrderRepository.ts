@@ -1,6 +1,6 @@
 import { IOrderRepository } from '../../domain/repositories/IOrderRepository';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 import { Order, CheckoutData, UpdateOrderData } from '../../domain/entities/Order';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class ClientOrderRepository implements IOrderRepository {
   private baseURL: string;

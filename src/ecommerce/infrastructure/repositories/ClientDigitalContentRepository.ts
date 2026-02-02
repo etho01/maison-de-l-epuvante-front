@@ -1,6 +1,6 @@
 import { IDigitalContentRepository } from '../../domain/repositories/IDigitalContentRepository';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 import { DigitalContent } from '../../domain/entities/DigitalContent';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class ClientDigitalContentRepository implements IDigitalContentRepository {
   private baseURL: string;

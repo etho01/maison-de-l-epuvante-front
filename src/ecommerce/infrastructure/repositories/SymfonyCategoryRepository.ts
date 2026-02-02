@@ -2,10 +2,10 @@
 import { ICategoryRepository } from '../../domain/repositories/ICategoryRepository';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../domain/entities/Category';
 import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class SymfonyCategoryRepository implements ICategoryRepository {
-  async getCategories(): Promise<PaginatedResponse <Category>> {
+  async getCategories(): Promise<PaginatedResponse<Category>> {
     const response = await apiClient.get<PaginatedResponse<Category>>('/categories');
     return response;
   }

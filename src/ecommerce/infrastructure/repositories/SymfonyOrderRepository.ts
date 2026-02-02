@@ -1,7 +1,7 @@
 import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
 import { IOrderRepository } from '../../domain/repositories/IOrderRepository';
-import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 import { Order, CheckoutData, UpdateOrderData } from '../../domain/entities/Order';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class SymfonyOrderRepository implements IOrderRepository {
   async getOrders(page?: number): Promise<PaginatedResponse<Order>> {

@@ -1,5 +1,5 @@
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 import { Order, CheckoutData, UpdateOrderData } from '../entities/Order';
-import { PaginatedResponse } from './IProductRepository';
 
 export interface IOrderRepository {
   getOrders(page?: number): Promise<PaginatedResponse<Order>>;

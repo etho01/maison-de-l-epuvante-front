@@ -1,5 +1,5 @@
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../entities/Category';
-import { PaginatedResponse } from './IProductRepository';
 
 export interface ICategoryRepository {
   getCategories(): Promise<PaginatedResponse<Category>>;
