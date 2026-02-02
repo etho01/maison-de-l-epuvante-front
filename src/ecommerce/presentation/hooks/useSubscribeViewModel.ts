@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { SubscribeViewModel } from '../viewmodels/SubscribeViewModel';
 import { ClientSubscriptionRepository } from '../../infrastructure/repositories/ClientSubscriptionRepository';
-import { SubscribeUseCase } from '../../application/usecases/SubscribeUseCase';
+import { SubscribeUseCase } from '../../application/usecases/subscriptions';
 
 // Singletons
 const subscriptionRepository = new ClientSubscriptionRepository();

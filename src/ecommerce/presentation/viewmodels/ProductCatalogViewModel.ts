@@ -1,7 +1,7 @@
 import { Product, ProductFilters } from '../../domain/entities/Product';
 import { Category } from '../../domain/entities/Category';
-import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
-import { GetCategoriesUseCase } from '../../application/usecases/GetCategoriesUseCase';
+import { GetProductsUseCase } from '../../application/usecases/products';
+import { GetCategoriesUseCase } from '../../application/usecases/categories';
 
 export class ProductCatalogViewModel {
   private state = {
@@ -35,7 +35,7 @@ export class ProductCatalogViewModel {
   async loadCategories() {
     try {
       const categoriesData = await this.getCategoriesUseCase.execute();
-      this.state.categories = categoriesData;
+      this.state.categories = categoriesData['member'];
       this.notify();
     } catch (err: any) {
       console.error('Erreur lors du chargement des catégories:', err);

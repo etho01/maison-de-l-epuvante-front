@@ -1,5 +1,5 @@
-import { GetAllCategoriesUseCase } from '@/src/ecommerce/application/usecases/GetAllCategoriesUseCase';
-import { GetProductsUseCase } from '@/src/ecommerce/application/usecases/GetProductsUseCase';
+import { GetAllCategoriesUseCase } from '@/src/ecommerce/application/usecases/categories';
+import { GetProductsUseCase } from '@/src/ecommerce/application/usecases/products';
 import { SymfonyCategoryRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyCategoryRepository';
 import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
 import { ProductCatalog } from '@/src/ecommerce/presentation/components/ProductCatalog';

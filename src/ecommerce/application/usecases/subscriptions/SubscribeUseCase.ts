@@ -1,5 +1,5 @@
-import { ISubscriptionRepository } from '../../domain/repositories/ISubscriptionRepository';
-import { Subscription, SubscribeData } from '../../domain/entities/Subscription';
+import { ISubscriptionRepository } from '../../../domain/repositories/ISubscriptionRepository';
+import { Subscription, SubscribeData } from '../../../domain/entities/Subscription';
 
 export class SubscribeUseCase {
   constructor(private subscriptionRepository: ISubscriptionRepository) {}

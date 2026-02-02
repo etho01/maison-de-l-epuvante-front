@@ -11,17 +11,17 @@ interface AuthGuardProps {
 
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children, redirectTo }) => {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!user) {
       const redirect = redirectTo || '/auth/login';
       const currentPath = window.location.pathname;
       router.push(`${redirect}?redirect=${currentPath}`);
     }
-  }, [user, loading, router, redirectTo]);
+  }, [user, router, redirectTo]);
 
-  if (loading || !user) {
+  if (!user) {
     return (
       <div className="container mx-auto px-4 py-8">
         <p>Chargement...</p>

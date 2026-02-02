@@ -11,18 +11,11 @@ import { ClientSubscriptionPlanRepository } from '../../infrastructure/repositor
 import { ClientDigitalContentRepository } from '../../infrastructure/repositories/ClientDigitalContentRepository';
 
 // Use Cases
-import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
-import { GetProductByIdUseCase } from '../../application/usecases/GetProductByIdUseCase';
-import { GetCategoriesUseCase } from '../../application/usecases/GetCategoriesUseCase';
-import { GetOrdersUseCase } from '../../application/usecases/GetOrdersUseCase';
-import { GetOrderByIdUseCase } from '../../application/usecases/GetOrderByIdUseCase';
-import { CheckoutUseCase } from '../../application/usecases/CheckoutUseCase';
-import { GetSubscriptionsUseCase } from '../../application/usecases/GetSubscriptionsUseCase';
-import { GetSubscriptionPlansUseCase } from '../../application/usecases/GetSubscriptionPlansUseCase';
-import { SubscribeUseCase } from '../../application/usecases/SubscribeUseCase';
-import { CancelSubscriptionUseCase } from '../../application/usecases/CancelSubscriptionUseCase';
-import { GetDigitalContentsUseCase } from '../../application/usecases/GetDigitalContentsUseCase';
-import { DownloadDigitalContentUseCase } from '../../application/usecases/DownloadDigitalContentUseCase';
+import { GetProductsUseCase, GetProductByIdUseCase } from '../../application/usecases/products';
+import { GetCategoriesUseCase } from '../../application/usecases/categories';
+import { GetOrdersUseCase, GetOrderByIdUseCase, CheckoutUseCase } from '../../application/usecases/orders';
+import { GetSubscriptionsUseCase, GetSubscriptionPlansUseCase, SubscribeUseCase, CancelSubscriptionUseCase } from '../../application/usecases/subscriptions';
+import { GetDigitalContentsUseCase, DownloadDigitalContentUseCase } from '../../application/usecases/digital-content';
 
 // Client Repositories instances (utilisent localStorage pour le token)
 const productRepository = new ClientProductRepository();

@@ -1,5 +1,5 @@
 import { Order } from '../../domain/entities/Order';
-import { GetOrderByIdUseCase } from '../../application/usecases/GetOrderByIdUseCase';
+import { GetOrderByIdUseCase } from '../../application/usecases/orders';
 
 export class OrderDetailViewModel {
   private state = {

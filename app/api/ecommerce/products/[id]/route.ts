@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
+import { GetProductsUseCase } from '@/src/ecommerce/application/usecases/products';
 
 const productRepository = new SymfonyProductRepository();
 

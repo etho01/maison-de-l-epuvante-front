@@ -1,5 +1,5 @@
-import { IOrderRepository } from '../../domain/repositories/IOrderRepository';
-import { Order } from '../../domain/entities/Order';
+import { IOrderRepository } from '../../../domain/repositories/IOrderRepository';
+import { Order } from '../../../domain/entities/Order';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class GetOrdersUseCase {

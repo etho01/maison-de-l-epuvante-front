@@ -1,4 +1,4 @@
-import { SubscribeUseCase } from '../../application/usecases/SubscribeUseCase';
+import { SubscribeUseCase } from '../../application/usecases/subscriptions';
 
 export class SubscribeViewModel {
   private state = {

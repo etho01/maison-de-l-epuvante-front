@@ -1,5 +1,5 @@
-import { ISubscriptionPlanRepository } from '../../domain/repositories/ISubscriptionPlanRepository';
-import { SubscriptionPlan } from '../../domain/entities/SubscriptionPlan';
+import { ISubscriptionPlanRepository } from '../../../domain/repositories/ISubscriptionPlanRepository';
+import { SubscriptionPlan } from '../../../domain/entities/SubscriptionPlan';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class GetSubscriptionPlansUseCase {

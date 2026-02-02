@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { OrderDetailViewModel } from '../viewmodels/OrderDetailViewModel';
 import { Order } from '../../domain/entities/Order';
 import { ClientOrderRepository } from '../../infrastructure/repositories/ClientOrderRepository';
-import { GetOrderByIdUseCase } from '../../application/usecases/GetOrderByIdUseCase';
+import { GetOrderByIdUseCase } from '../../application/usecases/orders';
 
 // Singletons
 const orderRepository = new ClientOrderRepository();

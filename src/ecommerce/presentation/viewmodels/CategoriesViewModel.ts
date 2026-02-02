@@ -1,5 +1,5 @@
 import { Category } from '../../domain/entities/Category';
-import { GetCategoriesUseCase } from '../../application/usecases/GetCategoriesUseCase';
+import { GetCategoriesUseCase } from '../../application/usecases/categories';
 
 export class CategoriesViewModel {
   private state = {

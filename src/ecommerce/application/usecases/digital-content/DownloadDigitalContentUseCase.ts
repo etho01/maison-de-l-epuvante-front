@@ -1,4 +1,4 @@
-import { IDigitalContentRepository } from '../../domain/repositories/IDigitalContentRepository';
+import { IDigitalContentRepository } from '../../../domain/repositories/IDigitalContentRepository';
 
 export class DownloadDigitalContentUseCase {
   constructor(private digitalContentRepository: IDigitalContentRepository) {}

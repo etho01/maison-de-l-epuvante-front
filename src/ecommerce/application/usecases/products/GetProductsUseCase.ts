@@ -1,5 +1,5 @@
-import { IProductRepository } from '../../domain/repositories/IProductRepository';
-import { Product, ProductFilters } from '../../domain/entities/Product';
+import { IProductRepository } from '../../../domain/repositories/IProductRepository';
+import { Product, ProductFilters } from '../../../domain/entities/Product';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class GetProductsUseCase {

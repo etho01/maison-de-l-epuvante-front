@@ -1,5 +1,5 @@
-import { ICategoryRepository } from '../../domain/repositories/ICategoryRepository';
-import { Category } from '../../domain/entities/Category';
+import { ICategoryRepository } from '../../../domain/repositories/ICategoryRepository';
+import { Category } from '../../../domain/entities/Category';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class GetCategoriesUseCase {

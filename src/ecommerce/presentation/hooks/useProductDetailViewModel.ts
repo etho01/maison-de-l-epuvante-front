@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ProductDetailViewModel } from '../viewmodels/ProductDetailViewModel';
 import { Product } from '../../domain/entities/Product';
 import { ClientProductRepository } from '../../infrastructure/repositories/ClientProductRepository';
-import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
+import { GetProductsUseCase } from '../../application/usecases/products';
 
 // Singletons
 const productRepository = new ClientProductRepository();

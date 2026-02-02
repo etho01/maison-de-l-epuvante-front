@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { CategoriesViewModel } from '../viewmodels/CategoriesViewModel';
 import { Category } from '../../domain/entities/Category';
 import { ClientCategoryRepository } from '../../infrastructure/repositories/ClientCategoryRepository';
-import { GetCategoriesUseCase } from '../../application/usecases/GetCategoriesUseCase';
+import { GetCategoriesUseCase } from '../../application/usecases/categories';
 
 // Singleton
 const categoryRepository = new ClientCategoryRepository();

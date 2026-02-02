@@ -1,4 +1,4 @@
-import { User } from '@/auth/domain/entities/User';
+import { User } from '@/src/auth/domain/entities/User';
 import { SubscriptionPlan } from './SubscriptionPlan';
 
 export type SubscriptionStatus = 'pending' | 'active' | 'cancelled' | 'expired';

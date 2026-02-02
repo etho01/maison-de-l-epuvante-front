@@ -1,5 +1,5 @@
 import { Product, ProductFilters } from '../../domain/entities/Product';
-import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
+import { GetProductsUseCase } from '../../application/usecases/products';
 import { Pagination } from '@/src/shared/domain/Pagination';
 
 export class ProductsViewModel {

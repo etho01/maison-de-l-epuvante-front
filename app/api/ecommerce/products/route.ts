@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
 import { ProductFilters } from '@/src/ecommerce/domain/entities/Product';
+import { GetProductsUseCase } from '@/src/ecommerce/application/usecases/products';
 
 const productRepository = new SymfonyProductRepository();
+const getProductsUseCase = new GetProductsUseCase(productRepository);
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,7 +21,8 @@ export async function GET(request: NextRequest) {
     if (searchParams.has('exclusiveOnline')) filters.exclusiveOnline = searchParams.get('exclusiveOnline') === 'true';
     if (searchParams.has('page')) filters.page = parseInt(searchParams.get('page')!);
 
-    const products = await productRepository.getAll(filters);
+    const products = await getProductsUseCase.execute(filters);
+
     return NextResponse.json(products);
   } catch (error: any) {
     return NextResponse.json(

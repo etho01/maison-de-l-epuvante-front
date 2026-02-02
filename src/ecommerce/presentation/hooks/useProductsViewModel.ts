@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ProductsViewModel } from '../viewmodels/ProductsViewModel';
 import { Product } from '../../domain/entities/Product';
 import { ClientProductRepository } from '../../infrastructure/repositories/ClientProductRepository';
-import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
+import { GetProductsUseCase } from '../../application/usecases/products';
 import { Pagination } from '@/src/shared/domain/Pagination';
 
 // Singleton

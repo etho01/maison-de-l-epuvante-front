@@ -1,5 +1,5 @@
 import { Product } from '../../domain/entities/Product';
-import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
+import { GetProductsUseCase } from '../../application/usecases/products';
 
 export class ProductDetailViewModel {
   private state = {

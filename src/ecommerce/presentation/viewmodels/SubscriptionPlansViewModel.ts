@@ -1,5 +1,5 @@
 import { SubscriptionPlan } from '../../domain/entities/SubscriptionPlan';
-import { GetSubscriptionPlansUseCase } from '../../application/usecases/GetSubscriptionPlansUseCase';
+import { GetSubscriptionPlansUseCase } from '../../application/usecases/subscriptions';
 
 export class SubscriptionPlansViewModel {
   private state = {

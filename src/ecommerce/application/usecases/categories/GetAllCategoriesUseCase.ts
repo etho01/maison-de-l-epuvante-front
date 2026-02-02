@@ -1,5 +1,5 @@
-import { ICategoryRepository } from '../../domain/repositories/ICategoryRepository';
-import { Category } from '../../domain/entities/Category';
+import { ICategoryRepository } from '../../../domain/repositories/ICategoryRepository';
+import { Category } from '../../../domain/entities/Category';
 
 export class GetAllCategoriesUseCase {
   constructor(private categoryRepository: ICategoryRepository) {}

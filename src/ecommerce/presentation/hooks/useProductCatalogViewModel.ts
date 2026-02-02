@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { ProductCatalogViewModel } from '../viewmodels/ProductCatalogViewModel';
 import { ClientProductRepository } from '../../infrastructure/repositories/ClientProductRepository';
 import { ClientCategoryRepository } from '../../infrastructure/repositories/ClientCategoryRepository';
-import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
-import { GetCategoriesUseCase } from '../../application/usecases/GetCategoriesUseCase';
+import { GetProductsUseCase } from '../../application/usecases/products';
+import { GetCategoriesUseCase } from '../../application/usecases/categories';
 
 // Singletons
 const productRepository = new ClientProductRepository();

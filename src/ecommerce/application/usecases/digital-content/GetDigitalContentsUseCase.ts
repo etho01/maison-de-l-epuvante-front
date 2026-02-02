@@ -1,5 +1,5 @@
-import { IDigitalContentRepository } from '../../domain/repositories/IDigitalContentRepository';
-import { DigitalContent } from '../../domain/entities/DigitalContent';
+import { IDigitalContentRepository } from '../../../domain/repositories/IDigitalContentRepository';
+import { DigitalContent } from '../../../domain/entities/DigitalContent';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class GetDigitalContentsUseCase {

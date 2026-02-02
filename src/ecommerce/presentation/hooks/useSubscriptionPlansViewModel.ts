@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { SubscriptionPlansViewModel } from '../viewmodels/SubscriptionPlansViewModel';
 import { SubscriptionPlan } from '../../domain/entities/SubscriptionPlan';
 import { ClientSubscriptionPlanRepository } from '../../infrastructure/repositories/ClientSubscriptionPlanRepository';
-import { GetSubscriptionPlansUseCase } from '../../application/usecases/GetSubscriptionPlansUseCase';
+import { GetSubscriptionPlansUseCase } from '../../application/usecases/subscriptions';
 
 // Singletons
 const subscriptionPlanRepository = new ClientSubscriptionPlanRepository();

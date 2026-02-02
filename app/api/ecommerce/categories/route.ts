@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SymfonyCategoryRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyCategoryRepository';
-import { GetCategoriesUseCase } from '@/src/ecommerce/application/usecases/GetCategoriesUseCase';
+import { GetCategoriesUseCase } from '@/src/ecommerce/application/usecases/categories';
 
 const categoryRepository = new SymfonyCategoryRepository();
 const getCategoriesUseCase = new GetCategoriesUseCase(categoryRepository);
