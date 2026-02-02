@@ -92,15 +92,6 @@ export default function Header() {
 
                         {isAuthenticated ? (
                             <>
-                                {isAdmin(user) && (
-                                    <Link
-                                        href="/admin"
-                                        className="text-gray-300 hover:text-red-500 transition-colors font-medium"
-                                    >
-                                        ⚙️ Admin
-                                    </Link>
-                                )}
-
                                 <Link
                                     href="/commandes"
                                     className="text-gray-300 hover:text-red-500 transition-colors font-medium"
@@ -200,6 +191,42 @@ export default function Header() {
                                 Ma collection
                             </Link>
                         </div>
+
+                        <Link
+                            href="/evil-ed"
+                            className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            {isAuthenticated ? (
+                                <>
+                                    <Link
+                                        href="/compte"
+                                        className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        👤 {user?.firstName || 'Mon Compte'}
+                                    </Link>
+
+                                    <button
+                                        onClick={() => {
+                                            logout();
+                                            setIsMenuOpen(false);
+                                        }}
+                                        className="block w-full text-left text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                    >
+                                        🚪 Déconnexion
+                                    </button>
+                                </>
+                            ) : (
+                                <Link
+                                    href="/auth/login"
+                                    className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    🔐 Connexion
+                                </Link>
+                            )}
+                        </Link>
 
                         <Link
                             href="/communaute"
