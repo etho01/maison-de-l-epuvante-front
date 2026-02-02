@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { CartSummary } from '@/src/ecommerce/presentation/components/CartSummary';
 
