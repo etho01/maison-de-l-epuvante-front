@@ -1,6 +1,6 @@
 import React from 'react';
-import AdminLayout from '@/admin/components/AdminLayout';
 import AdminUsersClient from './AdminUsersClient';
+import AdminLayout from '@/src/admin/components/AdminLayout';
 
 export default function AdminUsersPage() {
   return (

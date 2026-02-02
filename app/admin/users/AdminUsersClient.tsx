@@ -1,7 +1,7 @@
 'use client';
 
+import { User } from '@/src/auth/domain/entities/User';
 import React, { useEffect, useState } from 'react';
-import { User } from '@/auth/domain/entities/User';
 
 const AdminUsersClient: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
