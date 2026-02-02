@@ -10,7 +10,15 @@ export class OrdersViewModel {
 
   private listeners: Set<() => void> = new Set();
 
-  constructor(private getOrdersUseCase: GetOrdersUseCase) {}
+  constructor(
+    private getOrdersUseCase: GetOrdersUseCase,
+    initialOrders?: Order[]
+  ) {
+    if (initialOrders) {
+      this.state.orders = initialOrders;
+      this.state.loading = false;
+    }
+  }
 
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener);

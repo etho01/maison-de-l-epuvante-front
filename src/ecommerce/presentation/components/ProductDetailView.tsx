@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useProductDetailViewModel } from '../hooks/useProductDetailViewModel';
 import { useCart } from '../context/CartContext';
-import { Button } from '@/shared/components/ui/Button';
+import { Button } from '@/src/shared/components/ui';
 
 interface ProductDetailViewProps {
   slug: string;

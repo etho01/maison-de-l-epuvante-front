@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { CategoriesViewModel } from '../viewmodels/CategoriesViewModel';
+import { Category } from '../../domain/entities/Category';
 import { ClientCategoryRepository } from '../../infrastructure/repositories/ClientCategoryRepository';
 import { GetCategoriesUseCase } from '../../application/usecases/GetCategoriesUseCase';
 
@@ -9,8 +10,11 @@ import { GetCategoriesUseCase } from '../../application/usecases/GetCategoriesUs
 const categoryRepository = new ClientCategoryRepository();
 const getCategoriesUseCase = new GetCategoriesUseCase(categoryRepository);
 
-export const useCategoriesViewModel = () => {
-  const viewModel = useMemo(() => new CategoriesViewModel(getCategoriesUseCase), []);
+export const useCategoriesViewModel = (initialCategories?: Category[]) => {
+  const viewModel = useMemo(
+    () => new CategoriesViewModel(getCategoriesUseCase, initialCategories),
+    [initialCategories]
+  );
 
   const [, forceUpdate] = useState({});
 

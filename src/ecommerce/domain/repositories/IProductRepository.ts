@@ -2,7 +2,7 @@ import { Product, CreateProductData, UpdateProductData, ProductFilters } from '.
 
 export interface PaginatedResponse<T> {
   'member': T[];
-  'hydra:totalItems': number;
+  'totalItems': number;
   'hydra:view'?: {
     '@id': string;
     'hydra:first'?: string;
@@ -10,6 +10,7 @@ export interface PaginatedResponse<T> {
     'hydra:previous'?: string;
     'hydra:next'?: string;
   };
+  pagination : Pagination;
 }
 
 export interface IProductRepository {

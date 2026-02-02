@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { OrdersViewModel } from '../viewmodels/OrdersViewModel';
+import { Order } from '../../domain/entities/Order';
 import { ClientOrderRepository } from '../../infrastructure/repositories/ClientOrderRepository';
 import { GetOrdersUseCase } from '../../application/usecases/GetOrdersUseCase';
 
@@ -9,8 +10,11 @@ import { GetOrdersUseCase } from '../../application/usecases/GetOrdersUseCase';
 const orderRepository = new ClientOrderRepository();
 const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
 
-export const useOrdersViewModel = () => {
-  const viewModel = useMemo(() => new OrdersViewModel(getOrdersUseCase), []);
+export const useOrdersViewModel = (initialOrders?: Order[]) => {
+  const viewModel = useMemo(
+    () => new OrdersViewModel(getOrdersUseCase, initialOrders),
+    [initialOrders]
+  );
 
   const [, forceUpdate] = useState({});
 

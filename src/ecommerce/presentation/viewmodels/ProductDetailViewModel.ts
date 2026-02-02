@@ -12,8 +12,14 @@ export class ProductDetailViewModel {
 
   constructor(
     private getProductsUseCase: GetProductsUseCase,
-    private slug: string
-  ) {}
+    private slug: string,
+    initialProduct?: Product
+  ) {
+    if (initialProduct) {
+      this.state.product = initialProduct;
+      this.state.loading = false;
+    }
+  }
 
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener);

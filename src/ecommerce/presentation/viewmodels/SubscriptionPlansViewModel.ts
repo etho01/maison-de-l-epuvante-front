@@ -10,7 +10,15 @@ export class SubscriptionPlansViewModel {
 
   private listeners: Set<() => void> = new Set();
 
-  constructor(private getSubscriptionPlansUseCase: GetSubscriptionPlansUseCase) {}
+  constructor(
+    private getSubscriptionPlansUseCase: GetSubscriptionPlansUseCase,
+    initialPlans?: SubscriptionPlan[]
+  ) {
+    if (initialPlans) {
+      this.state.plans = initialPlans;
+      this.state.loading = false;
+    }
+  }
 
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener);

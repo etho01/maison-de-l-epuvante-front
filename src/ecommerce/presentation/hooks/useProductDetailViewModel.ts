@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { ProductDetailViewModel } from '../viewmodels/ProductDetailViewModel';
+import { Product } from '../../domain/entities/Product';
 import { ClientProductRepository } from '../../infrastructure/repositories/ClientProductRepository';
 import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
 
@@ -9,10 +10,10 @@ import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCas
 const productRepository = new ClientProductRepository();
 const getProductsUseCase = new GetProductsUseCase(productRepository);
 
-export const useProductDetailViewModel = (slug: string) => {
+export const useProductDetailViewModel = (slug: string, initialProduct?: Product) => {
   const viewModel = useMemo(
-    () => new ProductDetailViewModel(getProductsUseCase, slug),
-    [slug]
+    () => new ProductDetailViewModel(getProductsUseCase, slug, initialProduct),
+    [slug, initialProduct]
   );
 
   const [, forceUpdate] = useState({});

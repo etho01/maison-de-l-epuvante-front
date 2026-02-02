@@ -10,7 +10,15 @@ export class CategoriesViewModel {
 
   private listeners: Set<() => void> = new Set();
 
-  constructor(private getCategoriesUseCase: GetCategoriesUseCase) {}
+  constructor(
+    private getCategoriesUseCase: GetCategoriesUseCase,
+    initialCategories?: Category[]
+  ) {
+    if (initialCategories) {
+      this.state.categories = initialCategories;
+      this.state.loading = false;
+    }
+  }
 
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener);

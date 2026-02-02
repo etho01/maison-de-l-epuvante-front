@@ -5,9 +5,16 @@ import { useProductsViewModel } from '../hooks/useProductsViewModel';
 import { useCategoriesViewModel } from '../hooks/useCategoriesViewModel';
 import { ProductList } from './ProductList';
 import { ProductFilters } from './ProductFilters';
+import { Product } from '../../domain/entities/Product';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
-export const ProductCatalog: React.FC = () => {
-  const productsVM = useProductsViewModel();
+interface ProductCatalogProps {
+  initialProducts: Product[];
+  initialProductPagination: Pagination;
+}
+
+export const ProductCatalog: React.FC<ProductCatalogProps> = ({ initialProducts, initialProductPagination }) => {
+  const productsVM = useProductsViewModel(initialProducts, initialProductPagination);
   const categoriesVM = useCategoriesViewModel();
   
   const { products, loading, error, filters } = productsVM.getState();

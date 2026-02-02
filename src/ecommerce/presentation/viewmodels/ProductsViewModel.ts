@@ -1,9 +1,11 @@
 import { Product, ProductFilters } from '../../domain/entities/Product';
 import { GetProductsUseCase } from '../../application/usecases/GetProductsUseCase';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
 export class ProductsViewModel {
   private state = {
     products: [] as Product[],
+    pagination: null as Pagination | null,
     loading: true,
     error: null as string | null,
     filters: {} as ProductFilters,
@@ -11,7 +13,19 @@ export class ProductsViewModel {
 
   private listeners: Set<() => void> = new Set();
 
-  constructor(private getProductsUseCase: GetProductsUseCase) {}
+  constructor(
+    private getProductsUseCase: GetProductsUseCase,
+    initialProducts?: Product[],
+    initialPagination?: Pagination
+  ) {
+    if (initialProducts) {
+      this.state.products = initialProducts;
+      this.state.loading = false;
+    }
+    if (initialPagination) {
+      this.state.pagination = initialPagination;
+    }
+  }
 
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener);

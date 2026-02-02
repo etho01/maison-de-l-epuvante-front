@@ -12,8 +12,14 @@ export class OrderDetailViewModel {
 
   constructor(
     private getOrderByIdUseCase: GetOrderByIdUseCase,
-    private orderId: number
-  ) {}
+    private orderId: number,
+    initialOrder?: Order
+  ) {
+    if (initialOrder) {
+      this.state.order = initialOrder;
+      this.state.loading = false;
+    }
+  }
 
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener);
