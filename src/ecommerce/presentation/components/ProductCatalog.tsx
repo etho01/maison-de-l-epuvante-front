@@ -2,23 +2,22 @@
 
 import React from 'react';
 import { useProductsViewModel } from '../hooks/useProductsViewModel';
-import { useCategoriesViewModel } from '../hooks/useCategoriesViewModel';
 import { ProductList } from './ProductList';
 import { ProductFilters } from './ProductFilters';
 import { Product } from '../../domain/entities/Product';
 import { Pagination } from '@/src/shared/domain/Pagination';
+import { Category } from '../../domain/entities/Category';
 
 interface ProductCatalogProps {
   initialProducts: Product[];
   initialProductPagination: Pagination;
+  categories: Category[];
 }
 
-export const ProductCatalog: React.FC<ProductCatalogProps> = ({ initialProducts, initialProductPagination }) => {
+export const ProductCatalog: React.FC<ProductCatalogProps> = ({ initialProducts, initialProductPagination, categories }) => {
   const productsVM = useProductsViewModel(initialProducts, initialProductPagination);
-  const categoriesVM = useCategoriesViewModel();
   
   const { products, loading, error, filters } = productsVM.getState();
-  const { categories } = categoriesVM.getState();
 
   return (
     <div className="flex gap-8">

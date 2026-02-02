@@ -40,6 +40,11 @@ export class ClientCategoryRepository implements ICategoryRepository {
     return response;
   }
 
+  async getAllCategories(): Promise<Category[]> {
+    const response = await this.request<PaginatedResponse<Category>>('/categories/all');
+    return response.member;
+  }
+
   async getById(id: number): Promise<Category> {
     return await this.request<Category>(`/categories/${id}`);
   }

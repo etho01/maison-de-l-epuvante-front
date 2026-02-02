@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/auth/presentation/context/AuthContext';
+import { useAuth } from '@/src/auth/presentation/context/AuthContext';
 
 interface AuthGuardProps {
   children: React.ReactNode;

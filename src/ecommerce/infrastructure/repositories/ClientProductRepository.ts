@@ -1,5 +1,6 @@
-import { IProductRepository, PaginatedResponse } from '../../domain/repositories/IProductRepository';
+import { IProductRepository } from '../../domain/repositories/IProductRepository';
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../../domain/entities/Product';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class ClientProductRepository implements IProductRepository {
   private baseURL: string;

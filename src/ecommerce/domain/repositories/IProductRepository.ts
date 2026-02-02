@@ -1,4 +1,4 @@
-import { Pagination } from '@/src/shared/domain/Pagination';
+import { PaginatedResponse, Pagination } from '@/src/shared/domain/Pagination';
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../entities/Product';
 
 export interface IProductRepository {

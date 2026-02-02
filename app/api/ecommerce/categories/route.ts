@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SymfonyCategoryRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyCategoryRepository';
+import { GetCategoriesUseCase } from '@/src/ecommerce/application/usecases/GetCategoriesUseCase';
 
 const categoryRepository = new SymfonyCategoryRepository();
+const getCategoriesUseCase = new GetCategoriesUseCase(categoryRepository);
 
 export async function GET(request: NextRequest) {
   try {
-    const categories = await categoryRepository.getAll();
+    const categories = await getCategoriesUseCase.execute();
     return NextResponse.json(categories);
   } catch (error: any) {
     return NextResponse.json(

@@ -10,6 +10,11 @@ export class SymfonyCategoryRepository implements ICategoryRepository {
     return response;
   }
 
+  async getAllCategories(): Promise<Category[]> {
+    const response = await apiClient.get<PaginatedResponse<Category>>('/categories?pagination=false');
+    return response.member;
+  }
+
   async getById(id: number): Promise<Category> {
     return await apiClient.get<Category>(`/categories/${id}`);
   }

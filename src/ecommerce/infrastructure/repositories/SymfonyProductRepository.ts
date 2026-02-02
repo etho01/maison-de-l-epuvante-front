@@ -1,6 +1,7 @@
 import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
-import { IProductRepository, PaginatedResponse } from '../../domain/repositories/IProductRepository';
+import { IProductRepository } from '../../domain/repositories/IProductRepository';
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../../domain/entities/Product';
+import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class SymfonyProductRepository implements IProductRepository {
   async getProducts(filters?: ProductFilters): Promise<PaginatedResponse<Product>> {

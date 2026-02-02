@@ -38,7 +38,6 @@ export const CartSummary: React.FC = () => {
               <Link href={`/produits/${item.product.slug}`} className="hover:underline">
                 <h3 className="font-bold">{item.product.name}</h3>
               </Link>
-              <p className="text-sm text-gray-500">{item.product.category.name}</p>
               <p className="text-lg font-bold text-red-600 mt-2">{item.product.price} €</p>
             </div>
 
