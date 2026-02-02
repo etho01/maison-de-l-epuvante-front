@@ -4,7 +4,7 @@ import { PaginatedResponse } from '../../domain/repositories/IProductRepository'
 import { DigitalContent } from '../../domain/entities/DigitalContent';
 
 export class SymfonyDigitalContentRepository implements IDigitalContentRepository {
-  async getAll(page?: number): Promise<PaginatedResponse<DigitalContent>> {
+  async getDigitalContents(page?: number): Promise<PaginatedResponse<DigitalContent>> {
     const endpoint = page ? `/digital-contents?page=${page}` : '/digital-contents';
     return await apiClient.get<PaginatedResponse<DigitalContent>>(endpoint);
   }

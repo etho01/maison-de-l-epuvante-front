@@ -35,7 +35,7 @@ export class ClientDigitalContentRepository implements IDigitalContentRepository
     return await response.json();
   }
 
-  async getAll(page?: number): Promise<PaginatedResponse<DigitalContent>> {
+  async getDigitalContents(page?: number): Promise<PaginatedResponse<DigitalContent>> {
     const endpoint = page ? `/digital-contents?page=${page}` : '/digital-contents';
     return await this.request<PaginatedResponse<DigitalContent>>(endpoint);
   }

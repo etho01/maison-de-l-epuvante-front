@@ -5,6 +5,6 @@ export class GetSubscriptionPlansUseCase {
   constructor(private subscriptionPlanRepository: ISubscriptionPlanRepository) {}
 
   async execute(): Promise<SubscriptionPlan[]> {
-    return await this.subscriptionPlanRepository.getAll();
+    return await this.subscriptionPlanRepository.getSubscriptionPlans();
   }
 }

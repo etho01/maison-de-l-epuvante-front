@@ -3,7 +3,7 @@ import { IProductRepository, PaginatedResponse } from '../../domain/repositories
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../../domain/entities/Product';
 
 export class SymfonyProductRepository implements IProductRepository {
-  async getAll(filters?: ProductFilters): Promise<PaginatedResponse<Product>> {
+  async getProducts(filters?: ProductFilters): Promise<PaginatedResponse<Product>> {
     const params = new URLSearchParams();
     
     if (filters) {

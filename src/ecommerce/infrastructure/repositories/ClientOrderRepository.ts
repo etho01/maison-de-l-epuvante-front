@@ -35,7 +35,7 @@ export class ClientOrderRepository implements IOrderRepository {
     return await response.json();
   }
 
-  async getAll(page?: number): Promise<PaginatedResponse<Order>> {
+  async getOrders(page?: number): Promise<PaginatedResponse<Order>> {
     const endpoint = page ? `/orders?page=${page}` : '/orders';
     return await this.request<PaginatedResponse<Order>>(endpoint);
   }

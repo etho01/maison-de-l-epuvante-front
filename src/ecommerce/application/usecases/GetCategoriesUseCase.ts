@@ -6,6 +6,6 @@ export class GetCategoriesUseCase {
   constructor(private categoryRepository: ICategoryRepository) {}
 
   async execute(): Promise<PaginatedResponse<Category>> {
-    return await this.categoryRepository.getAll();
+    return await this.categoryRepository.getCategories();
   }
 }

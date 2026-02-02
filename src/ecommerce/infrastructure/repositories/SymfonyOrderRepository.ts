@@ -4,7 +4,7 @@ import { PaginatedResponse } from '../../domain/repositories/IProductRepository'
 import { Order, CheckoutData, UpdateOrderData } from '../../domain/entities/Order';
 
 export class SymfonyOrderRepository implements IOrderRepository {
-  async getAll(page?: number): Promise<PaginatedResponse<Order>> {
+  async getOrders(page?: number): Promise<PaginatedResponse<Order>> {
     const endpoint = page ? `/orders?page=${page}` : '/orders';
     return await apiClient.get<PaginatedResponse<Order>>(endpoint);
   }

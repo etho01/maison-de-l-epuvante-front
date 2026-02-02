@@ -4,7 +4,7 @@ import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanDat
 import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 
 export class SymfonySubscriptionPlanRepository implements ISubscriptionPlanRepository {
-  async getAll(): Promise<PaginatedResponse<SubscriptionPlan>> {
+  async getSubscriptionPlans(): Promise<PaginatedResponse<SubscriptionPlan>> {
     const response = await apiClient.get<PaginatedResponse<SubscriptionPlan>>('/subscription-plans');
     return response;
   }

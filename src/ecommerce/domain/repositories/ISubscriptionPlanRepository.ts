@@ -2,7 +2,7 @@ import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanDat
 import { PaginatedResponse } from './IProductRepository';
 
 export interface ISubscriptionPlanRepository {
-  getAll(): Promise<PaginatedResponse<SubscriptionPlan>>;
+  getSubscriptionPlans(): Promise<PaginatedResponse<SubscriptionPlan>>;
   getById(id: number): Promise<SubscriptionPlan>;
   create(data: CreateSubscriptionPlanData): Promise<SubscriptionPlan>;
   update(id: number, data: UpdateSubscriptionPlanData): Promise<SubscriptionPlan>;

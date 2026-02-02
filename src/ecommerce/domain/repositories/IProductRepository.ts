@@ -1,3 +1,4 @@
+import { Pagination } from '@/src/shared/domain/Pagination';
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../entities/Product';
 
 export interface PaginatedResponse<T> {
@@ -14,7 +15,7 @@ export interface PaginatedResponse<T> {
 }
 
 export interface IProductRepository {
-  getAll(filters?: ProductFilters): Promise<PaginatedResponse<Product>>;
+  getProducts(filters?: ProductFilters): Promise<PaginatedResponse<Product>>;
   getById(id: number): Promise<Product>;
   create(data: CreateProductData): Promise<Product>;
   update(id: number, data: UpdateProductData): Promise<Product>;

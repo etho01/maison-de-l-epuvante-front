@@ -2,7 +2,7 @@ import { Category, CreateCategoryData, UpdateCategoryData } from '../entities/Ca
 import { PaginatedResponse } from './IProductRepository';
 
 export interface ICategoryRepository {
-  getAll(): Promise<PaginatedResponse<Category>>;
+  getCategories(): Promise<PaginatedResponse<Category>>;
   getById(id: number): Promise<Category>;
   create(data: CreateCategoryData): Promise<Category>;
   update(id: number, data: UpdateCategoryData): Promise<Category>;

@@ -5,6 +5,6 @@ export class GetDigitalContentsUseCase {
   constructor(private digitalContentRepository: IDigitalContentRepository) {}
 
   async execute(page?: number): Promise<PaginatedResponse<DigitalContent>> {
-    return await this.digitalContentRepository.getAll(page);
+    return await this.digitalContentRepository.getDigitalContents(page);
   }
 }

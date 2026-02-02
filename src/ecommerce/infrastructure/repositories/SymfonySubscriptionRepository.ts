@@ -4,7 +4,7 @@ import { PaginatedResponse } from '../../domain/repositories/IProductRepository'
 import { Subscription, SubscribeData, RenewSubscriptionData } from '../../domain/entities/Subscription';
 
 export class SymfonySubscriptionRepository implements ISubscriptionRepository {
-  async getAll(page?: number): Promise<PaginatedResponse<Subscription>> {
+  async getSubscriptions(page?: number): Promise<PaginatedResponse<Subscription>> {
     const endpoint = page ? `/subscriptions?page=${page}` : '/subscriptions';
     return await apiClient.get<PaginatedResponse<Subscription>>(endpoint);
   }

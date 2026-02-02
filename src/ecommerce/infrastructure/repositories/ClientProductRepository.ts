@@ -34,7 +34,7 @@ export class ClientProductRepository implements IProductRepository {
     return await response.json();
   }
 
-  async getAll(filters?: ProductFilters): Promise<PaginatedResponse<Product>> {
+  async getProducts(filters?: ProductFilters): Promise<PaginatedResponse<Product>> {
     const params = new URLSearchParams();
     
     if (filters) {

@@ -35,7 +35,7 @@ export class ClientSubscriptionRepository implements ISubscriptionRepository {
     return await response.json();
   }
 
-  async getAll(page?: number): Promise<PaginatedResponse<Subscription>> {
+  async getSubscriptions(page?: number): Promise<PaginatedResponse<Subscription>> {
     const endpoint = page ? `/subscriptions?page=${page}` : '/subscriptions';
     return await this.request<PaginatedResponse<Subscription>>(endpoint);
   }

@@ -35,7 +35,7 @@ export class ClientCategoryRepository implements ICategoryRepository {
     return await response.json();
   }
 
-  async getAll(): Promise<PaginatedResponse<Category>> {
+  async getCategories(): Promise<PaginatedResponse<Category>> {
     const response = await this.request<PaginatedResponse<Category>>('/categories');
     return response;
   }

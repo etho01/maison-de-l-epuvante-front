@@ -6,6 +6,6 @@ export class GetSubscriptionsUseCase {
   constructor(private subscriptionRepository: ISubscriptionRepository) {}
 
   async execute(page?: number): Promise<PaginatedResponse<Subscription>> {
-    return await this.subscriptionRepository.getAll(page);
+    return await this.subscriptionRepository.getSubscriptions(page);
   }
 }

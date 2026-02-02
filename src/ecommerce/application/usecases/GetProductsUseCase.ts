@@ -5,6 +5,6 @@ export class GetProductsUseCase {
   constructor(private productRepository: IProductRepository) {}
 
   async execute(filters?: ProductFilters): Promise<PaginatedResponse<Product>> {
-    return await this.productRepository.getAll(filters);
+    return await this.productRepository.getProducts(filters);
   }
 }

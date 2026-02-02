@@ -37,6 +37,7 @@ export class ProductsViewModel {
   }
 
   async init() {
+    if (this.state.products) return;
     await this.loadProducts();
   }
 

@@ -1,5 +1,6 @@
 import { ISubscriptionPlanRepository } from '../../domain/repositories/ISubscriptionPlanRepository';
 import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../../domain/entities/SubscriptionPlan';
+import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 
 export class ClientSubscriptionPlanRepository implements ISubscriptionPlanRepository {
   private baseURL: string;
@@ -34,9 +35,9 @@ export class ClientSubscriptionPlanRepository implements ISubscriptionPlanReposi
     return await response.json();
   }
 
-  async getAll(): Promise<SubscriptionPlan[]> {
-    const response = await this.request<{ 'hydra:member': SubscriptionPlan[] }>('/subscription-plans');
-    return response['hydra:member'];
+  async getSubscriptionPlans(): Promise<PaginatedResponse<SubscriptionPlan>> {
+    const response = await this.request<PaginatedResponse<SubscriptionPlan>>('/subscription-plans');
+    return response;
   }
 
   async getById(id: number): Promise<SubscriptionPlan> {

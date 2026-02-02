@@ -5,11 +5,13 @@ import { ProductCatalog } from '@/src/ecommerce/presentation/components/ProductC
 const productRepository = new SymfonyProductRepository();
 const getProductUseCase = new GetProductsUseCase(productRepository);
 
+const categoryRepository = new SymfonyProductRepository();
+
 export default async function ProduitsPage() {
   const resp = await getProductUseCase.execute();
-
   const pagination = resp.pagination
   const products = resp.member;
+
 
   return (
     <div className="container mx-auto px-4 py-8">

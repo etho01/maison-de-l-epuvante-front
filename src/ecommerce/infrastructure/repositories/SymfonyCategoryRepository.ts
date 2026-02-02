@@ -5,7 +5,7 @@ import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
 import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 
 export class SymfonyCategoryRepository implements ICategoryRepository {
-  async getAll(): Promise<PaginatedResponse <Category>> {
+  async getCategories(): Promise<PaginatedResponse <Category>> {
     const response = await apiClient.get<PaginatedResponse<Category>>('/categories');
     return response;
   }
