@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SymfonyCategoryRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyCategoryRepository';
+import { GetCategoryByIdUseCase, UpdateCategoryUseCase, DeleteCategoryUseCase } from '@/src/ecommerce/application/usecases/categories';
 
 const categoryRepository = new SymfonyCategoryRepository();
+const getCategoryByIdUseCase = new GetCategoryByIdUseCase(categoryRepository);
+const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository);
+const deleteCategoryUseCase = new DeleteCategoryUseCase(categoryRepository);
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const category = await categoryRepository.getById(parseInt(params.id));
+    const category = await getCategoryByIdUseCase.execute(parseInt(params.id));
     return NextResponse.json(category);
   } catch (error: any) {
     return NextResponse.json(
@@ -24,7 +28,7 @@ export async function PATCH(
 ) {
   try {
     const data = await request.json();
-    const category = await categoryRepository.update(parseInt(params.id), data);
+    const category = await updateCategoryUseCase.execute(parseInt(params.id), data);
     return NextResponse.json(category);
   } catch (error: any) {
     return NextResponse.json(
@@ -39,7 +43,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await categoryRepository.delete(parseInt(params.id));
+    await deleteCategoryUseCase.execute(parseInt(params.id));
     return new NextResponse(null, { status: 204 });
   } catch (error: any) {
     return NextResponse.json(

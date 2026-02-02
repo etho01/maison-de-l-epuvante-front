@@ -1,14 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SymfonyDigitalContentRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyDigitalContentRepository';
+import { DownloadDigitalContentUseCase } from '@/src/ecommerce/application/usecases/digital-content';
 
 const digitalContentRepository = new SymfonyDigitalContentRepository();
+const downloadDigitalContentUseCase = new DownloadDigitalContentUseCase(digitalContentRepository);
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const blob = await digitalContentRepository.download(parseInt(params.id));
+    const blob = await downloadDigitalContentUseCase.execute(parseInt(params.id));
     
     return new NextResponse(blob, {
       headers: {
