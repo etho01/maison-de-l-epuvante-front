@@ -2,11 +2,12 @@
 import { ICategoryRepository } from '../../domain/repositories/ICategoryRepository';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../domain/entities/Category';
 import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
+import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 
 export class SymfonyCategoryRepository implements ICategoryRepository {
-  async getAll(): Promise<Category[]> {
-    const response = await apiClient.get<{ 'hydra:member': Category[] }>('/categories');
-    return response['hydra:member'];
+  async getAll(): Promise<PaginatedResponse <Category>> {
+    const response = await apiClient.get<PaginatedResponse<Category>>('/categories');
+    return response;
   }
 
   async getById(id: number): Promise<Category> {

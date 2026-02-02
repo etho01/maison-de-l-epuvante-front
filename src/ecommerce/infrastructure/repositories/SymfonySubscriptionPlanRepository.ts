@@ -1,11 +1,12 @@
 import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
 import { ISubscriptionPlanRepository } from '../../domain/repositories/ISubscriptionPlanRepository';
 import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../../domain/entities/SubscriptionPlan';
+import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 
 export class SymfonySubscriptionPlanRepository implements ISubscriptionPlanRepository {
-  async getAll(): Promise<SubscriptionPlan[]> {
-    const response = await apiClient.get<{ 'hydra:member': SubscriptionPlan[] }>('/subscription-plans');
-    return response['hydra:member'];
+  async getAll(): Promise<PaginatedResponse<SubscriptionPlan>> {
+    const response = await apiClient.get<PaginatedResponse<SubscriptionPlan>>('/subscription-plans');
+    return response;
   }
 
   async getById(id: number): Promise<SubscriptionPlan> {

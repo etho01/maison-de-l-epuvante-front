@@ -1,7 +1,8 @@
 import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../entities/SubscriptionPlan';
+import { PaginatedResponse } from './IProductRepository';
 
 export interface ISubscriptionPlanRepository {
-  getAll(): Promise<SubscriptionPlan[]>;
+  getAll(): Promise<PaginatedResponse<SubscriptionPlan>>;
   getById(id: number): Promise<SubscriptionPlan>;
   create(data: CreateSubscriptionPlanData): Promise<SubscriptionPlan>;
   update(id: number, data: UpdateSubscriptionPlanData): Promise<SubscriptionPlan>;

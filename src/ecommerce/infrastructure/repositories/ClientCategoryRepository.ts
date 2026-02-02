@@ -1,5 +1,6 @@
 import { ICategoryRepository } from '../../domain/repositories/ICategoryRepository';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../domain/entities/Category';
+import { PaginatedResponse } from '../../domain/repositories/IProductRepository';
 
 export class ClientCategoryRepository implements ICategoryRepository {
   private baseURL: string;
@@ -34,9 +35,9 @@ export class ClientCategoryRepository implements ICategoryRepository {
     return await response.json();
   }
 
-  async getAll(): Promise<Category[]> {
-    const response = await this.request<{ 'hydra:member': Category[] }>('/categories');
-    return response['hydra:member'];
+  async getAll(): Promise<PaginatedResponse<Category>> {
+    const response = await this.request<PaginatedResponse<Category>>('/categories');
+    return response;
   }
 
   async getById(id: number): Promise<Category> {

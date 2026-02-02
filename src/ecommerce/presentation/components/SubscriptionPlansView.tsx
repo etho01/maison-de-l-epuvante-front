@@ -1,38 +1,20 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/auth/presentation/context/AuthContext';
-import { useEcommerce } from '../context/EcommerceContext';
+import { useSubscriptionPlansViewModel } from '../hooks/useSubscriptionPlansViewModel';
+import { useSubscribeViewModel } from '../hooks/useSubscribeViewModel';
 import { SubscriptionPlanCard } from './SubscriptionPlanCard';
-import { SubscriptionPlan } from '../../domain/entities/SubscriptionPlan';
 
 export const SubscriptionPlansView: React.FC = () => {
   const router = useRouter();
   const { user } = useAuth();
-  const { getSubscriptionPlans, subscribe } = useEcommerce();
+  const plansViewModel = useSubscriptionPlansViewModel();
+  const subscribeViewModel = useSubscribeViewModel();
   
-  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [subscribing, setSubscribing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    loadPlans();
-  }, []);
-
-  const loadPlans = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const plansData = await getSubscriptionPlans();
-      setPlans(plansData.filter((plan) => plan.active));
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { plans, loading, error } = plansViewModel.getState();
+  const { subscribing } = subscribeViewModel.getState();
 
   const handleSubscribe = async (planId: number) => {
     if (!user) {
@@ -40,21 +22,14 @@ export const SubscriptionPlansView: React.FC = () => {
       return;
     }
 
-    try {
-      setSubscribing(true);
-      setError(null);
+    const success = await subscribeViewModel.subscribeToPlan({
+      plan: `/api/subscription-plans/${planId}`,
+      paymentMethod: 'card',
+      autoRenew: true,
+    });
 
-      await subscribe({
-        plan: `/api/subscription-plans/${planId}`,
-        paymentMethod: 'card',
-        autoRenew: true,
-      });
-
+    if (success) {
       router.push('/compte?tab=abonnements&success=true');
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
-    } finally {
-      setSubscribing(false);
     }
   };
 

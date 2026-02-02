@@ -2,17 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useEcommerce } from '../context/EcommerceContext';
-import { Order } from '../../domain/entities/Order';
+import { useOrdersViewModel } from '../hooks/useOrdersViewModel';
 import { OrderList } from './OrderList';
 
 export const OrdersManager: React.FC = () => {
   const searchParams = useSearchParams();
-  const { getOrders } = useEcommerce();
-  
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const viewModel = useOrdersViewModel();
+  const { orders, loading, error } = viewModel.getState();
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
@@ -21,23 +17,6 @@ export const OrdersManager: React.FC = () => {
       setTimeout(() => setShowSuccess(false), 5000);
     }
   }, [searchParams]);
-
-  useEffect(() => {
-    loadOrders();
-  }, []);
-
-  const loadOrders = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await getOrders();
-      setOrders(response['hydra:member']);
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <>

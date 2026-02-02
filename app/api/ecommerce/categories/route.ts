@@ -6,7 +6,7 @@ const categoryRepository = new SymfonyCategoryRepository();
 export async function GET(request: NextRequest) {
   try {
     const categories = await categoryRepository.getAll();
-    return NextResponse.json({ 'hydra:member': categories });
+    return NextResponse.json(categories);
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message || 'Erreur lors de la récupération des catégories' },

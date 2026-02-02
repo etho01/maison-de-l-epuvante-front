@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useEcommerce } from '../context/EcommerceContext';
+import React, { useState } from 'react';
+import { useProductDetailViewModel } from '../hooks/useProductDetailViewModel';
 import { useCart } from '../context/CartContext';
-import { Product } from '../../domain/entities/Product';
 import { Button } from '@/shared/components/ui/Button';
 
 interface ProductDetailViewProps {
@@ -11,39 +10,11 @@ interface ProductDetailViewProps {
 }
 
 export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ slug }) => {
-  const { getProducts } = useEcommerce();
+  const viewModel = useProductDetailViewModel(slug);
+  const { product, loading, error } = viewModel.getState();
   const { addToCart, getItemQuantity } = useCart();
   
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-
-  useEffect(() => {
-    loadProduct();
-  }, [slug]);
-
-  const loadProduct = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Rechercher le produit par slug
-      const response = await getProducts({ name: slug });
-      const foundProduct = response['hydra:member'].find((p) => p.slug === slug);
-      
-      if (!foundProduct) {
-        setError('Produit non trouvé');
-        return;
-      }
-      
-      setProduct(foundProduct);
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleAddToCart = () => {
     if (product) {

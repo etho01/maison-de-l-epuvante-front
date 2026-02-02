@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useEcommerce } from '../context/EcommerceContext';
-import { Order, OrderStatus } from '../../domain/entities/Order';
+import { useOrderDetailViewModel } from '../hooks/useOrderDetailViewModel';
+import { OrderStatus } from '../../domain/entities/Order';
 
 const statusLabels: Record<OrderStatus, string> = {
   pending: 'En attente',
@@ -21,28 +21,8 @@ interface OrderDetailProps {
 
 export const OrderDetail: React.FC<OrderDetailProps> = ({ orderId }) => {
   const router = useRouter();
-  const { getOrderById } = useEcommerce();
-  
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    loadOrder();
-  }, [orderId]);
-
-  const loadOrder = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const orderData = await getOrderById(orderId);
-      setOrder(orderData);
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const viewModel = useOrderDetailViewModel(orderId);
+  const { order, loading, error } = viewModel.getState();
 
   if (loading) {
     return <p>Chargement...</p>;

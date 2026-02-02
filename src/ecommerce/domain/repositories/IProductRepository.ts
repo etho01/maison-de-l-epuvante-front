@@ -1,7 +1,7 @@
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../entities/Product';
 
 export interface PaginatedResponse<T> {
-  'hydra:member': T[];
+  'member': T[];
   'hydra:totalItems': number;
   'hydra:view'?: {
     '@id': string;
