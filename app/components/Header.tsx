@@ -92,6 +92,15 @@ export default function Header() {
 
                         {isAuthenticated ? (
                             <>
+                                {isAdmin(user) && (
+                                    <Link
+                                        href="/admin"
+                                        className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                                    >
+                                        ⚙️ Admin
+                                    </Link>
+                                )}
+
                                 <Link
                                     href="/commandes"
                                     className="text-gray-300 hover:text-red-500 transition-colors font-medium"
