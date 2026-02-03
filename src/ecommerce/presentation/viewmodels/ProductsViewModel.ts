@@ -8,7 +8,9 @@ export class ProductsViewModel {
     pagination: null as Pagination | null,
     loading: true,
     error: null as string | null,
-    filters: {} as ProductFilters,
+    filters: {
+      page: 1,
+    } as ProductFilters,
   };
 
   private listeners: Set<() => void> = new Set();

@@ -7,6 +7,7 @@ import { ProductFilters } from './ProductFilters';
 import { Product } from '../../domain/entities/Product';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { Category } from '../../domain/entities/Category';
+import { PaginationComponent } from '@/src/shared/components/ui/PaginationComponent';
 
 interface ProductCatalogProps {
   initialProducts: Product[];
@@ -37,6 +38,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ initialProducts,
         )}
 
         <ProductList products={products} loading={loading} />
+        <PaginationComponent
+          pagination={initialProductPagination} 
+          onPageChange={(page) => productsVM.setFilter('page', page)} 
+        />
       </main>
     </div>
   );
