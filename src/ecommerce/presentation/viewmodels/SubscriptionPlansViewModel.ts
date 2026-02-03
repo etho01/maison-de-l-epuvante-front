@@ -1,9 +1,11 @@
 import { SubscriptionPlan } from '../../domain/entities/SubscriptionPlan';
 import { GetSubscriptionPlansUseCase } from '../../application/usecases/subscriptions';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
 export class SubscriptionPlansViewModel {
   private state = {
     plans: [] as SubscriptionPlan[],
+    pagination: null as Pagination | null,
     loading: true,
     error: null as string | null,
   };
@@ -12,11 +14,16 @@ export class SubscriptionPlansViewModel {
 
   constructor(
     private getSubscriptionPlansUseCase: GetSubscriptionPlansUseCase,
-    initialPlans?: SubscriptionPlan[]
+    initialPlans?: SubscriptionPlan[],
+    initialPagination?: Pagination
   ) {
     if (initialPlans) {
       this.state.plans = initialPlans;
       this.state.loading = false;
+    }
+
+    if (initialPagination) {
+      this.state.pagination = initialPagination;
     }
   }
 
@@ -30,6 +37,7 @@ export class SubscriptionPlansViewModel {
   }
 
   async init() {
+    if (this.state.plans) return;
     await this.loadPlans();
   }
 
@@ -40,7 +48,8 @@ export class SubscriptionPlansViewModel {
       this.notify();
 
       const plansData = await this.getSubscriptionPlansUseCase.execute();
-      this.state.plans = plansData.filter((plan) => plan.active);
+      this.state.plans = plansData.member.filter((plan) => plan.active);
+      this.state.pagination = plansData.pagination;
     } catch (err: any) {
       this.state.error = err.message || 'Une erreur est survenue';
     } finally {

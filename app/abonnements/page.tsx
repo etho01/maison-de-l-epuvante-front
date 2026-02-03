@@ -1,7 +1,15 @@
 import React from 'react';
 import { SubscriptionPlansView } from '@/src/ecommerce/presentation/components/SubscriptionPlansView';
+import { SymfonySubscriptionPlanRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonySubscriptionPlanRepository';
+import { GetSubscriptionPlansUseCase } from '@/src/ecommerce/application/usecases';
 
-export default function AbonnementsPage() {
+const subscriptionPlanRepository = new SymfonySubscriptionPlanRepository();
+const getSubscriptionPlansUseCase = new GetSubscriptionPlansUseCase(subscriptionPlanRepository);
+
+export default async function AbonnementsPage() {
+  const planData = await getSubscriptionPlansUseCase.execute();
+  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-5xl mx-auto">
@@ -10,12 +18,10 @@ export default function AbonnementsPage() {
           Choisissez l'abonnement qui vous convient pour recevoir régulièrement nos fanzines
         </p>
 
-        <SubscriptionPlansView />
-      </div>
-    </div>
-  );
-}
-
+        <SubscriptionPlansView
+          initialPlans={planData.member}
+          initialPagination={planData.pagination}
+        />
       </div>
     </div>
   );

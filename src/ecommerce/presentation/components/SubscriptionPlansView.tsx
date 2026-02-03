@@ -2,15 +2,23 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/auth/presentation/context/AuthContext';
 import { useSubscriptionPlansViewModel } from '../hooks/useSubscriptionPlansViewModel';
 import { useSubscribeViewModel } from '../hooks/useSubscribeViewModel';
 import { SubscriptionPlanCard } from './SubscriptionPlanCard';
+import { useAuth } from '@/src/auth/presentation/context/AuthContext';
+import { SubscriptionPlan } from '../../domain/entities/SubscriptionPlan';
+import { Pagination } from '@/src/shared/domain/Pagination';
+import { LoaderCard } from '@/src/shared/components/ui/LoaderCard';
 
-export const SubscriptionPlansView: React.FC = () => {
+interface SubscriptionPlansViewProps {
+  initialPlans?: SubscriptionPlan[];
+  initialPagination?: Pagination;
+}
+
+export const SubscriptionPlansView: React.FC<SubscriptionPlansViewProps> = ({ initialPlans, initialPagination }) => {
   const router = useRouter();
   const { user } = useAuth();
-  const plansViewModel = useSubscriptionPlansViewModel();
+  const plansViewModel = useSubscriptionPlansViewModel(initialPlans, initialPagination);
   const subscribeViewModel = useSubscribeViewModel();
   
   const { plans, loading, error } = plansViewModel.getState();
@@ -43,14 +51,7 @@ export const SubscriptionPlansView: React.FC = () => {
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="border rounded-lg p-6 animate-pulse">
-              <div className="bg-gray-200 h-8 rounded mb-4"></div>
-              <div className="bg-gray-200 h-4 rounded mb-2"></div>
-              <div className="bg-gray-200 h-12 rounded mb-4"></div>
-              <div className="bg-gray-200 h-10 rounded"></div>
-            </div>
-          ))}
+          <LoaderCard />
         </div>
       ) : plans.length === 0 ? (
         <div className="text-center py-12">

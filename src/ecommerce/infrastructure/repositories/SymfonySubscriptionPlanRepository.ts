@@ -5,7 +5,7 @@ import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class SymfonySubscriptionPlanRepository implements ISubscriptionPlanRepository {
   async getSubscriptionPlans(): Promise<PaginatedResponse<SubscriptionPlan>> {
-    const response = await apiClient.get<PaginatedResponse<SubscriptionPlan>>('/subscription-plans');
+    const response = await apiClient.get<PaginatedResponse<SubscriptionPlan>>('/subscription_plans');
     return response;
   }
 

@@ -5,12 +5,13 @@ import { SubscriptionPlansViewModel } from '../viewmodels/SubscriptionPlansViewM
 import { SubscriptionPlan } from '../../domain/entities/SubscriptionPlan';
 import { ClientSubscriptionPlanRepository } from '../../infrastructure/repositories/ClientSubscriptionPlanRepository';
 import { GetSubscriptionPlansUseCase } from '../../application/usecases/subscriptions';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
 // Singletons
 const subscriptionPlanRepository = new ClientSubscriptionPlanRepository();
 const getSubscriptionPlansUseCase = new GetSubscriptionPlansUseCase(subscriptionPlanRepository);
 
-export const useSubscriptionPlansViewModel = (initialPlans?: SubscriptionPlan[]) => {
+export const useSubscriptionPlansViewModel = (initialPlans?: SubscriptionPlan[], initialPagination?: Pagination) => {
   const viewModel = useMemo(
     () => new SubscriptionPlansViewModel(getSubscriptionPlansUseCase, initialPlans),
     [initialPlans]
