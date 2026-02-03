@@ -1,17 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useProductDetailViewModel } from '../hooks/useProductDetailViewModel';
 import { useCart } from '../context/CartContext';
 import { Button } from '@/src/shared/components/ui';
+import { Product } from '../../domain/entities/Product';
 
 interface ProductDetailViewProps {
-  slug: string;
+  product: Product
 }
 
-export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ slug }) => {
-  const viewModel = useProductDetailViewModel(slug);
-  const { product, loading, error } = viewModel.getState();
+export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product }) => {
   const { addToCart, getItemQuantity } = useCart();
   
   const [quantity, setQuantity] = useState(1);
@@ -21,24 +19,6 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ slug }) =>
       addToCart(product, quantity);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="animate-pulse">
-        <div className="bg-gray-200 h-96 rounded mb-4"></div>
-        <div className="bg-gray-200 h-8 rounded mb-2"></div>
-        <div className="bg-gray-200 h-4 rounded"></div>
-      </div>
-    );
-  }
-
-  if (error || !product) {
-    return (
-      <div className="text-center">
-        <p className="text-red-600 text-lg">{error || 'Produit non trouvé'}</p>
-      </div>
-    );
-  }
 
   const cartQuantity = getItemQuantity(product.id);
 

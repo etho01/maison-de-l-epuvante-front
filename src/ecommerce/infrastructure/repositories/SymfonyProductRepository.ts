@@ -28,6 +28,10 @@ export class SymfonyProductRepository implements IProductRepository {
     return await apiClient.get<Product>(`/products/${id}`);
   }
 
+  async getBySlug(slug: string): Promise<Product> {
+    return await apiClient.get<Product>(`/products/slug/${slug}`);
+  }
+
   async getProductBySlug(slug: string): Promise<Product> {
     return await apiClient.get<Product>(`/products/slug/${slug}`);
   }

@@ -1,5 +1,7 @@
 import React from 'react';
 import { ProductDetailView } from '@/src/ecommerce/presentation/components/ProductDetailView';
+import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
+import { GetProductBySlugUseCase } from '@/src/ecommerce/application/usecases/products/GetProductBySlugUseCase';
 
 interface ProductDetailPageProps {
   params: {
@@ -7,10 +9,22 @@ interface ProductDetailPageProps {
   };
 }
 
-export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+const productRepository = new SymfonyProductRepository();
+const getProductBySlugUseCase = new GetProductBySlugUseCase(productRepository);
+
+export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
+  const { slug } = await params;
+  const product = await getProductBySlugUseCase.execute(slug);
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <ProductDetailView slug={params.slug} />
+      { product ? (
+        <ProductDetailView product={product} />
+        ) : (
+          <div className="text-center">
+            <p className="text-red-600 text-lg">Produit non trouvé</p>
+          </div>
+        ) }
     </div>
   );
 }

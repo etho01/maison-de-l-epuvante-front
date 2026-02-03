@@ -4,6 +4,7 @@ import { Product, CreateProductData, UpdateProductData, ProductFilters } from '.
 export interface IProductRepository {
   getProducts(filters?: ProductFilters): Promise<PaginatedResponse<Product>>;
   getById(id: number): Promise<Product>;
+  getBySlug(slug: string): Promise<Product>;
   getProductBySlug(slug: string): Promise<Product>;
   create(data: CreateProductData): Promise<Product>;
   update(id: number, data: UpdateProductData): Promise<Product>;

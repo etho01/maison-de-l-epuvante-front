@@ -59,6 +59,10 @@ export class ClientProductRepository implements IProductRepository {
     return await this.request<Product>(`/products/${id}`);
   }
 
+  async getBySlug(slug: string): Promise<Product> {
+    return await this.request<Product>(`/products/slug/${slug}`);
+  }
+
   async getProductBySlug(slug: string): Promise<Product> {
     return await this.request<Product>(`/products/slug/${slug}`);
   }
