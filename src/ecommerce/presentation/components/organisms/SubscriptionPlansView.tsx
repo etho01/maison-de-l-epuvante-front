@@ -9,6 +9,7 @@ import { Pagination } from '@/src/shared/domain/Pagination';
 import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
 import { useSubscriptionPlansViewModel } from '../../hooks/useSubscriptionPlansViewModel';
 import { useSubscribeViewModel } from '../../hooks/useSubscribeViewModel';
+import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 
 interface SubscriptionPlansViewProps {
   initialPlans?: SubscriptionPlan[];
@@ -20,8 +21,8 @@ export const SubscriptionPlansView: React.FC<SubscriptionPlansViewProps> = ({ in
   const { user } = useAuth();
   const plansViewModel = useSubscriptionPlansViewModel(initialPlans, initialPagination);
   const subscribeViewModel = useSubscribeViewModel();
-  
-  const { plans, loading, error } = plansViewModel.getState();
+
+  const { plans, pagination, loading, error } = plansViewModel.getState();
   const { subscribing } = subscribeViewModel.getState();
 
   const handleSubscribe = async (planId: number) => {
@@ -58,16 +59,22 @@ export const SubscriptionPlansView: React.FC<SubscriptionPlansViewProps> = ({ in
           <p className="text-gray-500 text-lg">Aucun abonnement disponible pour le moment</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {plans.map((plan) => (
-            <SubscriptionPlanCard
-              key={plan.id}
-              plan={plan}
-              onSubscribe={handleSubscribe}
-              loading={subscribing}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {plans.map((plan) => (
+              <SubscriptionPlanCard
+                key={plan.id}
+                plan={plan}
+                onSubscribe={handleSubscribe}
+                loading={subscribing}
+              />
+            ))}
+          </div>
+          <PaginationComponent
+            pagination={pagination !}
+            onPageChange={(page) => plansViewModel.setFilter('page', page)}
+          />
+        </>
       )}
     </>
   );

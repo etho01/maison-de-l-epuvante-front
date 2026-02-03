@@ -2,10 +2,20 @@ import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
 import { ISubscriptionPlanRepository } from '../../domain/repositories/ISubscriptionPlanRepository';
 import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../../domain/entities/SubscriptionPlan';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
+import { SubscriptionPlansFilters } from '../../application/usecases/subscriptions/GetSubscriptionPlansUseCase';
 
 export class SymfonySubscriptionPlanRepository implements ISubscriptionPlanRepository {
-  async getSubscriptionPlans(): Promise<PaginatedResponse<SubscriptionPlan>> {
-    const response = await apiClient.get<PaginatedResponse<SubscriptionPlan>>('/subscription_plans');
+  async getSubscriptionPlans(filters?: SubscriptionPlansFilters): Promise<PaginatedResponse<SubscriptionPlan>> {
+    const params = new URLSearchParams();
+    
+    if (filters?.page) {
+      params.append('page', filters.page.toString());
+    }
+    
+    const queryString = params.toString();
+    const url = `/subscription_plans${queryString ? `?${queryString}` : ''}`;
+    
+    const response = await apiClient.get<PaginatedResponse<SubscriptionPlan>>(url);
     return response;
   }
 

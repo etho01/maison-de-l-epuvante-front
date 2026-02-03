@@ -4,7 +4,7 @@ import React from 'react';
 import { Pagination as PaginationType } from '@/src/shared/domain/Pagination';
 
 interface PaginationComponentProps {
-  pagination: PaginationType;
+  pagination?: PaginationType;
   onPageChange: (page: number) => void;
   className?: string;
 }
@@ -14,6 +14,8 @@ export const PaginationComponent: React.FC<PaginationComponentProps> = ({
   onPageChange,
   className = '',
 }) => {
+  if (!pagination) return null;
+
   const { page, totalPages, hasNextPage, hasPreviousPage, totalItems, itemsPerPage } = pagination;
 
   // Générer les numéros de pages à afficher

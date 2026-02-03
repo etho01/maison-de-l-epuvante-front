@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Product, ProductFilters } from '../../domain/entities/Product';
 import { ProductCard } from '../molecules/ProductCard';
 import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
+import { Product } from '@/src/ecommerce/domain/entities/Product';
 
 interface ProductListProps {
   products: Product[];

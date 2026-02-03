@@ -6,12 +6,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, type LoginFormData } from '../schemas/authSchemas';
 import { Input, PasswordInput, Button, ErrorMessage, Link } from '@/src/shared/components/ui';
+import { LoginFormData, loginSchema } from '../../schemas/authSchemas';
+import { useAuth } from '../../context/AuthContext';
 
 export default function LoginForm() {
   const { login } = useAuth();
