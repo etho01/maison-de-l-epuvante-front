@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header";
+import { Header } from "@/src/shared/components/organisms/Header";
 import { AuthProvider } from "@/src/auth/presentation/context/AuthContext";
 import { SymfonyAuthRepository } from "@/src/auth/infrastructure/repositories/SymfonyAuthRepository";
 import { User } from "@/src/auth/domain/entities/User";

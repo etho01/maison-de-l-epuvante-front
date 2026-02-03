@@ -6,7 +6,7 @@ import { useAuth } from '@/src/auth/presentation/context/AuthContext';
 import { isAdmin } from '@/src/auth/utils/roleHelpers';
 import { useCart } from '@/src/ecommerce/presentation/context/CartContext';
 
-export default function Header() {
+export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { user, isAuthenticated, logout } = useAuth();
     const { cart } = useCart();

@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Product, ProductFilters } from '../../domain/entities/Product';
-import { ProductCard } from './ProductCard';
-import { LoaderCard } from '@/src/shared/components/ui/LoaderCard';
+import { ProductCard } from '../molecules/ProductCard';
+import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
 
 interface ProductListProps {
   products: Product[];

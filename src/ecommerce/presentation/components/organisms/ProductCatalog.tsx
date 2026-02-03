@@ -3,15 +3,15 @@
 import React from 'react';
 import { useProductsViewModel } from '../hooks/useProductsViewModel';
 import { ProductList } from './ProductList';
-import { ProductFilters } from './ProductFilters';
+import { ProductFilters } from '../molecules/ProductFilters';
 import { Product } from '../../domain/entities/Product';
-import { Pagination } from '@/src/shared/domain/Pagination';
+import { Pagination as PaginationType } from '@/src/shared/domain/Pagination';
 import { Category } from '../../domain/entities/Category';
-import { PaginationComponent } from '@/src/shared/components/ui/PaginationComponent';
+import { Pagination } from '@/src/shared/components/molecules/Pagination';
 
 interface ProductCatalogProps {
   initialProducts: Product[];
-  initialProductPagination: Pagination;
+  initialProductPagination: PaginationType;
   categories: Category[];
 }
 
@@ -38,9 +38,9 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ initialProducts,
         )}
 
         <ProductList products={products} loading={loading} />
-        <PaginationComponent
+        <Pagination
           pagination={initialProductPagination} 
-          onPageChange={(page) => productsVM.setFilter('page', page)} 
+          onPageChange={(page: number) => productsVM.setFilter('page', page)} 
         />
       </main>
     </div>

@@ -4,11 +4,11 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useSubscriptionPlansViewModel } from '../hooks/useSubscriptionPlansViewModel';
 import { useSubscribeViewModel } from '../hooks/useSubscribeViewModel';
-import { SubscriptionPlanCard } from './SubscriptionPlanCard';
+import { SubscriptionPlanCard } from '../molecules/SubscriptionPlanCard';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
-import { SubscriptionPlan } from '../../domain/entities/SubscriptionPlan';
+import { SubscriptionPlan } from '../../../domain/entities/SubscriptionPlan';
 import { Pagination } from '@/src/shared/domain/Pagination';
-import { LoaderCard } from '@/src/shared/components/ui/LoaderCard';
+import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
 
 interface SubscriptionPlansViewProps {
   initialPlans?: SubscriptionPlan[];
