@@ -1,5 +1,5 @@
+import { CartSummary } from '@/src/ecommerce/presentation/components';
 import React from 'react';
-import { CartSummary } from '@/src/ecommerce/presentation/components/CartSummary';
 
 export default function PanierPage() {
   return (

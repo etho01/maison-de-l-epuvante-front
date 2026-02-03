@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useCart } from '../context/CartContext';
 import { Button } from '@/src/shared/components/ui';
+import { useCart } from '../../context/CartContext';
 
 export const CartSummary: React.FC = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();

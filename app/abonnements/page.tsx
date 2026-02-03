@@ -1,7 +1,7 @@
 import React from 'react';
-import { SubscriptionPlansView } from '@/src/ecommerce/presentation/components/SubscriptionPlansView';
 import { SymfonySubscriptionPlanRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonySubscriptionPlanRepository';
 import { GetSubscriptionPlansUseCase } from '@/src/ecommerce/application/usecases';
+import { SubscriptionPlansView } from '@/src/ecommerce/presentation/components';
 
 const subscriptionPlanRepository = new SymfonySubscriptionPlanRepository();
 const getSubscriptionPlansUseCase = new GetSubscriptionPlansUseCase(subscriptionPlanRepository);

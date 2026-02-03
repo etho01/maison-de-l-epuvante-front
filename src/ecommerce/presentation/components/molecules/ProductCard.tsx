@@ -2,9 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Product } from '../../domain/entities/Product';
-import { useCart } from '../context/CartContext';
-import Button from '@/src/shared/components/ui/Button';
+import { useCart } from '../../context/CartContext';
+import { Product } from '@/src/ecommerce/domain/entities/Product';
+import Button from '@/src/shared/components/atoms/Button';
 
 interface ProductCardProps {
   product: Product;

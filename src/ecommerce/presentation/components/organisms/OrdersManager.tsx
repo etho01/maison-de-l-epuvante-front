@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useOrdersViewModel } from '../hooks/useOrdersViewModel';
 import { OrderList } from './OrderList';
+import { useOrdersViewModel } from '../../hooks/useOrdersViewModel';
 
 export const OrdersManager: React.FC = () => {
   const searchParams = useSearchParams();

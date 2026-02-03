@@ -1,16 +1,17 @@
 'use client';
 
 import React from 'react';
-import { ProductList } from './ProductList';
-import { ProductFilters } from '../molecules/ProductFilters';
-import { Pagination as PaginationType } from '@/src/shared/domain/Pagination';
-import { Product } from '@/src/ecommerce/domain/entities/Product';
-import { Category } from '@/src/ecommerce/domain/entities/Category';
-import { useProductsViewModel } from '../../hooks/useProductsViewModel';
+import { useProductsViewModel } from '../hooks/useProductsViewModel';
+import { Product } from '../../domain/entities/Product';
+import { Pagination } from '@/src/shared/domain/Pagination';
+import { Category } from '../../domain/entities/Category';
+import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
+import { ProductFilters } from './molecules';
+import { ProductList } from './organisms';
 
 interface ProductCatalogProps {
   initialProducts: Product[];
-  initialProductPagination: PaginationType;
+  initialProductPagination: Pagination;
   categories: Category[];
 }
 
@@ -37,9 +38,9 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ initialProducts,
         )}
 
         <ProductList products={products} loading={loading} />
-        <Pagination
+        <PaginationComponent
           pagination={initialProductPagination} 
-          onPageChange={(page: number) => productsVM.setFilter('page', page)} 
+          onPageChange={(page) => productsVM.setFilter('page', page)} 
         />
       </main>
     </div>

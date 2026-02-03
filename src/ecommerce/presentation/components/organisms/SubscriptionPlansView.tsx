@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useSubscriptionPlansViewModel } from '../hooks/useSubscriptionPlansViewModel';
-import { useSubscribeViewModel } from '../hooks/useSubscribeViewModel';
 import { SubscriptionPlanCard } from '../molecules/SubscriptionPlanCard';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
 import { SubscriptionPlan } from '../../../domain/entities/SubscriptionPlan';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
+import { useSubscriptionPlansViewModel } from '../../hooks/useSubscriptionPlansViewModel';
+import { useSubscribeViewModel } from '../../hooks/useSubscribeViewModel';
 
 interface SubscriptionPlansViewProps {
   initialPlans?: SubscriptionPlan[];

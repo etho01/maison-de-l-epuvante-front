@@ -1,6 +1,6 @@
-export { Button } from './Button';
-export { Input } from './Input';
-export { PasswordInput } from './PasswordInput';
-export { Link } from './Link';
-export { ErrorMessage } from './ErrorMessage';
+export { default as Button } from './Button';
+export { default as Input } from './Input';
+export { default as PasswordInput } from './PasswordInput';
+export { default as Link } from './Link';
+export { default as ErrorMessage } from './ErrorMessage';
 export { LoaderCard } from './LoaderCard';

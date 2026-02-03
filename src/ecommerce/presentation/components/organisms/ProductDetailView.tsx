@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
 import { Button } from '@/src/shared/components/ui';
-import { Product } from '../../domain/entities/Product';
+import { Product } from '@/src/ecommerce/domain/entities/Product';
+import { useCart } from '../../context/CartContext';
 
 interface ProductDetailViewProps {
   product: Product

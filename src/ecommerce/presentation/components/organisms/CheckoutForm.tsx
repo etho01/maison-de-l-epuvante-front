@@ -1,12 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useCart } from '../context/CartContext';
-import { useEcommerce } from '../context/EcommerceContext';
-import { Address } from '../../domain/entities/Order';
+import { useCart } from '../../context/CartContext';
+import { useRouter } from 'next/router';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
-import { Button, ErrorMessage, Input } from '@/src/shared/components/ui';
+import { useEcommerce } from '../../context/EcommerceContext';
+import { Address } from '@/src/ecommerce/domain/entities/Order';
 
 export const CheckoutForm: React.FC = () => {
   const router = useRouter();
