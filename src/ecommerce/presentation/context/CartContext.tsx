@@ -45,6 +45,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const addToCart = (product: Product, quantity: number = 1) => {
+    let productAdded = false;
     setCart((prevCart) => {
       const existingItemIndex = prevCart.items.findIndex(
         (item) => item.product.id === product.id
@@ -55,7 +56,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (existingItemIndex > -1) {
         // Le produit existe déjà, on augmente la quantité
         newItems = [...prevCart.items];
-        newItems[existingItemIndex].quantity += quantity;
+        if (!productAdded) 
+        {
+          productAdded = true;
+          newItems[existingItemIndex].quantity += quantity;
+        }
       } else {
         // Nouveau produit
         newItems = [...prevCart.items, { product, quantity }];

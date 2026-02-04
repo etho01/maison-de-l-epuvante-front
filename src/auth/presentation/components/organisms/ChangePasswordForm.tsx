@@ -8,8 +8,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { changePasswordSchema, type ChangePasswordFormData } from '../schemas/authSchemas';
 import { PasswordInput, Button, ErrorMessage } from '@/src/shared/components/ui';
+import { ChangePasswordFormData, changePasswordSchema } from '../../schemas/authSchemas';
 
 export default function ChangePasswordForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);

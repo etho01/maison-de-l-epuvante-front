@@ -77,19 +77,6 @@ export function Header() {
                             💬 Communauté
                         </Link>
 
-                        {/* Panier */}
-                        <Link
-                            href="/panier"
-                            className="relative text-gray-300 hover:text-red-500 transition-colors font-medium"
-                        >
-                            🛒 Panier
-                            {cart.totalItems > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                    {cart.totalItems}
-                                </span>
-                            )}
-                        </Link>
-
                         {isAuthenticated ? (
                             <>
                                 {isAdmin(user) && (
@@ -137,7 +124,7 @@ export function Header() {
                         >
                             🛒 Panier
                             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                0
+                                {cart.totalItems}
                             </span>
                         </Link>
                     </div>
@@ -206,36 +193,37 @@ export function Header() {
                             className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
                             onClick={() => setIsMenuOpen(false)}
                         >
-                            {isAuthenticated ? (
-                                <>
-                                    <Link
-                                        href="/compte"
-                                        className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
-                                        onClick={() => setIsMenuOpen(false)}
-                                    >
-                                        👤 {user?.firstName || 'Mon Compte'}
-                                    </Link>
-
-                                    <button
-                                        onClick={() => {
-                                            logout();
-                                            setIsMenuOpen(false);
-                                        }}
-                                        className="block w-full text-left text-gray-300 hover:text-red-500 py-2 transition-colors"
-                                    >
-                                        🚪 Déconnexion
-                                    </button>
-                                </>
-                            ) : (
+                            💀 Evil Ed Collection
+                        </Link>
+                        {isAuthenticated ? (
+                            <>
                                 <Link
-                                    href="/auth/login"
+                                    href="/compte"
                                     className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
                                     onClick={() => setIsMenuOpen(false)}
                                 >
-                                    🔐 Connexion
+                                    👤 {user?.firstName || 'Mon Compte'}
                                 </Link>
-                            )}
-                        </Link>
+
+                                <button
+                                    onClick={() => {
+                                        logout();
+                                        setIsMenuOpen(false);
+                                    }}
+                                    className="block w-full text-left text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                >
+                                    🚪 Déconnexion
+                                </button>
+                            </>
+                        ) : (
+                            <Link
+                                href="/auth/login"
+                                className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                🔐 Connexion
+                            </Link>
+                        )}
 
                         <Link
                             href="/communaute"
@@ -243,14 +231,6 @@ export function Header() {
                             onClick={() => setIsMenuOpen(false)}
                         >
                             💬 Communauté
-                        </Link>
-
-                        <Link
-                            href="/panier"
-                            className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
-                            onClick={() => setIsMenuOpen(false)}
-                        >
-                            🛒 Panier {cart.totalItems > 0 && `(${cart.totalItems})`}
                         </Link>
 
                         {isAuthenticated ? (
@@ -308,7 +288,7 @@ export function Header() {
                                 className="block bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors mt-2"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                🛒 Panier (0)
+                                🛒 Panier ({cart.totalItems})
                             </Link>
                         </div>
                     </div>

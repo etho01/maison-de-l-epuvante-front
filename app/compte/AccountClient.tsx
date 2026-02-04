@@ -7,9 +7,9 @@
 
 import { useState } from 'react';
 import { User } from '@/src/auth/domain/entities/User';
-import EditProfileForm from '@/src/auth/presentation/components/EditProfileForm';
-import ChangePasswordForm from '@/src/auth/presentation/components/ChangePasswordForm';
 import { Button } from '@/src/shared/components/ui';
+import EditProfileForm from '@/src/auth/presentation/components/organisms/EditProfileForm';
+import ChangePasswordForm from '@/src/auth/presentation/components/organisms/ChangePasswordForm';
 
 interface AccountClientProps {
   initialUser: User;

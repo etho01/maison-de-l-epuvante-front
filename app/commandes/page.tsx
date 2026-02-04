@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthGuard } from '@/src/shared/components/AuthGuard';
-import { OrdersManager } from '@/src/ecommerce/presentation/components/OrdersManager';
+import { OrdersManager } from '@/src/ecommerce/presentation/components';
 
 export default function CommandesPage() {
   return (

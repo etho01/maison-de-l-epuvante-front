@@ -1,7 +1,7 @@
 import React from 'react';
-import { ProductDetailView } from '@/src/ecommerce/presentation/components/ProductDetailView';
 import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
 import { GetProductBySlugUseCase } from '@/src/ecommerce/application/usecases/products/GetProductBySlugUseCase';
+import { ProductDetailView } from '@/src/ecommerce/presentation/components';
 
 interface ProductDetailPageProps {
   params: {
