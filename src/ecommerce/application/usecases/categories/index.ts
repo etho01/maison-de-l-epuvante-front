@@ -1,5 +1,6 @@
 export { GetCategoriesUseCase } from './GetCategoriesUseCase';
 export { GetAllCategoriesUseCase } from './GetAllCategoriesUseCase';
 export { GetCategoryByIdUseCase } from './GetCategoryByIdUseCase';
+export { CreateCategoryUseCase } from './CreateCategoryUseCase';
 export { UpdateCategoryUseCase } from './UpdateCategoryUseCase';
 export { DeleteCategoryUseCase } from './DeleteCategoryUseCase';

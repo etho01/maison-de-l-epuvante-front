@@ -32,8 +32,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const menuItems = [
     { href: '/admin', label: 'Dashboard', icon: '📊' },
     { href: '/admin/users', label: 'Utilisateurs', icon: '👥' },
-    { href: '/admin/products', label: 'Produits', icon: '🛍️' },
-    { href: '/admin/orders', label: 'Commandes', icon: '📦' },
+    { href: '/admin/produits', label: 'Produits', icon: '🛍️' },
+    { href: '/admin/categories', label: 'Catégories', icon: '📁' },
+    { href: '/admin/commandes', label: 'Commandes', icon: '📦' },
     { href: '/admin/subscriptions', label: 'Abonnements', icon: '💳' },
   ];
 
