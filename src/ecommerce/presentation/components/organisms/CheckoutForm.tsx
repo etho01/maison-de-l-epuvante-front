@@ -219,7 +219,7 @@ export const CheckoutForm: React.FC = () => {
       </div>
 
       {/* Récapitulatif */}
-      <div className="border rounded-lg p-6 bg-gray-50">
+      <div className="border rounded-lg p-6 ">
         <h3 className="text-xl font-bold mb-4">Récapitulatif</h3>
         <div className="space-y-2 mb-4">
           {cart.items.map((item) => (
