@@ -4,6 +4,9 @@ import React from 'react';
 import Link from 'next/link';
 import { SubscriptionPlan, BillingInterval, SubscriptionFormat } from '../../domain/entities/SubscriptionPlan';
 import { Button } from '@/src/shared/components/ui';
+import { Card } from '@/src/shared/components/atoms/Card';
+import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
+import { Badge } from '@/src/shared/components/atoms/Badge';
 
 interface SubscriptionPlanCardProps {
   plan: SubscriptionPlan;
@@ -29,7 +32,7 @@ export const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
   loading,
 }) => {
   return (
-    <div className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
+    <Card variant="default" padding="lg" hoverable>
       <div className="mb-4">
         <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
         <p className="text-gray-600">{plan.description}</p>
@@ -37,7 +40,7 @@ export const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
 
       <div className="mb-4">
         <div className="flex items-baseline gap-2">
-          <span className="text-4xl font-bold text-red-600">{plan.price} €</span>
+          <PriceDisplay price={plan.price} variant="emphasis" size="xl" />
           <span className="text-gray-500">/ {intervalLabels[plan.billingInterval]}</span>
         </div>
       </div>
@@ -45,7 +48,7 @@ export const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
       <div className="space-y-2 mb-6">
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">Format:</span>
-          <span className="font-medium">{formatLabels[plan.format]}</span>
+          <Badge variant="info" size="sm">{formatLabels[plan.format]}</Badge>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">Durée:</span>
@@ -60,6 +63,6 @@ export const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
       >
         {loading ? 'Traitement...' : "S'abonner"}
       </Button>
-    </div>
+    </Card>
   );
 };

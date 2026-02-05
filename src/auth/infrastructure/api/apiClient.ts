@@ -3,18 +3,9 @@
  * Client HTTP pour communiquer avec l'API Symfony
  */
 
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { TokenStorage } from '../storage/TokenStorage';
 
-export class ApiError extends Error {
-    constructor(
-        message: string,
-        public status: number,
-        public data?: any
-    ) {
-        super(message);
-        this.name = 'ApiError';
-    }
-}
 
 export class ApiClient {
     private baseURL: string;
@@ -36,7 +27,8 @@ export class ApiClient {
 
     private async request<T>(
         endpoint: string,
-        options: RequestInit = {}
+        options: RequestInit = {},
+        hasAlledgedlyRetried: boolean = false
     ): Promise<T> {
         const url = `${this.baseURL}${endpoint}`;
 
@@ -57,6 +49,15 @@ export class ApiClient {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
+
+                if (response.status === 401) {
+                    // Token invalide ou expiré, supprimer le token stocké
+                    await TokenStorage.removeTokenServer();
+                    if (!hasAlledgedlyRetried) {
+                        // Retenter la requête une fois après suppression du token
+                        return this.request<T>(endpoint, options, true);
+                    }
+                }
 
                 throw new ApiError(
                     errorData.message || 'Une erreur est survenue',

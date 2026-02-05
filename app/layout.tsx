@@ -7,6 +7,7 @@ import { SymfonyAuthRepository } from "@/src/auth/infrastructure/repositories/Sy
 import { User } from "@/src/auth/domain/entities/User";
 import { CartProvider } from "@/src/ecommerce/presentation/context/CartContext";
 import { EcommerceProvider } from "@/src/ecommerce/presentation/context/EcommerceContext";
+import { GetCurrentUserUseCase } from "@/src/auth/application/usecases/GetCurrentUserUseCase";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +25,11 @@ export const metadata: Metadata = {
 };
 
 const authRepository = new SymfonyAuthRepository();
+const getCurrentUserUseCase = new GetCurrentUserUseCase(authRepository);
 
 async function getCurrentUser(): Promise<User | null> {
   try {
-    const user = await authRepository.getCurrentUser();
+    const user = await getCurrentUserUseCase.execute();
     return user;
   } catch (error) {
     return null;

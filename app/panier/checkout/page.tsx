@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthGuard } from '@/src/shared/components/AuthGuard';
-import { CheckoutForm } from '@/src/ecommerce/presentation/components/CheckoutForm';
+import { CheckoutForm } from '@/src/ecommerce/presentation/components';
 
 export default function CheckoutPage() {
   return (
