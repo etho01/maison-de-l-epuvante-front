@@ -5,15 +5,16 @@ import { OrdersViewModel } from '../viewmodels/OrdersViewModel';
 import { Order } from '../../domain/entities/Order';
 import { ClientOrderRepository } from '../../infrastructure/repositories/ClientOrderRepository';
 import { GetOrdersUseCase } from '../../application/usecases/orders';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
 // Singletons
 const orderRepository = new ClientOrderRepository();
 const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
 
-export const useOrdersViewModel = (initialOrders?: Order[]) => {
+export const useOrdersViewModel = (initialOrders?: Order[], initialPagination?: Pagination) => {
   const viewModel = useMemo(
-    () => new OrdersViewModel(getOrdersUseCase, initialOrders),
-    [initialOrders]
+    () => new OrdersViewModel(getOrdersUseCase, initialOrders, initialPagination),
+    []
   );
 
   const [, forceUpdate] = useState({});

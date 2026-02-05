@@ -1,22 +1,29 @@
 import { Order } from '../../domain/entities/Order';
 import { GetOrdersUseCase } from '../../application/usecases/orders';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
 export class OrdersViewModel {
   private state = {
     orders: [] as Order[],
     loading: true,
     error: null as string | null,
+    pagination: null as Pagination | null,
   };
 
   private listeners: Set<() => void> = new Set();
 
   constructor(
     private getOrdersUseCase: GetOrdersUseCase,
-    initialOrders?: Order[]
+    initialOrders?: Order[],
+    initialPagination?: Pagination
   ) {
     if (initialOrders) {
       this.state.orders = initialOrders;
       this.state.loading = false;
+    }
+
+    if (initialPagination) {
+      this.state.pagination = initialPagination;
     }
   }
 
@@ -30,6 +37,7 @@ export class OrdersViewModel {
   }
 
   async init() {
+    if (!this.state.loading) return;
     await this.loadOrders();
   }
 
@@ -41,6 +49,7 @@ export class OrdersViewModel {
 
       const response = await this.getOrdersUseCase.execute();
       this.state.orders = response['member'];
+      this.state.pagination = response['pagination'];
     } catch (err: any) {
       this.state.error = err.message || 'Une erreur est survenue';
     } finally {

@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Order, OrderStatus } from '../../domain/entities/Order';
+import { LoaderCard } from '@/src/shared/components';
+import { Order, OrderStatus } from '@/src/ecommerce/domain/entities/Order';
 
 interface OrderListProps {
   orders: Order[];
@@ -33,13 +34,7 @@ export const OrderList: React.FC<OrderListProps> = ({ orders, loading }) => {
   if (loading) {
     return (
       <div className="space-y-4">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="border rounded-lg p-6 animate-pulse">
-            <div className="bg-gray-200 h-6 rounded mb-4 w-1/3"></div>
-            <div className="bg-gray-200 h-4 rounded mb-2"></div>
-            <div className="bg-gray-200 h-4 rounded"></div>
-          </div>
-        ))}
+        <LoaderCard />
       </div>
     );
   }

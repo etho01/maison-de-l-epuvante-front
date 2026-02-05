@@ -4,10 +4,17 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { OrderList } from './OrderList';
 import { useOrdersViewModel } from '../../hooks/useOrdersViewModel';
+import { Order } from '@/src/ecommerce/domain/entities/Order';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
-export const OrdersManager: React.FC = () => {
+interface OrdersManagerProps {
+  initialOrders?: Order[];
+  initialPagination?: Pagination
+}
+
+export const OrdersManager: React.FC<OrdersManagerProps> = ({ initialOrders, initialPagination }) => {
   const searchParams = useSearchParams();
-  const viewModel = useOrdersViewModel();
+  const viewModel = useOrdersViewModel(initialOrders, initialPagination);
   const { orders, loading, error } = viewModel.getState();
   const [showSuccess, setShowSuccess] = useState(false);
 

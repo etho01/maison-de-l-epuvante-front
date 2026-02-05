@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthGuard } from '@/src/shared/components/AuthGuard';
-import { OrderDetail } from '@/src/ecommerce/presentation/components/OrderDetail';
+import { OrderDetail } from '@/src/ecommerce/presentation/components';
 
 interface OrderDetailPageProps {
   params: {
