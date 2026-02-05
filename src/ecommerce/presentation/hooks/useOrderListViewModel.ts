@@ -1,20 +1,24 @@
 'use client';
 
 import { useMemo, useEffect, useState } from 'react';
-import { OrderDetailViewModel } from '../viewmodels/OrderDetailViewModel';
-import { GetOrderByIdUseCase, UpdateOrderUseCase } from '../../application/usecases/orders';
+import { OrderListViewModel } from '../viewmodels/OrderListViewModel';
+import { GetOrdersUseCase, GetOrderByIdUseCase } from '../../application/usecases/orders';
 import { ClientOrderRepository } from '../../infrastructure/repositories/ClientOrderRepository';
+import { Order } from '../../domain/entities/Order';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
 // Singleton repositories
 const orderRepository = new ClientOrderRepository();
+const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
 const getOrderByIdUseCase = new GetOrderByIdUseCase(orderRepository);
-const updateOrderUseCase = new UpdateOrderUseCase(orderRepository);
 
-export const useOrderDetailViewModel = () => {
+export const useOrderListViewModel = (initialOrders?: Order[], initialPagination?: Pagination) => {
   const viewModel = useMemo(
-    () => new OrderDetailViewModel(
+    () => new OrderListViewModel(
+      getOrdersUseCase,
       getOrderByIdUseCase,
-      updateOrderUseCase
+      initialOrders,
+      initialPagination
     ),
     []
   );
@@ -25,6 +29,8 @@ export const useOrderDetailViewModel = () => {
     const unsubscribe = viewModel.subscribe(() => {
       forceUpdate({});
     });
+
+    viewModel.init();
 
     return unsubscribe;
   }, [viewModel]);

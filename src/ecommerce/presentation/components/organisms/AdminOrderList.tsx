@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useAdminEcommerce } from '../../context/AdminEcommerceContext';
+import React from 'react';
+import { useGetOrdersViewModel } from '../../hooks/useGetOrdersViewModel';
 import { Order } from '../../../domain/entities/Order';
 import { OrderCard } from '../molecules/OrderCard';
 
@@ -10,32 +10,10 @@ interface AdminOrderListProps {
 }
 
 export const AdminOrderList: React.FC<AdminOrderListProps> = ({ onView }) => {
-  const { getOrders } = useAdminEcommerce();
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const viewModel = useGetOrdersViewModel();
+  const { orders, loading, error, pagination } = viewModel.getState();
 
-  const loadOrders = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await getOrders.execute(currentPage);
-      setOrders(response.member);
-      setTotalPages(Math.ceil(response.totalItems / response.pagination.itemsPerPage));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du chargement');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadOrders();
-  }, [currentPage]);
-
-  if (loading) {
+  if (loading && orders.length === 0) {
     return <div className="text-center py-8">Chargement...</div>;
   }
 
@@ -60,21 +38,21 @@ export const AdminOrderList: React.FC<AdminOrderListProps> = ({ onView }) => {
       )}
 
       {/* Pagination */}
-      {totalPages > 1 && (
+      {pagination && pagination.totalPages > 1 && (
         <div className="flex justify-center gap-2">
           <button
-            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
+            onClick={() => viewModel.loadOrders(Math.max(1, pagination.page - 1))}
+            disabled={!pagination.hasPreviousPage}
             className="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-300"
           >
             Précédent
           </button>
           <span className="px-4 py-2">
-            Page {currentPage} / {totalPages}
+            Page {pagination.page} / {pagination.totalPages}
           </span>
           <button
-            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-            disabled={currentPage === totalPages}
+            onClick={() => viewModel.loadOrders(Math.min(pagination.totalPages, pagination.page + 1))}
+            disabled={!pagination.hasNextPage}
             className="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-300"
           >
             Suivant

@@ -12,7 +12,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const category = await getCategoryByIdUseCase.execute(parseInt(params.id));
+    const { id } = await params
+    const category = await getCategoryByIdUseCase.execute(parseInt(id));
     return NextResponse.json(category);
   } catch (error: any) {
     return NextResponse.json(
@@ -28,7 +29,8 @@ export async function PATCH(
 ) {
   try {
     const data = await request.json();
-    const category = await updateCategoryUseCase.execute(parseInt(params.id), data);
+    const { id } = await params
+    const category = await updateCategoryUseCase.execute(parseInt(id), data);
     return NextResponse.json(category);
   } catch (error: any) {
     return NextResponse.json(
@@ -43,7 +45,8 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await deleteCategoryUseCase.execute(parseInt(params.id));
+    const { id } = await params
+    await deleteCategoryUseCase.execute(parseInt(id));
     return new NextResponse(null, { status: 204 });
   } catch (error: any) {
     return NextResponse.json(

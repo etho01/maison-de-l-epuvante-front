@@ -1,9 +1,8 @@
-import { Order, UpdateOrderData } from '../../domain/entities/Order';
-import { GetOrderByIdUseCase, UpdateOrderUseCase } from '../../application/usecases/orders';
+import { CreateCategoryData, UpdateCategoryData } from '../../domain/entities/Category';
+import { CreateCategoryUseCase, UpdateCategoryUseCase } from '../../application/usecases/categories';
 
-export class OrderDetailViewModel {
+export class CategoryFormViewModel {
   private state = {
-    order: null as Order | null,
     loading: false,
     error: null as string | null,
     success: false,
@@ -12,8 +11,8 @@ export class OrderDetailViewModel {
   private listeners: Set<() => void> = new Set();
 
   constructor(
-    private getOrderByIdUseCase: GetOrderByIdUseCase,
-    private updateOrderUseCase: UpdateOrderUseCase
+    private createCategoryUseCase: CreateCategoryUseCase,
+    private updateCategoryUseCase: UpdateCategoryUseCase
   ) {}
 
   subscribe(listener: () => void): () => void {
@@ -25,38 +24,38 @@ export class OrderDetailViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async init() {
-    await this.loadOrder();
-  }
-
-  async loadOrder(id: number) {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
-
-      this.state.order = await this.getOrderByIdUseCase.execute(id);
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors du chargement de la commande';
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
-  }
-
-  async updateOrder(id: number, data: UpdateOrderData): Promise<boolean> {
+  async createCategory(data: CreateCategoryData): Promise<boolean> {
     try {
       this.state.loading = true;
       this.state.error = null;
       this.state.success = false;
       this.notify();
 
-      const updatedOrder = await this.updateOrderUseCase.execute(id, data);
-      this.state.order = updatedOrder;
+      await this.createCategoryUseCase.execute(data);
       this.state.success = true;
       return true;
     } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la mise à jour de la commande';
+      this.state.error = err.message || 'Erreur lors de la création de la catégorie';
+      this.state.success = false;
+      return false;
+    } finally {
+      this.state.loading = false;
+      this.notify();
+    }
+  }
+
+  async updateCategory(id: number, data: UpdateCategoryData): Promise<boolean> {
+    try {
+      this.state.loading = true;
+      this.state.error = null;
+      this.state.success = false;
+      this.notify();
+
+      await this.updateCategoryUseCase.execute(id, data);
+      this.state.success = true;
+      return true;
+    } catch (err: any) {
+      this.state.error = err.message || 'Erreur lors de la mise à jour de la catégorie';
       this.state.success = false;
       return false;
     } finally {

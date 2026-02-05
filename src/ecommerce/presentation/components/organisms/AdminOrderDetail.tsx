@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useAdminEcommerce } from '../../context/AdminEcommerceContext';
+import React, { useState, useEffect } from 'react';
+import { useGetOrderByIdViewModel } from '../../hooks/useGetOrderByIdViewModel';
+import { useUpdateOrderViewModel } from '../../hooks/useUpdateOrderViewModel';
 import { Order, OrderStatus } from '../../../domain/entities/Order';
 import { OrderStatusBadge } from '../atoms/OrderStatusBadge';
 
 interface AdminOrderDetailProps {
-  order: Order;
+  orderId: number;
   onUpdate?: () => void;
   onClose?: () => void;
 }
@@ -21,29 +22,49 @@ const ORDER_STATUSES: OrderStatus[] = [
   'refunded',
 ];
 
-export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ order, onUpdate, onClose }) => {
-  const { updateOrder } = useAdminEcommerce();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedStatus, setSelectedStatus] = useState<OrderStatus>(order.status);
-  const [adminNotes, setAdminNotes] = useState(order.adminNotes || '');
+export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onUpdate, onClose }) => {
+  const getOrderViewModel = useGetOrderByIdViewModel();
+  const updateOrderViewModel = useUpdateOrderViewModel();
+  const { order, loading: getLoading, error: getError } = getOrderViewModel.getState();
+  const { loading: updateLoading, error: updateError } = updateOrderViewModel.getState();
+  
+  const loading = getLoading || updateLoading;
+  const error = getError || updateError;
+  
+  const [selectedStatus, setSelectedStatus] = useState<OrderStatus | null>(null);
+  const [adminNotes, setAdminNotes] = useState('');
+
+  useEffect(() => {
+    getOrderViewModel.loadOrder(orderId);
+  }, [orderId]);
+
+  useEffect(() => {
+    if (order) {
+      setSelectedStatus(order.status);
+      setAdminNotes(order.adminNotes || '');
+    }
+  }, [order]);
 
   const handleUpdateOrder = async () => {
-    setLoading(true);
-    setError(null);
+    if (!order || !selectedStatus) return;
+    
+    const updatedOrder = await updateOrderViewModel.updateOrder(order.id, {
+      status: selectedStatus,
+      adminNotes: adminNotes || undefined,
+    });
 
-    try {
-      await updateOrder.execute(order.id, {
-        status: selectedStatus,
-        adminNotes: adminNotes || undefined,
-      });
+    if (updatedOrder) {
       onUpdate?.();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la mise à jour');
-    } finally {
-      setLoading(false);
     }
   };
+
+  if (loading && !order) {
+    return <div className="text-center py-8">Chargement...</div>;
+  }
+
+  if (!order) {
+    return <div className="text-center py-8 text-red-600">Commande introuvable</div>;
+  }
 
   return (
     <div className="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto">
@@ -143,7 +164,7 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ order, onUpd
               <OrderStatusBadge status={order.status} />
             </div>
             <select
-              value={selectedStatus}
+              value={selectedStatus || ''}
               onChange={(e) => setSelectedStatus(e.target.value as OrderStatus)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
             >

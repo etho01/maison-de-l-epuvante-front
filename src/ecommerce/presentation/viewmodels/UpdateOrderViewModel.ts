@@ -1,9 +1,8 @@
 import { Order, UpdateOrderData } from '../../domain/entities/Order';
-import { GetOrderByIdUseCase, UpdateOrderUseCase } from '../../application/usecases/orders';
+import { UpdateOrderUseCase } from '../../application/usecases/orders';
 
-export class OrderDetailViewModel {
+export class UpdateOrderViewModel {
   private state = {
-    order: null as Order | null,
     loading: false,
     error: null as string | null,
     success: false,
@@ -11,10 +10,7 @@ export class OrderDetailViewModel {
 
   private listeners: Set<() => void> = new Set();
 
-  constructor(
-    private getOrderByIdUseCase: GetOrderByIdUseCase,
-    private updateOrderUseCase: UpdateOrderUseCase
-  ) {}
+  constructor(private updateOrderUseCase: UpdateOrderUseCase) {}
 
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener);
@@ -25,26 +21,7 @@ export class OrderDetailViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async init() {
-    await this.loadOrder();
-  }
-
-  async loadOrder(id: number) {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
-
-      this.state.order = await this.getOrderByIdUseCase.execute(id);
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors du chargement de la commande';
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
-  }
-
-  async updateOrder(id: number, data: UpdateOrderData): Promise<boolean> {
+  async updateOrder(id: number, data: UpdateOrderData): Promise<Order | null> {
     try {
       this.state.loading = true;
       this.state.error = null;
@@ -52,13 +29,12 @@ export class OrderDetailViewModel {
       this.notify();
 
       const updatedOrder = await this.updateOrderUseCase.execute(id, data);
-      this.state.order = updatedOrder;
       this.state.success = true;
-      return true;
+      return updatedOrder;
     } catch (err: any) {
       this.state.error = err.message || 'Erreur lors de la mise à jour de la commande';
       this.state.success = false;
-      return false;
+      return null;
     } finally {
       this.state.loading = false;
       this.notify();

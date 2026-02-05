@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useAdminEcommerce } from '../../context/AdminEcommerceContext';
-import { Product, ProductFilters } from '../../../domain/entities/Product';
+import React from 'react';
+import { useGetProductsViewModel } from '../../hooks/useGetProductsViewModel';
+import { useDeleteProductViewModel } from '../../hooks/useDeleteProductViewModel';
+import { Product } from '../../../domain/entities/Product';
 import { AdminProductCard } from '../molecules/AdminProductCard';
 
 interface AdminProductListProps {
@@ -10,44 +11,27 @@ interface AdminProductListProps {
 }
 
 export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit }) => {
-  const { getProducts, deleteProduct } = useAdminEcommerce();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<ProductFilters>({});
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await getProducts.execute({ ...filters, page: currentPage });
-      setProducts(response.member);
-      setTotalPages(Math.ceil(response.totalItems / response.pagination.itemsPerPage));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du chargement');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadProducts();
-  }, [filters, currentPage]);
+  const listViewModel = useGetProductsViewModel();
+  const deleteViewModel = useDeleteProductViewModel();
+  const { products, loading, error, pagination } = listViewModel.getState();
 
   const handleDelete = async (product: Product) => {
     if (!confirm(`Supprimer le produit "${product.name}" ?`)) return;
     
-    try {
-      await deleteProduct.execute(product.id);
-      loadProducts();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'Erreur lors de la suppression');
+    const success = await deleteViewModel.deleteProduct(product.id);
+    if (success) {
+      listViewModel.loadProducts();
+    } else {
+      const deleteError = deleteViewModel.getState().error;
+      if (deleteError) alert(deleteError);
     }
   };
 
-  if (loading) {
+  const handleFilterChange = (key: string, value: any) => {
+    listViewModel.setFilters({ [key]: value });
+  };
+
+  if (loading && products.length === 0) {
     return <div className="text-center py-8">Chargement...</div>;
   }
 
@@ -64,12 +48,12 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit }) =>
             type="text"
             placeholder="Rechercher par nom..."
             className="px-3 py-2 border border-gray-300 rounded-md"
-            onChange={(e) => setFilters({ ...filters, name: e.target.value || undefined })}
+            onChange={(e) => handleFilterChange('name', e.target.value || undefined)}
           />
           
           <select
             className="px-3 py-2 border border-gray-300 rounded-md"
-            onChange={(e) => setFilters({ ...filters, type: e.target.value as any || undefined })}
+            onChange={(e) => handleFilterChange('type', e.target.value || undefined)}
           >
             <option value="">Tous les types</option>
             <option value="physical">Physique</option>
@@ -79,7 +63,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit }) =>
           
           <select
             className="px-3 py-2 border border-gray-300 rounded-md"
-            onChange={(e) => setFilters({ ...filters, active: e.target.value === 'true' ? true : e.target.value === 'false' ? false : undefined })}
+            onChange={(e) => handleFilterChange('active', e.target.value === 'true' ? true : e.target.value === 'false' ? false : undefined)}
           >
             <option value="">Tous les statuts</option>
             <option value="true">Actif</option>
@@ -87,10 +71,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit }) =>
           </select>
           
           <button
-            onClick={() => {
-              setFilters({});
-              setCurrentPage(1);
-            }}
+            onClick={() => listViewModel.setFilters({ page: 1 })}
             className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
           >
             Réinitialiser
@@ -115,21 +96,21 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit }) =>
       )}
 
       {/* Pagination */}
-      {totalPages > 1 && (
+      {pagination && pagination.totalPages > 1 && (
         <div className="flex justify-center gap-2">
           <button
-            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
+            onClick={() => listViewModel.setFilters({ page: Math.max(1, pagination.page - 1) })}
+            disabled={!pagination.hasPreviousPage}
             className="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-300"
           >
             Précédent
           </button>
           <span className="px-4 py-2">
-            Page {currentPage} / {totalPages}
+            Page {pagination.page} / {pagination.totalPages}
           </span>
           <button
-            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-            disabled={currentPage === totalPages}
+            onClick={() => listViewModel.setFilters({ page: Math.min(pagination.totalPages, pagination.page + 1) })}
+            disabled={!pagination.hasNextPage}
             className="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-300"
           >
             Suivant

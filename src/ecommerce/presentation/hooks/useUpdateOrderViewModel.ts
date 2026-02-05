@@ -1,21 +1,17 @@
 'use client';
 
 import { useMemo, useEffect, useState } from 'react';
-import { OrderDetailViewModel } from '../viewmodels/OrderDetailViewModel';
-import { GetOrderByIdUseCase, UpdateOrderUseCase } from '../../application/usecases/orders';
+import { UpdateOrderViewModel } from '../viewmodels/UpdateOrderViewModel';
+import { UpdateOrderUseCase } from '../../application/usecases/orders';
 import { ClientOrderRepository } from '../../infrastructure/repositories/ClientOrderRepository';
 
 // Singleton repositories
 const orderRepository = new ClientOrderRepository();
-const getOrderByIdUseCase = new GetOrderByIdUseCase(orderRepository);
 const updateOrderUseCase = new UpdateOrderUseCase(orderRepository);
 
-export const useOrderDetailViewModel = () => {
+export const useUpdateOrderViewModel = () => {
   const viewModel = useMemo(
-    () => new OrderDetailViewModel(
-      getOrderByIdUseCase,
-      updateOrderUseCase
-    ),
+    () => new UpdateOrderViewModel(updateOrderUseCase),
     []
   );
 

@@ -1,49 +1,36 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useAdminEcommerce } from '../../context/AdminEcommerceContext';
+import React from 'react';
+import { useGetCategoriesViewModel } from '../../hooks/useCategoryListViewModel';
+import { useDeleteCategoryViewModel } from '../../hooks/useDeleteCategoryViewModel';
 import { Category } from '../../../domain/entities/Category';
 import { CategoryCard } from '../molecules/CategoryCard';
+import { Pagination } from '@/src/shared/components/ui';
 
 interface AdminCategoryListProps {
   onEdit?: (category: Category) => void;
+  initialCategories: Category[];
+  initialPagination: Pagination;
 }
 
-export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit }) => {
-  const { getCategories, deleteCategory } = useAdminEcommerce();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const loadCategories = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await getCategories.execute();
-      setCategories(response.member);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du chargement');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadCategories();
-  }, []);
+export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit, initialCategories, initialPagination }) => {
+  const listViewModel = useGetCategoriesViewModel(initialCategories);
+  const deleteViewModel = useDeleteCategoryViewModel();
+  const { categories, loading, error } = listViewModel.getState();
 
   const handleDelete = async (category: Category) => {
     if (!confirm(`Supprimer la catégorie "${category.name}" ?`)) return;
     
-    try {
-      await deleteCategory.execute(category.id);
-      loadCategories();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'Erreur lors de la suppression');
+    const success = await deleteViewModel.deleteCategory(category.id);
+    if (success) {
+      listViewModel.loadCategories();
+    } else {
+      const deleteError = deleteViewModel.getState().error;
+      if (deleteError) alert(deleteError);
     }
   };
 
-  if (loading) {
+  if (loading && categories.length === 0) {
     return <div className="text-center py-8">Chargement...</div>;
   }
 

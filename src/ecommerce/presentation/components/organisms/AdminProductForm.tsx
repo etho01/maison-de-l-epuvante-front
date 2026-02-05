@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAdminEcommerce } from '../../context/AdminEcommerceContext';
+import { useCreateProductViewModel } from '../../hooks/useCreateProductViewModel';
+import { useUpdateProductViewModel } from '../../hooks/useUpdateProductViewModel';
+import { useGetAllCategoriesViewModel } from '../../hooks/useGetAllCategoriesViewModel';
 import { Product, CreateProductData, UpdateProductData } from '../../../domain/entities/Product';
 import { Category } from '../../../domain/entities/Category';
 
@@ -12,11 +14,20 @@ interface AdminProductFormProps {
 }
 
 export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onSuccess, onCancel }) => {
-  const { createProduct, updateProduct, getAllCategories } = useAdminEcommerce();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const createViewModel = useCreateProductViewModel();
+  const updateViewModel = useUpdateProductViewModel();
+  const categoriesViewModel = useGetAllCategoriesViewModel();
+  const categories = categoriesViewModel.getState().categories;
+  const { loading: createLoading, error: createError } = createViewModel.getState();
+  const { loading: updateLoading, error: updateError } = updateViewModel.getState();
   
+  const loading = createLoading || updateLoading;
+  const error = createError || updateError;
+  
+  useEffect(() => {
+    categoriesViewModel.loadCategories();
+  }, []);
+
   const [formData, setFormData] = useState({
     name: product?.name || '',
     description: product?.description || '',
@@ -31,50 +42,29 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
     weight: product?.weight || '',
   });
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
-
-  const loadCategories = async () => {
-    try {
-      const cats = await getAllCategories.execute();
-      setCategories(cats);
-    } catch (err) {
-      console.error('Erreur chargement catégories:', err);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
 
-    try {
-      const data: CreateProductData | UpdateProductData = {
-        name: formData.name,
-        description: formData.description,
-        slug: formData.slug,
-        price: formData.price,
-        stock: formData.stock,
-        type: formData.type,
-        sku: formData.sku,
-        category: `/api/categories/${formData.category}`,
-        active: formData.active,
-        exclusiveOnline: formData.exclusiveOnline,
-        weight: formData.weight || undefined,
-      };
+    const data: CreateProductData | UpdateProductData = {
+      name: formData.name,
+      description: formData.description,
+      slug: formData.slug,
+      price: formData.price,
+      stock: formData.stock,
+      type: formData.type,
+      sku: formData.sku,
+      category: `/api/categories/${formData.category}`,
+      active: formData.active,
+      exclusiveOnline: formData.exclusiveOnline,
+      weight: formData.weight || undefined,
+    };
 
-      if (product) {
-        await updateProduct.execute(product.id, data);
-      } else {
-        await createProduct.execute(data as CreateProductData);
-      }
-      
+    const success = product 
+      ? await updateViewModel.updateProduct(product.id, data)
+      : await createViewModel.createProduct(data as CreateProductData);
+    
+    if (success) {
       onSuccess?.();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la sauvegarde');
-    } finally {
-      setLoading(false);
     }
   };
 

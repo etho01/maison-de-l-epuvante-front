@@ -1,20 +1,34 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAdminEcommerce } from '../../context/AdminEcommerceContext';
+import { useCreateCategoryViewModel } from '../../hooks/useCreateCategoryViewModel';
+import { useUpdateCategoryViewModel } from '../../hooks/useUpdateCategoryViewModel';
+import { useGetAllCategoriesViewModel } from '../../hooks/useGetAllCategoriesViewModel';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../../domain/entities/Category';
 
 interface AdminCategoryFormProps {
   category?: Category;
   onSuccess?: () => void;
   onCancel?: () => void;
+  allCategories: Category[]; // Nécessaire pour la sélection de la catégorie parente
 }
 
-export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, onSuccess, onCancel }) => {
-  const { createCategory, updateCategory, getAllCategories } = useAdminEcommerce();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, onSuccess, onCancel, allCategories }) => {
+  const createViewModel = useCreateCategoryViewModel();
+  const updateViewModel = useUpdateCategoryViewModel();
+  const allCategoriesViewModel = useGetAllCategoriesViewModel();
+  const { loading: createLoading, error: createError } = createViewModel.getState();
+  const { loading: updateLoading, error: updateError } = updateViewModel.getState();
+  
+  const loading = createLoading || updateLoading;
+  const error = createError || updateError;
+  
+  useEffect(() => {
+    allCategoriesViewModel.loadCategories();
+  }, []);
+  
+  // Exclure la catégorie courante si on est en modification (éviter boucle)
+  const categories = allCategories.filter(c => !category || c.id !== category.id);
   
   const [formData, setFormData] = useState({
     name: category?.name || '',
@@ -23,44 +37,22 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
     parent: category?.parent?.id.toString() || '',
   });
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
-
-  const loadCategories = async () => {
-    try {
-      const cats = await getAllCategories.execute();
-      // Exclure la catégorie courante si on est en modification (éviter boucle)
-      setCategories(cats.filter(c => !category || c.id !== category.id));
-    } catch (err) {
-      console.error('Erreur chargement catégories:', err);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
 
-    try {
-      const data: CreateCategoryData | UpdateCategoryData = {
-        name: formData.name,
-        description: formData.description || undefined,
-        slug: formData.slug,
-        parent: formData.parent ? `/api/categories/${formData.parent}` : undefined,
-      };
+    const data: CreateCategoryData | UpdateCategoryData = {
+      name: formData.name,
+      description: formData.description || undefined,
+      slug: formData.slug,
+      parent: formData.parent ? `/api/categories/${formData.parent}` : undefined,
+    };
 
-      if (category) {
-        await updateCategory.execute(category.id, data);
-      } else {
-        await createCategory.execute(data as CreateCategoryData);
-      }
-      
+    const success = category
+      ? await updateViewModel.updateCategory(category.id, data)
+      : await createViewModel.createCategory(data as CreateCategoryData);
+    
+    if (success) {
       onSuccess?.();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la sauvegarde');
-    } finally {
-      setLoading(false);
     }
   };
 

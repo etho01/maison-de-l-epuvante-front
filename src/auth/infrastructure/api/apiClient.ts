@@ -58,7 +58,7 @@ export class ApiClient {
                         return this.request<T>(endpoint, options, true);
                     }
                 }
-
+                console.log(errorData, url)
                 throw new ApiError(
                     errorData.message || 'Une erreur est survenue',
                     response.status,
