@@ -12,7 +12,6 @@ const getCategoriesUseCase = new GetCategoriesUseCase(categoryRepository);
 export default async function AdminCategoriesPage() {
   const allCategories = await getAllCategoriesUseCase.execute();
   const categories = await getCategoriesUseCase.execute();
-  console.log('Fetched categories for admin page:', categories);
 
   return (
     <AdminLayout>

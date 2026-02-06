@@ -38,7 +38,6 @@ export class ProductCatalogViewModel {
       this.state.categories = categoriesData['member'];
       this.notify();
     } catch (err: any) {
-      console.error('Erreur lors du chargement des catégories:', err);
     }
   }
 

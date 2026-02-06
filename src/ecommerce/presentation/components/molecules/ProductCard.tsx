@@ -21,7 +21,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const handleAddToCart = () => {
     addToCart(product, 1);
-    console.log(`Added product ${product.id} to cart`);
   };
 
   return (

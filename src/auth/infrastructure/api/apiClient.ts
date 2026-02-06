@@ -46,9 +46,11 @@ export class ApiClient {
 
         try {
             const response = await fetch(url, config);
+            console.log(`Request: ${config.method || 'GET'} ${url} - Status: ${response.status}`);
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
+                console.log('Error response data:', errorData);
 
                 if (response.status === 401) {
                     // Token invalide ou expiré, supprimer le token stocké
@@ -58,7 +60,7 @@ export class ApiClient {
                         return this.request<T>(endpoint, options, true);
                     }
                 }
-                console.log(errorData, url)
+
                 throw new ApiError(
                     errorData.message || 'Une erreur est survenue',
                     response.status,

@@ -52,7 +52,6 @@ const AdminUsersClient: React.FC = () => {
       setUsers(mockUsers);
       setLoading(false);
     } catch (error) {
-      console.error('Erreur lors du chargement des utilisateurs:', error);
       setLoading(false);
     }
   };
@@ -64,14 +63,12 @@ const AdminUsersClient: React.FC = () => {
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     // TODO: Implémenter le changement de rôle via API
-    console.log(`Changement de rôle pour l'utilisateur ${userId} vers ${newRole}`);
     alert('Fonctionnalité à implémenter: changement de rôle');
   };
 
   const handleDeleteUser = async (userId: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       // TODO: Implémenter la suppression via API
-      console.log(`Suppression de l'utilisateur ${userId}`);
       alert('Fonctionnalité à implémenter: suppression utilisateur');
     }
   };

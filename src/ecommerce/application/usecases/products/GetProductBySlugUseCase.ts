@@ -8,7 +8,6 @@ export class GetProductBySlugUseCase {
     try {
       return await this.productRepository.getBySlug(slug);
     } catch (error) {
-      console.error('Error fetching product by slug:', error);
       return null;
     }
   }
