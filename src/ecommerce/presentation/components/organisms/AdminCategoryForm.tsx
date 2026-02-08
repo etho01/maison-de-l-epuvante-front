@@ -1,11 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateCategoryViewModel } from '../../hooks/useCreateCategoryViewModel';
 import { useUpdateCategoryViewModel } from '../../hooks/useUpdateCategoryViewModel';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../../domain/entities/Category';
 import { Input, Select, TextArea, Button, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
+import { categorySchema, CategoryFormData } from '../../schemas/ecommerceSchemas';
 
 interface AdminCategoryFormProps {
   category?: Category;
@@ -26,21 +29,25 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
   // Exclure la catégorie courante si on est en modification (éviter boucle)
   const categories = allCategories.filter(c => !category || c.id !== category.id);
   
-  const [formData, setFormData] = useState({
-    name: category?.name || '',
-    description: category?.description || '',
-    slug: category?.slug || '',
-    parent: category?.parent?.id.toString() || '',
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<CategoryFormData>({
+    resolver: zodResolver(categorySchema),
+    defaultValues: {
+      name: category?.name || '',
+      description: category?.description || '',
+      slug: category?.slug || '',
+      parentId: category?.parent?.id.toString() || '',
+    },
   });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (formData: CategoryFormData) => {
     const data: CreateCategoryData | UpdateCategoryData = {
       name: formData.name,
       description: formData.description || undefined,
       slug: formData.slug,
-      parent: formData.parent ? `/api/categories/${formData.parent}` : undefined,
+      parentId: formData.parentId ? Number(formData.parentId) : undefined,
     };
 
     const success = category
@@ -53,7 +60,7 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-900 border border-gray-700 text-white p-6 rounded-lg shadow space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-gray-900 border border-gray-700 text-white p-6 rounded-lg shadow space-y-6">
       <h2 className="text-2xl font-bold mb-4 text-red-500">
         {category ? 'Modifier la catégorie' : 'Nouvelle catégorie'}
       </h2>
@@ -65,27 +72,25 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
           <Input
             label="Nom *"
             type="text"
-            required
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            error={errors.name?.message}
             variant="dark"
+            {...register('name')}
           />
 
           <Input
             label="Slug *"
             type="text"
-            required
-            value={formData.slug}
-            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+            error={errors.slug?.message}
             variant="dark"
+            {...register('slug')}
           />
         </div>
 
         <Select
           label="Catégorie parente"
-          value={formData.parent}
-          onChange={(e) => setFormData({ ...formData, parent: e.target.value })}
+          error={errors.parentId?.message}
           variant="dark"
+          {...register('parentId')}
         >
           <option value="">Aucune (catégorie racine)</option>
           {categories.map((cat) => (
@@ -98,19 +103,19 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
         <TextArea
           label="Description"
           rows={4}
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          error={errors.description?.message}
           variant="dark"
+          {...register('description')}
         />
       </FormSection>
 
       <FormActions align="left">
         <Button
           type="submit"
-          disabled={loading}
+          disabled={loading || isSubmitting}
           variant="primary"
         >
-          {loading ? 'Enregistrement...' : category ? 'Mettre à jour' : 'Créer'}
+          {loading || isSubmitting ? 'Enregistrement...' : category ? 'Mettre à jour' : 'Créer'}
         </Button>
         {onCancel && (
           <Button

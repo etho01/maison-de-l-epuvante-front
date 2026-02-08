@@ -13,12 +13,12 @@ export interface CreateCategoryData {
   name: string;
   description?: string;
   slug: string;
-  parent?: string; // IRI like /api/categories/1
+  parentId?: number; // IRI like /api/categories/1
 }
 
 export interface UpdateCategoryData {
   name?: string;
   description?: string;
   slug?: string;
-  parent?: string | null;
+  parentId?: number | null;
 }

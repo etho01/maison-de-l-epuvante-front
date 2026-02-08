@@ -7,7 +7,7 @@ export interface Product {
   name: string;
   description: string;
   slug: string;
-  price: string; // Decimal as string
+  price: number; // Decimal as string
   stock: number;
   type: ProductType;
   sku: string;
@@ -15,7 +15,7 @@ export interface Product {
   active: boolean;
   exclusiveOnline: boolean;
   images: string[];
-  weight: string | null; // For physical products
+  weight: number | null; // For physical products
   metadata: Record<string, any>;
   createdAt: string;
   updatedAt: string;
@@ -25,15 +25,15 @@ export interface CreateProductData {
   name: string;
   description: string;
   slug: string;
-  price: string;
+  price: number;
   stock: number;
   type: ProductType;
   sku: string;
-  category: string; // IRI like /api/categories/1
+  categoryId: number; // IRI like /api/categories/1
   active?: boolean;
   exclusiveOnline?: boolean;
   images?: string[];
-  weight?: string;
+  weight?: number;
   metadata?: Record<string, any>;
 }
 
@@ -41,15 +41,15 @@ export interface UpdateProductData {
   name?: string;
   description?: string;
   slug?: string;
-  price?: string;
+  price?: number;
   stock?: number;
   type?: ProductType;
   sku?: string;
-  category?: string;
+  categoryId?: number;
   active?: boolean;
   exclusiveOnline?: boolean;
   images?: string[];
-  weight?: string;
+  weight?: number;
   metadata?: Record<string, any>;
 }
 

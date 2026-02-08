@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCart } from '../../context/CartContext';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
@@ -9,6 +11,7 @@ import { Address } from '@/src/ecommerce/domain/entities/Order';
 import Input from '@/src/shared/components/atoms/Input';
 import Button from '@/src/shared/components/atoms/Button';
 import ErrorMessage from '@/src/shared/components/atoms/ErrorMessage';
+import { checkoutSchema, CheckoutFormData } from '../../schemas/ecommerceSchemas';
 
 export const CheckoutForm: React.FC = () => {
   const router = useRouter();
@@ -16,51 +19,57 @@ export const CheckoutForm: React.FC = () => {
   const { checkout } = useEcommerce();
   const { user } = useAuth();
 
-  const [shippingAddress, setShippingAddress] = useState<Address>({
-    firstName: user?.firstName || '',
-    lastName: user?.lastName || '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: 'FR',
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<CheckoutFormData>({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      shippingAddress: {
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+        address: '',
+        city: '',
+        postalCode: '',
+        country: 'FR',
+      },
+      billingAddress: {
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+        address: '',
+        city: '',
+        postalCode: '',
+        country: 'FR',
+      },
+      paymentMethod: 'card',
+      customerNotes: '',
+      useSameAddress: true,
+    },
   });
 
-  const [billingAddress, setBillingAddress] = useState<Address>({
-    firstName: user?.firstName || '',
-    lastName: user?.lastName || '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: 'FR',
-  });
+  const useSameAddress = watch('useSameAddress');
 
-  const [useSameAddress, setUseSameAddress] = useState(true);
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [customerNotes, setCustomerNotes] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+  const onSubmit = async (data: CheckoutFormData) => {
+    setSubmitError(null);
 
     try {
-      const finalBillingAddress = useSameAddress ? shippingAddress : billingAddress;
+      const finalBillingAddress = data.useSameAddress ? data.shippingAddress : data.billingAddress;
 
       await checkout({
-        shippingAddress,
+        shippingAddress: data.shippingAddress,
         billingAddress: finalBillingAddress,
-        paymentMethod,
-        customerNotes: customerNotes || undefined,
+        paymentMethod: data.paymentMethod,
+        customerNotes: data.customerNotes || undefined,
       });
 
       clearCart();
       router.push('/commandes?success=true');
     } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue lors de la commande');
-    } finally {
-      setLoading(false);
+      setSubmitError(err.message || 'Une erreur est survenue lors de la commande');
     }
   };
 
@@ -73,8 +82,8 @@ export const CheckoutForm: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && <ErrorMessage message={error} />}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <ErrorMessage message={submitError} />
 
       {/* Adresse de livraison */}
       <div className="border rounded-lg p-6">
@@ -82,41 +91,35 @@ export const CheckoutForm: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             label="Prénom"
-            value={shippingAddress.firstName}
-            onChange={(e) => setShippingAddress({ ...shippingAddress, firstName: e.target.value })}
-            required
+            error={errors.shippingAddress?.firstName?.message}
+            {...register('shippingAddress.firstName')}
           />
           <Input
             label="Nom"
-            value={shippingAddress.lastName}
-            onChange={(e) => setShippingAddress({ ...shippingAddress, lastName: e.target.value })}
-            required
+            error={errors.shippingAddress?.lastName?.message}
+            {...register('shippingAddress.lastName')}
           />
           <Input
             label="Adresse"
-            value={shippingAddress.address}
-            onChange={(e) => setShippingAddress({ ...shippingAddress, address: e.target.value })}
-            required
+            error={errors.shippingAddress?.address?.message}
             className="md:col-span-2"
+            {...register('shippingAddress.address')}
           />
           <Input
             label="Ville"
-            value={shippingAddress.city}
-            onChange={(e) => setShippingAddress({ ...shippingAddress, city: e.target.value })}
-            required
+            error={errors.shippingAddress?.city?.message}
+            {...register('shippingAddress.city')}
           />
           <Input
             label="Code postal"
-            value={shippingAddress.postalCode}
-            onChange={(e) => setShippingAddress({ ...shippingAddress, postalCode: e.target.value })}
-            required
+            error={errors.shippingAddress?.postalCode?.message}
+            {...register('shippingAddress.postalCode')}
           />
           <Input
             label="Pays"
-            value={shippingAddress.country}
-            onChange={(e) => setShippingAddress({ ...shippingAddress, country: e.target.value })}
-            required
+            error={errors.shippingAddress?.country?.message}
             className="md:col-span-2"
+            {...register('shippingAddress.country')}
           />
         </div>
       </div>
@@ -128,8 +131,7 @@ export const CheckoutForm: React.FC = () => {
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
-              checked={useSameAddress}
-              onChange={(e) => setUseSameAddress(e.target.checked)}
+              {...register('useSameAddress')}
             />
             <span className="text-sm">Identique à l'adresse de livraison</span>
           </label>
@@ -139,41 +141,35 @@ export const CheckoutForm: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Prénom"
-              value={billingAddress.firstName}
-              onChange={(e) => setBillingAddress({ ...billingAddress, firstName: e.target.value })}
-              required
+              error={errors.billingAddress?.firstName?.message}
+              {...register('billingAddress.firstName')}
             />
             <Input
               label="Nom"
-              value={billingAddress.lastName}
-              onChange={(e) => setBillingAddress({ ...billingAddress, lastName: e.target.value })}
-              required
+              error={errors.billingAddress?.lastName?.message}
+              {...register('billingAddress.lastName')}
             />
             <Input
               label="Adresse"
-              value={billingAddress.address}
-              onChange={(e) => setBillingAddress({ ...billingAddress, address: e.target.value })}
-              required
+              error={errors.billingAddress?.address?.message}
               className="md:col-span-2"
+              {...register('billingAddress.address')}
             />
             <Input
               label="Ville"
-              value={billingAddress.city}
-              onChange={(e) => setBillingAddress({ ...billingAddress, city: e.target.value })}
-              required
+              error={errors.billingAddress?.city?.message}
+              {...register('billingAddress.city')}
             />
             <Input
               label="Code postal"
-              value={billingAddress.postalCode}
-              onChange={(e) => setBillingAddress({ ...billingAddress, postalCode: e.target.value })}
-              required
+              error={errors.billingAddress?.postalCode?.message}
+              {...register('billingAddress.postalCode')}
             />
             <Input
               label="Pays"
-              value={billingAddress.country}
-              onChange={(e) => setBillingAddress({ ...billingAddress, country: e.target.value })}
-              required
+              error={errors.billingAddress?.country?.message}
               className="md:col-span-2"
+              {...register('billingAddress.country')}
             />
           </div>
         )}
@@ -186,20 +182,16 @@ export const CheckoutForm: React.FC = () => {
           <label className="flex items-center gap-2">
             <input
               type="radio"
-              name="paymentMethod"
               value="card"
-              checked={paymentMethod === 'card'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              {...register('paymentMethod')}
             />
             <span>Carte bancaire</span>
           </label>
           <label className="flex items-center gap-2">
             <input
               type="radio"
-              name="paymentMethod"
               value="paypal"
-              checked={paymentMethod === 'paypal'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              {...register('paymentMethod')}
             />
             <span>PayPal</span>
           </label>
@@ -213,9 +205,11 @@ export const CheckoutForm: React.FC = () => {
           className="w-full border rounded p-2"
           rows={4}
           placeholder="Instructions de livraison, remarques..."
-          value={customerNotes}
-          onChange={(e) => setCustomerNotes(e.target.value)}
+          {...register('customerNotes')}
         />
+        {errors.customerNotes && (
+          <p className="text-red-500 text-sm mt-1">{errors.customerNotes.message}</p>
+        )}
       </div>
 
       {/* Récapitulatif */}
@@ -241,8 +235,8 @@ export const CheckoutForm: React.FC = () => {
         </div>
       </div>
 
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? 'Traitement...' : 'Confirmer la commande'}
+      <Button type="submit" disabled={isSubmitting} className="w-full">
+        {isSubmitting ? 'Traitement...' : 'Confirmer la commande'}
       </Button>
     </form>
   );

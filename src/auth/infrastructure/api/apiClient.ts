@@ -46,7 +46,7 @@ export class ApiClient {
 
         try {
             const response = await fetch(url, config);
-            console.log(`Request: ${config.method || 'GET'} ${url} - Status: ${response.status}`);
+            console.log(url)
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
@@ -96,6 +96,7 @@ export class ApiClient {
     }
 
     async put<T>(endpoint: string, data?: any): Promise<T> {
+        console.log('PATCH request to:', endpoint, 'with data:', data);
         return this.request<T>(endpoint, {
             method: 'PUT',
             body: data ? JSON.stringify(data) : undefined,

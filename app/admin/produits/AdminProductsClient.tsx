@@ -4,8 +4,20 @@ import React, { useState } from 'react';
 import { AdminProductList } from '@/src/ecommerce/presentation/components/organisms/AdminProductList';
 import { AdminProductForm } from '@/src/ecommerce/presentation/components/organisms/AdminProductForm';
 import { Product } from '@/src/ecommerce/domain/entities/Product';
+import { Pagination } from '@/src/shared/domain/Pagination';
+import { Category } from '@/src/ecommerce/domain/entities/Category';
 
-export default function AdminProductsClient() {
+interface AdminProductsClientProps {
+ initialProducts?: Product[];
+ initialPagination?: Pagination;
+ allCategories?: Category[];
+}
+
+export default function AdminProductsClient({
+  initialProducts = [],
+  initialPagination,
+  allCategories = [],
+}: AdminProductsClientProps) {
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | undefined>();
 
@@ -39,12 +51,17 @@ export default function AdminProductsClient() {
 
       {showForm ? (
         <AdminProductForm
+          allCategories={allCategories}
           product={editingProduct}
           onSuccess={handleSuccess}
           onCancel={handleCancel}
         />
       ) : (
-        <AdminProductList onEdit={handleEdit} />
+        <AdminProductList 
+          onEdit={handleEdit} 
+          initialProducts={initialProducts}
+          initialPagination={initialPagination}
+        />
       )}
     </div>
   );

@@ -6,13 +6,17 @@ import { useDeleteProductViewModel } from '../../hooks/useDeleteProductViewModel
 import { Product } from '../../../domain/entities/Product';
 import { AdminProductCard } from '../molecules/AdminProductCard';
 import { Input, Select, Button } from '@/src/shared/components/atoms';
+import { Pagination } from '@/src/shared/domain/Pagination';
+import { init } from 'next/dist/compiled/webpack/webpack';
 
 interface AdminProductListProps {
   onEdit?: (product: Product) => void;
+  initialProducts?: Product[];
+  initialPagination?: Pagination;
 }
 
-export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit }) => {
-  const listViewModel = useGetProductsViewModel();
+export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, initialProducts, initialPagination }) => {
+  const listViewModel = useGetProductsViewModel(initialProducts, initialPagination);
   const deleteViewModel = useDeleteProductViewModel();
   const { products, loading, error, pagination } = listViewModel.getState();
 

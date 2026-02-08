@@ -28,7 +28,9 @@ export async function PATCH(
 ) {
   try {
     const data = await request.json();
-    const product = await updateProductUseCase.execute(parseInt(params.id), data);
+    const { id } = await params
+    
+    const product = await updateProductUseCase.execute(parseInt(id), data);
     return NextResponse.json(product);
   } catch (error: any) {
     return NextResponse.json(
