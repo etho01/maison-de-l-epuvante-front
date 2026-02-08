@@ -6,6 +6,8 @@ import { useUpdateProductViewModel } from '../../hooks/useUpdateProductViewModel
 import { useGetAllCategoriesViewModel } from '../../hooks/useGetAllCategoriesViewModel';
 import { Product, CreateProductData, UpdateProductData } from '../../../domain/entities/Product';
 import { Category } from '../../../domain/entities/Category';
+import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';
+import { FormSection, FormActions } from '@/src/shared/components/molecules';
 
 interface AdminProductFormProps {
   product?: Product;
@@ -69,95 +71,51 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow space-y-4">
-      <h2 className="text-2xl font-bold mb-4">
+    <form onSubmit={handleSubmit} className="bg-gray-900 border border-gray-700 text-white p-6 rounded-lg shadow space-y-6">
+      <h2 className="text-2xl font-bold mb-4 text-red-500">
         {product ? 'Modifier le produit' : 'Nouveau produit'}
       </h2>
 
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {error}
-        </div>
-      )}
+      <ErrorMessage message={error} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
-          <input
+      <FormSection 
+        title="Informations générales"
+        description="Informations de base du produit"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input
+            label="Nom *"
             type="text"
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            variant="dark"
           />
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
-          <input
+          <Input
+            label="Slug *"
             type="text"
             required
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            variant="dark"
           />
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">SKU *</label>
-          <input
+          <Input
+            label="SKU *"
             type="text"
             required
             value={formData.sku}
             onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            variant="dark"
           />
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Prix *</label>
-          <input
-            type="number"
-            step="0.01"
-            required
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Stock *</label>
-          <input
-            type="number"
-            required
-            value={formData.stock}
-            onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
-          <select
-            required
-            value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          >
-            <option value="physical">Physique</option>
-            <option value="digital">Numérique</option>
-            <option value="subscription">Abonnement</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie *</label>
-          <select
+          <Select
+            label="Catégorie *"
             required
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            variant="dark"
           >
             <option value="">Sélectionner une catégorie</option>
             {categories.map((cat) => (
@@ -165,71 +123,101 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
                 {cat.name}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Poids (kg)</label>
-          <input
-            type="text"
-            value={formData.weight}
-            onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-        <textarea
+        <TextArea
+          label="Description *"
           required
           rows={4}
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          variant="dark"
         />
-      </div>
+      </FormSection>
 
-      <div className="flex gap-4">
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
+      <FormSection 
+        title="Tarification et inventaire"
+        description="Prix, stock et caractéristiques du produit"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input
+            label="Prix *"
+            type="number"
+            step="0.01"
+            required
+            value={formData.price}
+            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            variant="dark"
+          />
+
+          <Input
+            label="Stock *"
+            type="number"
+            required
+            value={formData.stock}
+            onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) })}
+            variant="dark"
+          />
+
+          <Select
+            label="Type *"
+            required
+            value={formData.type}
+            onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+            variant="dark"
+          >
+            <option value="physical">Physique</option>
+            <option value="digital">Numérique</option>
+            <option value="subscription">Abonnement</option>
+          </Select>
+
+          <Input
+            label="Poids (kg)"
+            type="text"
+            value={formData.weight}
+            onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+            variant="dark"
+          />
+        </div>
+      </FormSection>
+
+      <FormSection title="Options">
+        <div className="flex gap-4">
+          <Checkbox
+            label="Actif"
             checked={formData.active}
             onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-            className="rounded"
+            variant="dark"
           />
-          <span className="text-sm text-gray-700">Actif</span>
-        </label>
 
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
+          <Checkbox
+            label="Exclusivité en ligne"
             checked={formData.exclusiveOnline}
             onChange={(e) => setFormData({ ...formData, exclusiveOnline: e.target.checked })}
-            className="rounded"
+            variant="dark"
           />
-          <span className="text-sm text-gray-700">Exclusivité en ligne</span>
-        </label>
-      </div>
+        </div>
+      </FormSection>
 
-      <div className="flex gap-4 pt-4">
-        <button
+      <FormActions align="left">
+        <Button
           type="submit"
           disabled={loading}
-          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+          variant="primary"
         >
           {loading ? 'Enregistrement...' : product ? 'Mettre à jour' : 'Créer'}
-        </button>
+        </Button>
         {onCancel && (
-          <button
+          <Button
             type="button"
             onClick={onCancel}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+            variant="secondary"
           >
             Annuler
-          </button>
+          </Button>
         )}
-      </div>
+      </FormActions>
     </form>
   );
 };

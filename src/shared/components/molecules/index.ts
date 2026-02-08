@@ -8,3 +8,6 @@ export { CartItem } from './CartItem';
 export type { CartItemProduct } from './CartItem';
 export { OrderCard } from './OrderCard';
 export type { OrderCardData, OrderCardItem } from './OrderCard';
+export { FormSection } from './FormSection';
+export { FormActions } from './FormActions';
+

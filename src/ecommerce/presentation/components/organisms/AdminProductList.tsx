@@ -5,6 +5,7 @@ import { useGetProductsViewModel } from '../../hooks/useGetProductsViewModel';
 import { useDeleteProductViewModel } from '../../hooks/useDeleteProductViewModel';
 import { Product } from '../../../domain/entities/Product';
 import { AdminProductCard } from '../molecules/AdminProductCard';
+import { Input, Select, Button } from '@/src/shared/components/atoms';
 
 interface AdminProductListProps {
   onEdit?: (product: Product) => void;
@@ -42,40 +43,40 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit }) =>
   return (
     <div>
       {/* Filters */}
-      <div className="mb-6 bg-white p-4 rounded-lg shadow">
+      <div className="mb-6 bg-gray-900 p-4 rounded-lg shadow border border-gray-700">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <input
+          <Input
             type="text"
             placeholder="Rechercher par nom..."
-            className="px-3 py-2 border border-gray-300 rounded-md"
             onChange={(e) => handleFilterChange('name', e.target.value || undefined)}
+            variant="dark"
           />
           
-          <select
-            className="px-3 py-2 border border-gray-300 rounded-md"
+          <Select
             onChange={(e) => handleFilterChange('type', e.target.value || undefined)}
+            variant="dark"
           >
             <option value="">Tous les types</option>
             <option value="physical">Physique</option>
             <option value="digital">Numérique</option>
             <option value="subscription">Abonnement</option>
-          </select>
+          </Select>
           
-          <select
-            className="px-3 py-2 border border-gray-300 rounded-md"
+          <Select
             onChange={(e) => handleFilterChange('active', e.target.value === 'true' ? true : e.target.value === 'false' ? false : undefined)}
+            variant="dark"
           >
             <option value="">Tous les statuts</option>
             <option value="true">Actif</option>
             <option value="false">Inactif</option>
-          </select>
+          </Select>
           
-          <button
+          <Button
             onClick={() => listViewModel.setFilters({ page: 1 })}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+            variant="secondary"
           >
             Réinitialiser
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -98,23 +99,23 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit }) =>
       {/* Pagination */}
       {pagination && pagination.totalPages > 1 && (
         <div className="flex justify-center gap-2">
-          <button
+          <Button
             onClick={() => listViewModel.setFilters({ page: Math.max(1, pagination.page - 1) })}
             disabled={!pagination.hasPreviousPage}
-            className="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-300"
+            variant="primary"
           >
             Précédent
-          </button>
+          </Button>
           <span className="px-4 py-2">
             Page {pagination.page} / {pagination.totalPages}
           </span>
-          <button
+          <Button
             onClick={() => listViewModel.setFilters({ page: Math.min(pagination.totalPages, pagination.page + 1) })}
             disabled={!pagination.hasNextPage}
-            className="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-300"
+            variant="primary"
           >
             Suivant
-          </button>
+          </Button>
         </div>
       )}
     </div>

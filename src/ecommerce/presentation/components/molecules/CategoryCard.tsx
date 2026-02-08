@@ -14,7 +14,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category, onEdit, on
     <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start mb-2">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
+          <h3 className="text-lg font-semibold text-white">{category.name}</h3>
           <p className="text-sm text-gray-500">{category.slug}</p>
         </div>
       </div>
