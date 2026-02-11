@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useGetOrderByIdViewModel } from '../../hooks/useGetOrderByIdViewModel';
-import { useUpdateOrderViewModel } from '../../hooks/useUpdateOrderViewModel';
+import { useGetOrderByIdViewModel, useUpdateOrderViewModel } from '../../hooks/orders';
 import { Order, OrderStatus } from '../../../domain/entities/Order';
 import { OrderStatusBadge } from '../atoms/OrderStatusBadge';
 import { Select, TextArea, Button } from '@/src/shared/components/atoms';
@@ -101,7 +100,7 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
       <div className="mb-6">
         <h3 className="font-semibold mb-3">Articles</h3>
         <div className="space-y-2">
-          {order.items.map((item) => (
+          {order.items.map((item: any) => (
             <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
               <div>
                 <p className="font-medium">{item.product.name}</p>

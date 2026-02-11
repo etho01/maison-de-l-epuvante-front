@@ -3,9 +3,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateProductViewModel } from '../../hooks/useCreateProductViewModel';
-import { useUpdateProductViewModel } from '../../hooks/useUpdateProductViewModel';
-import { useGetAllCategoriesViewModel } from '../../hooks/useGetAllCategoriesViewModel';
+import { useCreateProductViewModel, useUpdateProductViewModel } from '../../hooks/products';
+import { useGetAllCategoriesViewModel } from '../../hooks/categories';
 import { Product, CreateProductData, UpdateProductData } from '../../../domain/entities/Product';
 import { Category } from '../../../domain/entities/Category';
 import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';

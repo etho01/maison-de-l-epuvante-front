@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetProductsViewModel } from '../../hooks/useGetProductsViewModel';
-import { useDeleteProductViewModel } from '../../hooks/useDeleteProductViewModel';
+import { useGetProductsViewModel, useDeleteProductViewModel } from '../../hooks/products';
 import { Product } from '../../../domain/entities/Product';
 import { AdminProductCard } from '../molecules/AdminProductCard';
 import { Input, Select, Button } from '@/src/shared/components/atoms';
@@ -100,7 +99,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
 
       {/* Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        {products.map((product) => (
+        {products.map((product: Product) => (
           <AdminProductCard
             key={product.id}
             product={product}

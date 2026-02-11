@@ -6,7 +6,7 @@ import { ProductFilters } from '../molecules/ProductFilters';
 import { Pagination as PaginationType } from '@/src/shared/domain/Pagination';
 import { Product } from '@/src/ecommerce/domain/entities/Product';
 import { Category } from '@/src/ecommerce/domain/entities/Category';
-import { useProductsViewModel } from '../../hooks/useProductsViewModel';
+import { useProductsViewModel } from '../../hooks/products';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 
 interface ProductCatalogProps {

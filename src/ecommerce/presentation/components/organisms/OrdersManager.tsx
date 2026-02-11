@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { OrderList } from './OrderList';
-import { useOrdersViewModel } from '../../hooks/useOrdersViewModel';
+import { useOrdersViewModel } from '../../hooks/orders';
 import { Order } from '@/src/ecommerce/domain/entities/Order';
 import { Pagination } from '@/src/shared/domain/Pagination';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useGetOrdersViewModel } from '../../hooks/useGetOrdersViewModel';
+import { useGetOrdersViewModel } from '../../hooks/orders';
 import { Order } from '../../../domain/entities/Order';
 import { OrderCard } from '../molecules/OrderCard';
 

@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { useProductsViewModel } from '../hooks/useProductsViewModel';
 import { Product } from '../../domain/entities/Product';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { Category } from '../../domain/entities/Category';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 import { ProductFilters } from './molecules';
 import { ProductList } from './organisms';
+import { useProductsViewModel } from '../hooks';
 
 interface ProductCatalogProps {
   initialProducts: Product[];

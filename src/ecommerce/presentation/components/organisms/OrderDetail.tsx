@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { OrderStatus } from '@/src/ecommerce/domain/entities/Order';
-import { useOrderDetailViewModel } from '../../hooks/useOrderDetailViewModel';
+import { useOrderDetailViewModel } from '../../hooks/orders';
 
 const statusLabels: Record<OrderStatus, string> = {
   pending: 'En attente',

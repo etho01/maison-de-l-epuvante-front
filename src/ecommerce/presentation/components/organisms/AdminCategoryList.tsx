@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetCategoriesViewModel } from '../../hooks/useCategoryListViewModel';
-import { useDeleteCategoryViewModel } from '../../hooks/useDeleteCategoryViewModel';
+import { useGetCategoriesViewModel, useDeleteCategoryViewModel } from '../../hooks/categories';
 import { Category } from '../../../domain/entities/Category';
 import { CategoryCard } from '../molecules/CategoryCard';
 import { Pagination } from '@/src/shared/components/ui';
@@ -55,7 +54,7 @@ export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit, in
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-5">
-        {categories.map((category) => (
+        {categories.map((category: Category) => (
           <CategoryCard
             key={category.id}
             category={category}

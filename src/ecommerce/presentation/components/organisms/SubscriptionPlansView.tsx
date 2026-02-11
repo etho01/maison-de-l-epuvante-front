@@ -7,8 +7,7 @@ import { useAuth } from '@/src/auth/presentation/context/AuthContext';
 import { SubscriptionPlan } from '../../../domain/entities/SubscriptionPlan';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
-import { useSubscriptionPlansViewModel } from '../../hooks/useSubscriptionPlansViewModel';
-import { useSubscribeViewModel } from '../../hooks/useSubscribeViewModel';
+import { useSubscriptionPlansViewModel, useSubscribeViewModel } from '../../hooks/subscriptions';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 
 interface SubscriptionPlansViewProps {

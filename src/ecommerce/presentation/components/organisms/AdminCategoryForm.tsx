@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateCategoryViewModel } from '../../hooks/useCreateCategoryViewModel';
-import { useUpdateCategoryViewModel } from '../../hooks/useUpdateCategoryViewModel';
+import { useCreateCategoryViewModel, useUpdateCategoryViewModel } from '../../hooks/categories';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../../domain/entities/Category';
 import { Input, Select, TextArea, Button, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
