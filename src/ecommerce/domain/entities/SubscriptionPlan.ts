@@ -5,7 +5,7 @@ export interface SubscriptionPlan {
   id: number;
   name: string;
   description: string;
-  price: string;
+  price: number;
   billingInterval: BillingInterval;
   durationInMonths: number;
   format: SubscriptionFormat;
@@ -17,7 +17,7 @@ export interface SubscriptionPlan {
 export interface CreateSubscriptionPlanData {
   name: string;
   description: string;
-  price: string;
+  price: number;
   billingInterval: BillingInterval;
   durationInMonths: number;
   format: SubscriptionFormat;
@@ -27,7 +27,7 @@ export interface CreateSubscriptionPlanData {
 export interface UpdateSubscriptionPlanData {
   name?: string;
   description?: string;
-  price?: string;
+  price?: number;
   billingInterval?: BillingInterval;
   durationInMonths?: number;
   format?: SubscriptionFormat;

@@ -20,18 +20,18 @@ export class SymfonySubscriptionPlanRepository implements ISubscriptionPlanRepos
   }
 
   async getById(id: number): Promise<SubscriptionPlan> {
-    return await apiClient.get<SubscriptionPlan>(`/subscription-plans/${id}`);
+    return await apiClient.get<SubscriptionPlan>(`/subscription_plans/${id}`);
   }
 
   async create(data: CreateSubscriptionPlanData): Promise<SubscriptionPlan> {
-    return await apiClient.post<SubscriptionPlan>('/subscription-plans', data);
+    return await apiClient.post<SubscriptionPlan>('/subscription_plans', data);
   }
 
   async update(id: number, data: UpdateSubscriptionPlanData): Promise<SubscriptionPlan> {
-    return await apiClient.patch<SubscriptionPlan>(`/subscription-plans/${id}`, data);
+    return await apiClient.patch<SubscriptionPlan>(`/subscription_plans/${id}`, data);
   }
 
   async delete(id: number): Promise<void> {
-    await apiClient.delete(`/subscription-plans/${id}`);
+    await apiClient.delete(`/subscription_plans/${id}`);
   }
 }

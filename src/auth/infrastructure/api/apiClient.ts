@@ -46,11 +46,11 @@ export class ApiClient {
 
         try {
             const response = await fetch(url, config);
-            console.log(url)
+            console.log(url, options)
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.log('Error response data:', errorData);
+                console.log('Error response data:', errorData, response.status);
 
                 if (response.status === 401) {
                     // Token invalide ou expiré, supprimer le token stocké
@@ -89,6 +89,7 @@ export class ApiClient {
     }
 
     async post<T>(endpoint: string, data?: any): Promise<T> {
+        console.log('POST request to:', endpoint, 'with data:', data);
         return this.request<T>(endpoint, {
             method: 'POST',
             body: data ? JSON.stringify(data) : undefined,

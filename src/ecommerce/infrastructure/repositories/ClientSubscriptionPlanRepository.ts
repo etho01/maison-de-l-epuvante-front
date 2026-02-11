@@ -35,9 +35,17 @@ export class ClientSubscriptionPlanRepository implements ISubscriptionPlanReposi
     return await response.json();
   }
 
-  async getSubscriptionPlans(): Promise<PaginatedResponse<SubscriptionPlan>> {
-    const response = await this.request<PaginatedResponse<SubscriptionPlan>>('/subscription-plans');
-    return response;
+  async getSubscriptionPlans(filters?: { page?: number }): Promise<PaginatedResponse<SubscriptionPlan>> {
+    const params = new URLSearchParams();
+    
+    if (filters?.page) {
+      params.append('page', filters.page.toString());
+    }
+    
+    const queryString = params.toString();
+    const endpoint = `/subscription-plans${queryString ? `?${queryString}` : ''}`;
+    
+    return await this.request<PaginatedResponse<SubscriptionPlan>>(endpoint);
   }
 
   async getById(id: number): Promise<SubscriptionPlan> {

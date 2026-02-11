@@ -108,9 +108,38 @@ export const checkoutSchema = z.object({
 });
 
 /**
+ * Schéma de validation pour la création/modification de plan d'abonnement
+ */
+export const subscriptionPlanSchema = z.object({
+  name: z
+    .string()
+    .min(1, 'Le nom est requis')
+    .min(2, 'Le nom doit contenir au moins 2 caractères'),
+  description: z
+    .string()
+    .min(1, 'La description est requise')
+    .min(10, 'La description doit contenir au moins 10 caractères'),
+  price: z
+    .number({ message: 'Le prix doit être un nombre' })
+    .positive('Le prix doit être un nombre positif'),
+  billingInterval: z.enum(['monthly', 'quarterly', 'yearly'], {
+    message: 'Intervalle de facturation invalide',
+  }),
+  durationInMonths: z
+    .number()
+    .int('La durée doit être un nombre entier')
+    .positive('La durée doit être un nombre positif'),
+  format: z.enum(['paper', 'digital', 'both'], {
+    message: 'Format invalide',
+  }),
+  active: z.boolean(),
+});
+
+/**
  * Types TypeScript dérivés des schémas Zod
  */
 export type ProductFormData = z.infer<typeof productSchema>;
 export type CategoryFormData = z.infer<typeof categorySchema>;
 export type AddressFormData = z.infer<typeof addressSchema>;
 export type CheckoutFormData = z.infer<typeof checkoutSchema>;
+export type SubscriptionPlanFormData = z.infer<typeof subscriptionPlanSchema>;
