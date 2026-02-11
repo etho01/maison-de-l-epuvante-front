@@ -3,10 +3,11 @@ import { ICategoryRepository } from '../../domain/repositories/ICategoryReposito
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../domain/entities/Category';
 import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
+import { GetCategoriesFilter } from '../../application/usecases/categories/GetCategoriesUseCase';
 
 export class SymfonyCategoryRepository implements ICategoryRepository {
-  async getCategories(): Promise<PaginatedResponse<Category>> {
-    const response = await apiClient.get<PaginatedResponse<Category>>('/categories');
+  async getCategories(filter?: GetCategoriesFilter): Promise<PaginatedResponse<Category>> {
+    const response = await apiClient.get<PaginatedResponse<Category>>('/categories' + (filter ? `?page=${filter.page || 1}` : ''));
     return response;
   }
 

@@ -1,8 +1,9 @@
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../entities/Category';
+import { GetCategoriesFilter } from '../../application/usecases/categories/GetCategoriesUseCase';
 
 export interface ICategoryRepository {
-  getCategories(): Promise<PaginatedResponse<Category>>;
+  getCategories(filter?: GetCategoriesFilter): Promise<PaginatedResponse<Category>>;
   getAllCategories(): Promise<Category[]>;
   getById(id: number): Promise<Category>;
   create(data: CreateCategoryData): Promise<Category>;

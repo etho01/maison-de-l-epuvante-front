@@ -1,6 +1,7 @@
 import { ICategoryRepository } from '../../domain/repositories/ICategoryRepository';
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../domain/entities/Category';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
+import { GetCategoriesFilter } from '../../application/usecases/categories/GetCategoriesUseCase';
 
 export class ClientCategoryRepository implements ICategoryRepository {
   private baseURL: string;
@@ -35,8 +36,8 @@ export class ClientCategoryRepository implements ICategoryRepository {
     return await response.json();
   }
 
-  async getCategories(): Promise<PaginatedResponse<Category>> {
-    const response = await this.request<PaginatedResponse<Category>>('/categories');
+  async getCategories(filter?: GetCategoriesFilter): Promise<PaginatedResponse<Category>> {
+    const response = await this.request<PaginatedResponse<Category>>('/categories' + (filter ? `?page=${filter.page || 1}` : ''));
     return response;
   }
 

@@ -1,6 +1,7 @@
 import { Category } from '../../domain/entities/Category';
 import { GetCategoriesUseCase } from '../../application/usecases/categories';
 import { Pagination } from '@/src/shared/domain/Pagination';
+import { GetCategoriesFilter } from '../../application/usecases/categories/GetCategoriesUseCase';
 
 export class GetCategoriesViewModel {
   private state = {
@@ -8,16 +9,21 @@ export class GetCategoriesViewModel {
     pagination: null as Pagination | null,
     loading: false,
     error: null as string | null,
+    filter: {} as GetCategoriesFilter
   };
 
   private listeners: Set<() => void> = new Set();
 
   constructor(
     private getCategoriesUseCase: GetCategoriesUseCase,
-    initialCategories?: Category[]
+    initialCategories?: Category[],
+    initialPagination?: Pagination
   ) {
     if (initialCategories) {
       this.state.categories = initialCategories;
+    }
+    if (initialPagination) {
+      this.state.pagination = initialPagination;
     }
   }
 
@@ -41,7 +47,7 @@ export class GetCategoriesViewModel {
       this.state.error = null;
       this.notify();
 
-      const response = await this.getCategoriesUseCase.execute();
+      const response = await this.getCategoriesUseCase.execute(this.state.filter);
       this.state.categories = response.member;
       this.state.pagination = response.pagination;
     } catch (err: any) {
@@ -50,6 +56,15 @@ export class GetCategoriesViewModel {
       this.state.loading = false;
       this.notify();
     }
+  }
+
+  setFilter(filter: GetCategoriesFilter) 
+  {
+    this.state.filter = {
+      ...this.state.filter,
+      ...filter
+    };
+    this.loadCategories();
   }
 
   getState() {

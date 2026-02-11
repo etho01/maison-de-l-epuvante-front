@@ -10,4 +10,7 @@ export { OrderCard } from './OrderCard';
 export type { OrderCardData, OrderCardItem } from './OrderCard';
 export { FormSection } from './FormSection';
 export { FormActions } from './FormActions';
+export { Modal, ModalHeader, ModalBody, ModalFooter } from './Modal';
+export type { ModalProps } from './Modal';
+export { ConfirmModal } from './ConfirmModal';
 

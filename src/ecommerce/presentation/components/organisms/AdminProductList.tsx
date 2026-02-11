@@ -1,13 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useGetProductsViewModel } from '../../hooks/useGetProductsViewModel';
 import { useDeleteProductViewModel } from '../../hooks/useDeleteProductViewModel';
 import { Product } from '../../../domain/entities/Product';
 import { AdminProductCard } from '../molecules/AdminProductCard';
 import { Input, Select, Button } from '@/src/shared/components/atoms';
+import { ConfirmModal } from '@/src/shared/components/molecules';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { init } from 'next/dist/compiled/webpack/webpack';
+import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 
 interface AdminProductListProps {
   onEdit?: (product: Product) => void;
@@ -19,17 +21,29 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
   const listViewModel = useGetProductsViewModel(initialProducts, initialPagination);
   const deleteViewModel = useDeleteProductViewModel();
   const { products, loading, error, pagination } = listViewModel.getState();
+  const { loading: deleteLoading } = deleteViewModel.getState();
 
-  const handleDelete = async (product: Product) => {
-    if (!confirm(`Supprimer le produit "${product.name}" ?`)) return;
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+
+  const handleDeleteClick = (product: Product) => {
+    setProductToDelete(product);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!productToDelete) return;
     
-    const success = await deleteViewModel.deleteProduct(product.id);
+    const success = await deleteViewModel.deleteProduct(productToDelete.id);
     if (success) {
+      setProductToDelete(null);
       listViewModel.loadProducts();
     } else {
       const deleteError = deleteViewModel.getState().error;
       if (deleteError) alert(deleteError);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setProductToDelete(null);
   };
 
   const handleFilterChange = (key: string, value: any) => {
@@ -91,7 +105,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
             key={product.id}
             product={product}
             onEdit={onEdit}
-            onDelete={handleDelete}
+            onDelete={handleDeleteClick}
           />
         ))}
       </div>
@@ -100,28 +114,25 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
         <div className="text-center py-8 text-gray-500">Aucun produit trouvé</div>
       )}
 
-      {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && (
-        <div className="flex justify-center gap-2">
-          <Button
-            onClick={() => listViewModel.setFilters({ page: Math.max(1, pagination.page - 1) })}
-            disabled={!pagination.hasPreviousPage}
-            variant="primary"
-          >
-            Précédent
-          </Button>
-          <span className="px-4 py-2">
-            Page {pagination.page} / {pagination.totalPages}
-          </span>
-          <Button
-            onClick={() => listViewModel.setFilters({ page: Math.min(pagination.totalPages, pagination.page + 1) })}
-            disabled={!pagination.hasNextPage}
-            variant="primary"
-          >
-            Suivant
-          </Button>
-        </div>
-      )}
+      <PaginationComponent
+        pagination={initialPagination}
+        onPageChange={(page: number) => listViewModel.setFilters({
+          page
+        })}
+      />
+
+      {/* Confirm Delete Modal */}
+      <ConfirmModal
+        isOpen={!!productToDelete}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="Supprimer le produit"
+        message={`Êtes-vous sûr de vouloir supprimer le produit "${productToDelete?.name}" ? Cette action est irréversible.`}
+        confirmText="Supprimer"
+        cancelText="Annuler"
+        variant="danger"
+        isLoading={deleteLoading}
+      />
     </div>
   );
 };

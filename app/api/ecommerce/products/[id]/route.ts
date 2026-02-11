@@ -12,7 +12,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const product = await getProductByIdUseCase.execute(parseInt(params.id));
+    const { id } = await params;
+    const product = await getProductByIdUseCase.execute(parseInt(id));
     return NextResponse.json(product);
   } catch (error: any) {
     return NextResponse.json(
@@ -45,7 +46,8 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await deleteProductUseCase.execute(parseInt(params.id));
+    const { id } = await params;
+    await deleteProductUseCase.execute(parseInt(id));
     return new NextResponse(null, { status: 204 });
   } catch (error: any) {
     return NextResponse.json(
