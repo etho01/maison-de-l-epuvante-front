@@ -1,16 +1,16 @@
 'use client';
 
 import React from 'react';
-import { Category } from '../../domain/entities/Category';
-import { ProductType } from '../../domain/entities/Product';
 import { FilterSection, FilterOption } from '@/src/shared/components/molecules/FilterSection';
+import { Category } from '@/src/ecommerce/domain/entities/Category';
+import { ProductType } from '@/src/ecommerce/domain/entities/Product';
 
 interface ProductFiltersProps {
   categories: Category[];
   selectedCategoryId?: number;
-  selectedType?: ProductType;
+  selectedType?: ProductType[];
   onCategoryChange: (categoryId: number | undefined) => void;
-  onTypeChange: (type: ProductType | undefined) => void;
+  onTypeChange: (type: ProductType[] | undefined) => void;
 }
 
 export const ProductFilters: React.FC<ProductFiltersProps> = ({
@@ -25,9 +25,9 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
     value: category.id,
   }));
 
-  const typeOptions: FilterOption<ProductType>[] = [
-    { label: 'Produits physiques', value: 'physical' },
-    { label: 'Produits numériques', value: 'digital' },
+  const typeOptions: FilterOption<ProductType[]>[] = [
+    { label: 'Produits physiques', value: [ProductType.PHYSICAL] },
+    { label: 'Produits numériques', value: [ProductType.DIGITAL] },
   ];
 
   return (
@@ -46,6 +46,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
         selectedValue={selectedType}
         onChange={onTypeChange}
         clearLabel="Tous"
+        valueClearLabel={[ProductType.DIGITAL, ProductType.PHYSICAL]} // Permet de réinitialiser le filtre de type
       />
     </aside>
   );

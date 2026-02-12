@@ -1,5 +1,6 @@
-import { Product, ProductFilters } from '../../domain/entities/Product';
-import { GetProductsUseCase } from '../../application/usecases/products';
+
+import { GetProductsUseCase } from '@/src/ecommerce/application/usecases';
+import { Product, ProductFilters, ProductType } from '@/src/ecommerce/domain/entities/Product';
 import { Pagination } from '@/src/shared/domain/Pagination';
 
 export class ProductsViewModel {
@@ -71,7 +72,7 @@ export class ProductsViewModel {
     this.setFilter('category.id', categoryId);
   }
 
-  setTypeFilter(type: string | undefined) {
+  setTypeFilter(type: ProductType[] | undefined) {
     this.setFilter('type', type);
   }
 

@@ -3,6 +3,7 @@ import { GetProductsUseCase } from '@/src/ecommerce/application/usecases/product
 import { SymfonyCategoryRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyCategoryRepository';
 import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
 import { ProductCatalog } from '@/src/ecommerce/presentation/components/ProductCatalog';
+import { ProductType } from '@/src/ecommerce/domain/entities/Product';
 
 const productRepository = new SymfonyProductRepository();
 const getProductUseCase = new GetProductsUseCase(productRepository);
@@ -11,7 +12,10 @@ const categoryRepository = new SymfonyCategoryRepository();
 const getAllCategoriesUseCase = new GetAllCategoriesUseCase(categoryRepository);
 
 export default async function ProduitsPage() {
-  const resp = await getProductUseCase.execute();
+  const resp = await getProductUseCase.execute({
+      page: 1,
+      type: [ProductType.PHYSICAL, ProductType.DIGITAL],
+  });
   const pagination = resp.pagination
   const products = resp.member;
 

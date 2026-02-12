@@ -16,10 +16,11 @@ interface FilterSectionProps<T = any> {
   title: string;
   options: FilterOption<T>[];
   selectedValue?: T;
-  onChange: (value: T | undefined) => void;
+  onChange: (value?: T) => void;
   allowClear?: boolean;
   clearLabel?: string;
   className?: string;
+  valueClearLabel?: T;
 }
 
 export function FilterSection<T>({
@@ -30,16 +31,25 @@ export function FilterSection<T>({
   allowClear = true,
   clearLabel = 'Tous',
   className = '',
+  valueClearLabel,
 }: FilterSectionProps<T>) {
+
+  function isValueEqual(val1: T | undefined, val2: T | undefined): boolean {
+    if (Array.isArray(val1) && Array.isArray(val2)) {
+      return JSON.stringify(val1.sort()) === JSON.stringify(val2.sort());
+    }
+    return val1 === val2;
+  }
+
   return (
     <div className={`border rounded-lg p-4 ${className}`}>
       <h3 className="font-bold mb-3">{title}</h3>
       <div className="space-y-2">
         {allowClear && (
           <button
-            onClick={() => onChange(undefined)}
+            onClick={() => onChange(valueClearLabel)}
             className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-100 transition-colors ${
-              selectedValue === undefined ? 'bg-red-100 text-red-800' : ''
+              selectedValue === undefined || isValueEqual(selectedValue, valueClearLabel) ? 'bg-red-100 text-red-800' : ''
             }`}
           >
             {clearLabel}
@@ -50,7 +60,7 @@ export function FilterSection<T>({
             key={index}
             onClick={() => onChange(option.value)}
             className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-100 transition-colors ${
-              selectedValue === option.value ? 'bg-red-100 text-red-800' : ''
+              isValueEqual(selectedValue, option.value) ? 'bg-red-100 text-red-800' : ''
             }`}
           >
             {option.label}

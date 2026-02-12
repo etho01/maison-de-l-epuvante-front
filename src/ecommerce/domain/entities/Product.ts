@@ -1,6 +1,10 @@
 import { Category } from './Category';
 
-export type ProductType = 'physical' | 'digital' | 'subscription';
+export enum ProductType {
+  PHYSICAL = 'physical',
+  DIGITAL = 'digital',
+  SUBSCRIPTION = 'subscription'
+}
 
 export interface Product {
   id: number;
@@ -55,7 +59,7 @@ export interface UpdateProductData {
 
 export interface ProductFilters {
   name?: string;
-  type?: ProductType;
+  type?: ProductType[];
   'category.id'?: number;
   'price[gte]'?: number;
   'price[lte]'?: number;
