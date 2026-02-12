@@ -30,13 +30,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   }
 
   const menuItems = [
-    { href: '/admin', label: 'Dashboard', icon: '📊' },
-    { href: '/admin/users', label: 'Utilisateurs', icon: '👥' },
-    { href: '/admin/produits', label: 'Produits', icon: '🛍️' },
-    { href: '/admin/categories', label: 'Catégories', icon: '📁' },
-    { href: '/admin/commandes', label: 'Commandes', icon: '📦' },
-    { href: '/admin/subscriptions', label: 'Abonnements', icon: '💳' },
-    { href: '/admin/subscription-plans', label: 'Plans d\'abonnement', icon: '📋' },
+    { href: '/admin', label: 'Dashboard' },
+    { href: '/admin/users', label: 'Utilisateurs' },
+    { href: '/admin/produits', label: 'Produits' },
+    { href: '/admin/categories', label: 'Catégories' },
+    { href: '/admin/commandes', label: 'Commandes' },
+    { href: '/admin/subscriptions', label: 'Abonnements' },
+    { href: '/admin/subscription-plans', label: 'Plans d\'abonnement' },
+    { href: '/admin/administrateurs', label: 'Administrateurs' }
   ];
 
   return (
@@ -67,14 +68,13 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                    className={`block px-4 py-2 rounded-lg transition-colors ${
                       isActive
                         ? 'bg-red-900/30 text-red-400 font-medium border border-red-800'
                         : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                     }`}
                   >
-                    <span>{item.icon}</span>
-                    <span>{item.label}</span>
+                    {item.label}
                   </Link>
                 );
               })}
