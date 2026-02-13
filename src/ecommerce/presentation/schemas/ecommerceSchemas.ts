@@ -92,19 +92,59 @@ export const addressSchema = z.object({
     .length(2, 'Le pays doit être un code à 2 lettres'),
 });
 
+export const addressSchemaOptional = z.object({
+  firstName: z
+    .string()
+    .optional(),
+  lastName: z
+    .string()
+    .optional(),
+  address: z
+    .string()
+    .optional(),
+  city: z
+    .string()
+    .optional(),
+  postalCode: z
+    .string()
+    .optional(),
+  country: z
+    .string()
+    .optional()
+});
+
 /**
  * Schéma de validation pour le checkout
  */
 export const checkoutSchema = z.object({
   shippingAddress: addressSchema,
-  billingAddress: addressSchema,
-  paymentMethod: z
-    .string()
-    .min(1, 'La méthode de paiement est requise'),
+  billingAddress: addressSchemaOptional.optional(),
   customerNotes: z
     .string()
     .optional(),
   useSameAddress: z.boolean(),
+}).superRefine((data, ctx) => {
+  // Si useSameAddress est false, billingAddress est requis et doit être complet
+  if (!data.useSameAddress) {
+    if (!data.billingAddress) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "L'adresse de facturation est requise",
+        path: ['billingAddress'],
+      });
+      return;
+    }
+
+    const billingValidation = addressSchema.safeParse(data.billingAddress);
+    if (!billingValidation.success) {
+      for (const issue of billingValidation.error.issues) {
+        ctx.addIssue({
+          ...issue,
+          path: ['billingAddress', ...issue.path],
+        });
+      }
+    }
+  }
 });
 
 /**

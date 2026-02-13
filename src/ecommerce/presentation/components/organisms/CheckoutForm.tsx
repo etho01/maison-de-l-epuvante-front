@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCart } from '../../context/CartContext';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
-import { useEcommerce } from '../../context/EcommerceContext';
+import { useCreateOrderViewModel } from '../../hooks/orders';
 import { Address } from '@/src/ecommerce/domain/entities/Order';
 import Input from '@/src/shared/components/atoms/Input';
 import Button from '@/src/shared/components/atoms/Button';
@@ -16,10 +16,10 @@ import { checkoutSchema, CheckoutFormData } from '../../schemas/ecommerceSchemas
 export const CheckoutForm: React.FC = () => {
   const router = useRouter();
   const { cart, clearCart } = useCart();
-  const { checkout } = useEcommerce();
+  const createOrderViewModel = useCreateOrderViewModel();
   const { user } = useAuth();
 
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const { loading, error: submitError } = createOrderViewModel.getState();
 
   const {
     register,
@@ -45,7 +45,6 @@ export const CheckoutForm: React.FC = () => {
         postalCode: '',
         country: 'FR',
       },
-      paymentMethod: 'card',
       customerNotes: '',
       useSameAddress: true,
     },
@@ -54,22 +53,30 @@ export const CheckoutForm: React.FC = () => {
   const useSameAddress = watch('useSameAddress');
 
   const onSubmit = async (data: CheckoutFormData) => {
-    setSubmitError(null);
+    console.log('Form data submitted:', data);
 
-    try {
-      const finalBillingAddress = data.useSameAddress ? data.shippingAddress : data.billingAddress;
+    const finalBillingAddress: Address = data.useSameAddress 
+      ? (data.shippingAddress as Address)
+      : (data.billingAddress as Address);
 
-      await checkout({
-        shippingAddress: data.shippingAddress,
-        billingAddress: finalBillingAddress,
-        paymentMethod: data.paymentMethod,
-        customerNotes: data.customerNotes || undefined,
-      });
+    const products = cart.items.map((item) => ({
+      id: item.product.id,
+      name: item.product.name,
+      quantity: item.quantity,
+      price: item.product.price,
+    }));
 
+    const success = await createOrderViewModel.checkout({
+      shippingAddress: data.shippingAddress,
+      billingAddress: finalBillingAddress,
+      paymentMethod: 'card',
+      customerNotes: data.customerNotes || undefined,
+      products,
+    });
+
+    if (success) {
       clearCart();
       router.push('/commandes?success=true');
-    } catch (err: any) {
-      setSubmitError(err.message || 'Une erreur est survenue lors de la commande');
     }
   };
 
@@ -175,29 +182,6 @@ export const CheckoutForm: React.FC = () => {
         )}
       </div>
 
-      {/* Méthode de paiement */}
-      <div className="border rounded-lg p-6">
-        <h3 className="text-xl font-bold mb-4">Méthode de paiement</h3>
-        <div className="space-y-2">
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              value="card"
-              {...register('paymentMethod')}
-            />
-            <span>Carte bancaire</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              value="paypal"
-              {...register('paymentMethod')}
-            />
-            <span>PayPal</span>
-          </label>
-        </div>
-      </div>
-
       {/* Notes */}
       <div className="border rounded-lg p-6">
         <h3 className="text-xl font-bold mb-4">Notes (optionnel)</h3>
@@ -221,7 +205,7 @@ export const CheckoutForm: React.FC = () => {
               <span>
                 {item.product.name} x {item.quantity}
               </span>
-              <span>{(parseFloat(item.product.price) * item.quantity).toFixed(2)} €</span>
+              <span>{(item.product.price * item.quantity).toFixed(2)} €</span>
             </div>
           ))}
         </div>
@@ -235,8 +219,8 @@ export const CheckoutForm: React.FC = () => {
         </div>
       </div>
 
-      <Button type="submit" disabled={isSubmitting} className="w-full">
-        {isSubmitting ? 'Traitement...' : 'Confirmer la commande'}
+      <Button type="submit" disabled={isSubmitting || loading} className="w-full">
+        {isSubmitting || loading ? 'Traitement...' : 'Payer la commande'}
       </Button>
     </form>
   );

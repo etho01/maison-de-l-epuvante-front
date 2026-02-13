@@ -1,4 +1,3 @@
-
 import { User } from '@/src/auth/domain/entities/User';
 import { Product } from './Product';
 
@@ -49,6 +48,12 @@ export interface CheckoutData {
   billingAddress: Address;
   paymentMethod: string;
   customerNotes?: string;
+  products: Array<{
+    id: number;
+    name: string;
+    quantity: number;
+    price: number;
+  }>;
 }
 
 export interface UpdateOrderData {
