@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateCategoryViewModel, useUpdateCategoryViewModel } from '../../hooks/categories';
-import { Category, CreateCategoryData, UpdateCategoryData } from '../../../domain/entities/Category';
+import { useCreateCategoryViewModel, useUpdateCategoryViewModel } from '../../../../hooks/categories';
+import { Category, CreateCategoryData, UpdateCategoryData } from '../../../../../domain/entities/Category';
 import { Input, Select, TextArea, Button, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
-import { categorySchema, CategoryFormData } from '../../schemas/ecommerceSchemas';
+import { categorySchema, CategoryFormData } from '../../../../schemas/ecommerceSchemas';
 
 interface AdminCategoryFormProps {
   category?: Category;

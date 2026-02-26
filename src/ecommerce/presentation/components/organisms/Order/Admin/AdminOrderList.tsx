@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { useGetOrdersViewModel } from '../../hooks/orders';
-import { Order } from '../../../domain/entities/Order';
-import { OrderCard } from '../molecules/OrderCard';
+import { useGetOrdersViewModel } from '../../../../hooks/orders';
+import { Order } from '../../../../../domain/entities/Order';
+import { OrderCard } from '../../../molecules/OrderCard';
 
 interface AdminOrderListProps {
   onView?: (order: Order) => void;

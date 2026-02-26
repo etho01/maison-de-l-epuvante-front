@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetCategoriesViewModel, useDeleteCategoryViewModel } from '../../hooks/categories';
-import { Category } from '../../../domain/entities/Category';
-import { CategoryCard } from '../molecules/CategoryCard';
+import { useGetCategoriesViewModel, useDeleteCategoryViewModel } from '../../../../hooks/categories';
+import { Category } from '../../../../../domain/entities/Category';
+import { CategoryCard } from '../../../molecules/CategoryCard';
 import { Pagination } from '@/src/shared/components/ui';
 import { ConfirmModal } from '@/src/shared/components/molecules';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';

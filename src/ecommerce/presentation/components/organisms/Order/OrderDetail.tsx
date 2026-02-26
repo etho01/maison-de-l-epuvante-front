@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { OrderStatus } from '@/src/ecommerce/domain/entities/Order';
-import { useOrderDetailViewModel } from '../../hooks/orders';
+import { useOrderDetailViewModel } from '../../../hooks/orders';
 
 const statusLabels: Record<OrderStatus, string> = {
   pending: 'En attente',
@@ -21,8 +21,12 @@ interface OrderDetailProps {
 
 export const OrderDetail: React.FC<OrderDetailProps> = ({ orderId }) => {
   const router = useRouter();
-  const viewModel = useOrderDetailViewModel(orderId);
+  const viewModel = useOrderDetailViewModel();
   const { order, loading, error } = viewModel.getState();
+
+  useEffect(() => {
+    viewModel.loadOrder(orderId);
+  }, [orderId]);
 
   if (loading) {
     return <p>Chargement...</p>;
@@ -67,7 +71,7 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ orderId }) => {
             </p>
           </div>
           <span className="px-4 py-2 rounded bg-blue-100 text-blue-800 font-medium">
-            {statusLabels[order.status]}
+            {statusLabels[order.status as OrderStatus]}
           </span>
         </div>
 
@@ -75,7 +79,7 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ orderId }) => {
         <div className="mb-6">
           <h2 className="text-xl font-bold mb-4">Articles commandés</h2>
           <div className="space-y-3">
-            {order.items.map((item) => (
+            {order.items.map((item: any) => (
               <div key={item.id} className="flex justify-between border-b pb-3">
                 <div>
                   <p className="font-medium">{item.product.name}</p>

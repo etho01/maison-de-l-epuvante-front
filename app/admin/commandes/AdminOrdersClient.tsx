@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AdminOrderList } from '@/src/ecommerce/presentation/components/organisms/AdminOrderList';
-import { AdminOrderDetail } from '@/src/ecommerce/presentation/components/organisms/AdminOrderDetail';
+import { AdminOrderList } from '@/src/ecommerce/presentation/components/organisms/Order/Admin/AdminOrderList';
+import { AdminOrderDetail } from '@/src/ecommerce/presentation/components/organisms/Order/Admin/AdminOrderDetail';
 import { Order } from '@/src/ecommerce/domain/entities/Order';
 
 export default function AdminOrdersClient() {

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AdminCategoryList } from '@/src/ecommerce/presentation/components/organisms/AdminCategoryList';
-import { AdminCategoryForm } from '@/src/ecommerce/presentation/components/organisms/AdminCategoryForm';
+import { AdminCategoryList } from '@/src/ecommerce/presentation/components/organisms/Category/Admin/AdminCategoryList';
+import { AdminCategoryForm } from '@/src/ecommerce/presentation/components/organisms/Category/Admin/AdminCategoryForm';
 import { Category } from '@/src/ecommerce/domain/entities/Category';
 import { Pagination } from '@/src/shared/domain/Pagination';
 
