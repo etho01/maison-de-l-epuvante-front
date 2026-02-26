@@ -8,7 +8,6 @@ const getSubscriptionPlansUseCase = new GetSubscriptionPlansUseCase(subscription
 
 export default async function AbonnementsPage() {
   const planData = await getSubscriptionPlansUseCase.execute();
-  
 
   return (
     <div className="container mx-auto px-4 py-8">

@@ -21,8 +21,9 @@ export const SubscriptionPlansView: React.FC<SubscriptionPlansViewProps> = ({ in
   const plansViewModel = useGetSubscriptionPlansViewModel(initialPlans, initialPagination);
   const subscribeViewModel = useSubscribeViewModel();
 
-  const { plans: allPlans, pagination, loading, error } = plansViewModel.getState();
+  const { plans: allPlans, pagination, loading } = plansViewModel.getState();
   const { subscribing } = subscribeViewModel.getState();
+  const [error, setError] = React.useState<string | null>(null);
 
   // Filtrer pour ne montrer que les plans actifs côté client
   const plans = allPlans.filter((plan) => plan.active);
@@ -33,14 +34,16 @@ export const SubscriptionPlansView: React.FC<SubscriptionPlansViewProps> = ({ in
       return;
     }
 
-    const success = await subscribeViewModel.subscribeToPlan({
-      plan: `/api/subscription-plans/${planId}`,
-      paymentMethod: 'card',
-      autoRenew: true,
-    });
-
-    if (success) {
+    setError(null);
+    try {
+      await subscribeViewModel.subscribeToPlan({
+        plan: `/api/subscription-plans/${planId}`,
+        paymentMethod: 'card',
+        autoRenew: true,
+      });
       router.push('/compte?tab=abonnements&success=true');
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de l\'abonnement');
     }
   };
 

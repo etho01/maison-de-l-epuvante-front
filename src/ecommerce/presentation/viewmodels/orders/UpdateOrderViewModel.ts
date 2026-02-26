@@ -4,7 +4,6 @@ import { UpdateOrderUseCase } from '../../application/usecases/orders';
 export class UpdateOrderViewModel {
   private state = {
     loading: false,
-    error: null as string | null,
     success: false,
   };
 
@@ -21,20 +20,15 @@ export class UpdateOrderViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async updateOrder(id: number, data: UpdateOrderData): Promise<Order | null> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.state.success = false;
-      this.notify();
+  async updateOrder(id: number, data: UpdateOrderData): Promise<Order> {
+    this.state.loading = true;
+    this.state.success = false;
+    this.notify();
 
+    try {
       const updatedOrder = await this.updateOrderUseCase.execute(id, data);
       this.state.success = true;
       return updatedOrder;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la mise à jour de la commande';
-      this.state.success = false;
-      return null;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -42,7 +36,6 @@ export class UpdateOrderViewModel {
   }
 
   resetState() {
-    this.state.error = null;
     this.state.success = false;
     this.notify();
   }

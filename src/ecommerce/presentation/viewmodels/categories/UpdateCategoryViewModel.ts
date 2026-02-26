@@ -4,7 +4,6 @@ import { UpdateCategoryUseCase } from '../../application/usecases/categories';
 export class UpdateCategoryViewModel {
   private state = {
     loading: false,
-    error: null as string | null,
     success: false,
   };
 
@@ -21,20 +20,14 @@ export class UpdateCategoryViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async updateCategory(id: number, data: UpdateCategoryData): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.state.success = false;
-      this.notify();
+  async updateCategory(id: number, data: UpdateCategoryData): Promise<void> {
+    this.state.loading = true;
+    this.state.success = false;
+    this.notify();
 
+    try {
       await this.updateCategoryUseCase.execute(id, data);
       this.state.success = true;
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la mise à jour de la catégorie';
-      this.state.success = false;
-      return false;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -42,7 +35,6 @@ export class UpdateCategoryViewModel {
   }
 
   resetState() {
-    this.state.error = null;
     this.state.success = false;
     this.notify();
   }

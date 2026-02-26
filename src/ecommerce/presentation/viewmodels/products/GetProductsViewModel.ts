@@ -7,7 +7,6 @@ export class GetProductsViewModel {
     products: [] as Product[],
     pagination: null as Pagination | null,
     loading: false,
-    error: null as string | null,
     filters: {
       page: 1,
     } as ProductFilters,
@@ -43,16 +42,13 @@ export class GetProductsViewModel {
   }
 
   async loadProducts() {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
+    this.state.loading = true;
+    this.notify();
 
+    try {
       const response = await this.getProductsUseCase.execute(this.state.filters);
       this.state.products = response.member;
       this.state.pagination = response.pagination;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors du chargement des produits';
     } finally {
       this.state.loading = false;
       this.notify();

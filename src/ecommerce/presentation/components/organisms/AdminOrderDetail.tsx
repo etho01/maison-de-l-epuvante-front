@@ -25,17 +25,25 @@ const ORDER_STATUSES: OrderStatus[] = [
 export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onUpdate, onClose }) => {
   const getOrderViewModel = useGetOrderByIdViewModel();
   const updateOrderViewModel = useUpdateOrderViewModel();
-  const { order, loading: getLoading, error: getError } = getOrderViewModel.getState();
-  const { loading: updateLoading, error: updateError } = updateOrderViewModel.getState();
+  const { order, loading: getLoading } = getOrderViewModel.getState();
+  const { loading: updateLoading } = updateOrderViewModel.getState();
   
   const loading = getLoading || updateLoading;
-  const error = getError || updateError;
+  const [error, setError] = useState<string | null>(null);
   
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus | null>(null);
   const [adminNotes, setAdminNotes] = useState('');
 
   useEffect(() => {
-    getOrderViewModel.loadOrder(orderId);
+    const loadOrder = async () => {
+      setError(null);
+      try {
+        await getOrderViewModel.loadOrder(orderId);
+      } catch (err: any) {
+        setError(err.message || 'Erreur lors du chargement de la commande');
+      }
+    };
+    loadOrder();
   }, [orderId]);
 
   useEffect(() => {
@@ -48,13 +56,15 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
   const handleUpdateOrder = async () => {
     if (!order || !selectedStatus) return;
     
-    const updatedOrder = await updateOrderViewModel.updateOrder(order.id, {
-      status: selectedStatus,
-      adminNotes: adminNotes || undefined,
-    });
-
-    if (updatedOrder) {
+    setError(null);
+    try {
+      await updateOrderViewModel.updateOrder(order.id, {
+        status: selectedStatus,
+        adminNotes: adminNotes || undefined,
+      });
       onUpdate?.();
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de la mise à jour de la commande');
     }
   };
 

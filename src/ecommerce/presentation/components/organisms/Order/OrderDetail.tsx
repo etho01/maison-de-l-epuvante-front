@@ -22,10 +22,19 @@ interface OrderDetailProps {
 export const OrderDetail: React.FC<OrderDetailProps> = ({ orderId }) => {
   const router = useRouter();
   const viewModel = useGetOrderByIdViewModel();
-  const { order, loading, error } = viewModel.getState();
+  const { order, loading } = viewModel.getState();
+  const [error, setError] = React.useState<string | null>(null);
 
   useEffect(() => {
-    viewModel.loadOrder(orderId);
+    const loadOrder = async () => {
+      setError(null);
+      try {
+        await viewModel.loadOrder(orderId);
+      } catch (err: any) {
+        setError(err.message || 'Erreur lors du chargement de la commande');
+      }
+    };
+    loadOrder();
   }, [orderId]);
 
   if (loading) {

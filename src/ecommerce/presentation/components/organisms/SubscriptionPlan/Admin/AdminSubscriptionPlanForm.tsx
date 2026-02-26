@@ -18,11 +18,11 @@ interface AdminSubscriptionPlanFormProps {
 export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps> = ({ plan, onSuccess, onCancel }) => {
   const createViewModel = useCreateSubscriptionPlanViewModel();
   const updateViewModel = useUpdateSubscriptionPlanViewModel();
-  const { loading: createLoading, error: createError } = createViewModel.getState();
-  const { loading: updateLoading, error: updateError } = updateViewModel.getState();
+  const { loading: createLoading } = createViewModel.getState();
+  const { loading: updateLoading } = updateViewModel.getState();
   
   const loading = createLoading || updateLoading;
-  const error = createError || updateError;
+  const [error, setError] = React.useState<string | null>(null);
 
   const {
     register,
@@ -42,6 +42,8 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
   });
 
   const onSubmit = async (formData: SubscriptionPlanFormData) => {
+    setError(null);
+    
     const data: CreateSubscriptionPlanData | UpdateSubscriptionPlanData = {
       name: formData.name,
       description: formData.description,
@@ -52,12 +54,15 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
       active: formData.active,
     };
 
-    const success = plan 
-      ? await updateViewModel.updatePlan(plan.id, data)
-      : await createViewModel.createPlan(data as CreateSubscriptionPlanData);
-    
-    if (success) {
+    try {
+      if (plan) {
+        await updateViewModel.updatePlan(plan.id, data);
+      } else {
+        await createViewModel.createPlan(data as CreateSubscriptionPlanData);
+      }
       onSuccess?.();
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de l\'enregistrement du plan d\'abonnement');
     }
   };
 

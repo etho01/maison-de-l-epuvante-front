@@ -19,11 +19,11 @@ interface AdminCategoryFormProps {
 export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, onSuccess, onCancel, allCategories }) => {
   const createViewModel = useCreateCategoryViewModel();
   const updateViewModel = useUpdateCategoryViewModel();
-  const { loading: createLoading, error: createError } = createViewModel.getState();
-  const { loading: updateLoading, error: updateError } = updateViewModel.getState();
+  const { loading: createLoading } = createViewModel.getState();
+  const { loading: updateLoading } = updateViewModel.getState();
   
   const loading = createLoading || updateLoading;
-  const error = createError || updateError;
+  const [error, setError] = useState<string | null>(null);
   
   // Exclure la catégorie courante si on est en modification (éviter boucle)
   const categories = allCategories.filter(c => !category || c.id !== category.id);
@@ -42,6 +42,8 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
     },
   });
   const onSubmit = async (formData: CategoryFormData) => {
+    setError(null);
+    
     const data: CreateCategoryData | UpdateCategoryData = {
       name: formData.name,
       description: formData.description || undefined,
@@ -49,12 +51,15 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
       parentId: formData.parentId ? Number(formData.parentId) : undefined,
     };
 
-    const success = category
-      ? await updateViewModel.updateCategory(category.id, data)
-      : await createViewModel.createCategory(data as CreateCategoryData);
-    
-    if (success) {
+    try {
+      if (category) {
+        await updateViewModel.updateCategory(category.id, data);
+      } else {
+        await createViewModel.createCategory(data as CreateCategoryData);
+      }
       onSuccess?.();
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de l\'enregistrement de la catégorie');
     }
   };
 

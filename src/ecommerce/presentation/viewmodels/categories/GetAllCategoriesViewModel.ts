@@ -5,7 +5,6 @@ export class GetAllCategoriesViewModel {
   private state = {
     categories: [] as Category[],
     loading: false,
-    error: null as string | null,
   };
 
   private listeners: Set<() => void> = new Set();
@@ -22,14 +21,11 @@ export class GetAllCategoriesViewModel {
   }
 
   async loadCategories() {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
+    this.state.loading = true;
+    this.notify();
 
+    try {
       this.state.categories = await this.getAllCategoriesUseCase.execute();
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors du chargement des catégories';
     } finally {
       this.state.loading = false;
       this.notify();

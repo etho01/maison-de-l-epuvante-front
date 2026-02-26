@@ -6,7 +6,6 @@ export class GetSubscriptionPlansViewModel {
   private state = {
     plans: [] as SubscriptionPlan[],
     loading: false,
-    error: null as string | null,
     pagination: null as Pagination | null,
     filters: {} as SubscriptionPlansFilters,
   };
@@ -41,11 +40,10 @@ export class GetSubscriptionPlansViewModel {
   }
 
   async loadPlans(page: number = 1): Promise<void> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
+    this.state.loading = true;
+    this.notify();
 
+    try {
       const result = await this.getSubscriptionPlansUseCase.execute({
         ...this.state.filters,
         page,
@@ -53,8 +51,8 @@ export class GetSubscriptionPlansViewModel {
       this.state.plans = result.member;
       this.state.pagination = result.pagination;
     } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors du chargement des plans d\'abonnement';
       this.state.plans = [];
+      throw err;
     } finally {
       this.state.loading = false;
       this.notify();

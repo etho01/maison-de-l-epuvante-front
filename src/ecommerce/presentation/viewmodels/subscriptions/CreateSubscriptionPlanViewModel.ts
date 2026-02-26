@@ -4,7 +4,6 @@ import { CreateSubscriptionPlanUseCase } from '../../../application/usecases/sub
 export class CreateSubscriptionPlanViewModel {
   private state = {
     loading: false,
-    error: null as string | null,
     success: false,
   };
 
@@ -21,20 +20,14 @@ export class CreateSubscriptionPlanViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async createPlan(data: CreateSubscriptionPlanData): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.state.success = false;
-      this.notify();
+  async createPlan(data: CreateSubscriptionPlanData): Promise<void> {
+    this.state.loading = true;
+    this.state.success = false;
+    this.notify();
 
+    try {
       await this.createSubscriptionPlanUseCase.execute(data);
       this.state.success = true;
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la création du plan d\'abonnement';
-      this.state.success = false;
-      return false;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -42,7 +35,6 @@ export class CreateSubscriptionPlanViewModel {
   }
 
   resetState() {
-    this.state.error = null;
     this.state.success = false;
     this.notify();
   }

@@ -4,7 +4,6 @@ import { DeleteProductUseCase } from "@/src/ecommerce/application/usecases";
 export class DeleteProductViewModel {
   private state = {
     loading: false,
-    error: null as string | null,
     success: false,
   };
 
@@ -21,20 +20,14 @@ export class DeleteProductViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async deleteProduct(id: number): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.state.success = false;
-      this.notify();
+  async deleteProduct(id: number): Promise<void> {
+    this.state.loading = true;
+    this.state.success = false;
+    this.notify();
 
+    try {
       await this.deleteProductUseCase.execute(id);
       this.state.success = true;
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la suppression du produit';
-      this.state.success = false;
-      return false;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -42,7 +35,6 @@ export class DeleteProductViewModel {
   }
 
   resetState() {
-    this.state.error = null;
     this.state.success = false;
     this.notify();
   }

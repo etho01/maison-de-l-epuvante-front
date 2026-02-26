@@ -3,7 +3,6 @@ import { DeleteSubscriptionPlanUseCase } from '../../../application/usecases/sub
 export class DeleteSubscriptionPlanViewModel {
   private state = {
     loading: false,
-    error: null as string | null,
   };
 
   private listeners: Set<() => void> = new Set();
@@ -19,17 +18,12 @@ export class DeleteSubscriptionPlanViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async deletePlan(id: number): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
+  async deletePlan(id: number): Promise<void> {
+    this.state.loading = true;
+    this.notify();
 
+    try {
       await this.deleteSubscriptionPlanUseCase.execute(id);
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la suppression du plan d\'abonnement';
-      return false;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -37,7 +31,6 @@ export class DeleteSubscriptionPlanViewModel {
   }
 
   resetState() {
-    this.state.error = null;
     this.notify();
   }
 

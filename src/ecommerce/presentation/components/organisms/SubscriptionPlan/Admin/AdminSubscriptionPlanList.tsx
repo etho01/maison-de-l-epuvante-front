@@ -17,10 +17,11 @@ interface AdminSubscriptionPlanListProps {
 export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps> = ({ onEdit, initialPlans, initialPagination }) => {
   const listViewModel = useGetSubscriptionPlansViewModel(initialPlans, initialPagination);
   const deleteViewModel = useDeleteSubscriptionPlanViewModel();
-  const { plans, loading, error, pagination } = listViewModel.getState();
+  const { plans, loading, pagination } = listViewModel.getState();
   const { loading: deleteLoading } = deleteViewModel.getState();
 
   const [planToDelete, setPlanToDelete] = useState<SubscriptionPlan | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDeleteClick = (plan: SubscriptionPlan) => {
     setPlanToDelete(plan);
@@ -29,13 +30,13 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
   const handleConfirmDelete = async () => {
     if (!planToDelete) return;
     
-    const success = await deleteViewModel.deletePlan(planToDelete.id);
-    if (success) {
+    setError(null);
+    try {
+      await deleteViewModel.deletePlan(planToDelete.id);
       setPlanToDelete(null);
       listViewModel.loadPlans();
-    } else {
-      const deleteError = deleteViewModel.getState().error;
-      if (deleteError) alert(deleteError);
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de la suppression du plan d\'abonnement');
     }
   };
 
@@ -49,10 +50,6 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
 
   if (loading && plans.length === 0) {
     return <div className="text-center py-8">Chargement...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-600 py-8">{error}</div>;
   }
 
   const formatInterval = (interval: string) => {
@@ -75,6 +72,12 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
 
   return (
     <div>
+      {error && (
+        <div className="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg">
+          {error}
+        </div>
+      )}
+      
       {/* Filters */}
       <div className="mb-6 bg-gray-900 p-4 rounded-lg shadow border border-gray-700">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

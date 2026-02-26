@@ -19,10 +19,11 @@ interface AdminProductListProps {
 export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, initialProducts, initialPagination }) => {
   const listViewModel = useGetProductsViewModel(initialProducts, initialPagination);
   const deleteViewModel = useDeleteProductViewModel();
-  const { products, loading, error, pagination } = listViewModel.getState();
+  const { products, loading, pagination } = listViewModel.getState();
   const { loading: deleteLoading } = deleteViewModel.getState();
 
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDeleteClick = (product: Product) => {
     setProductToDelete(product);
@@ -31,13 +32,13 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
   const handleConfirmDelete = async () => {
     if (!productToDelete) return;
     
-    const success = await deleteViewModel.deleteProduct(productToDelete.id);
-    if (success) {
+    setError(null);
+    try {
+      await deleteViewModel.deleteProduct(productToDelete.id);
       setProductToDelete(null);
       listViewModel.loadProducts();
-    } else {
-      const deleteError = deleteViewModel.getState().error;
-      if (deleteError) alert(deleteError);
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de la suppression du produit');
     }
   };
 
@@ -53,12 +54,14 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
     return <div className="text-center py-8">Chargement...</div>;
   }
 
-  if (error) {
-    return <div className="text-red-600 py-8">{error}</div>;
-  }
-
   return (
     <div>
+      {error && (
+        <div className="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg">
+          {error}
+        </div>
+      )}
+      
       {/* Filters */}
       <div className="mb-6 bg-gray-900 p-4 rounded-lg shadow border border-gray-700">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

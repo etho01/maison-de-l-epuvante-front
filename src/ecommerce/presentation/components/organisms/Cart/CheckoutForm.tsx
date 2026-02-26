@@ -20,8 +20,9 @@ export const CheckoutForm: React.FC = () => {
   const createOrderViewModel = useCreateOrderViewModel();
   const { user } = useAuth();
   const [showPayment, setShowPayment] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { loading, error: submitError, clientSecret, orderId, orderNumber } = createOrderViewModel.getState();
+  const { loading, clientSecret, orderId, orderNumber } = createOrderViewModel.getState();
 
   const {
     register,
@@ -56,6 +57,7 @@ export const CheckoutForm: React.FC = () => {
 
   const onSubmit = async (data: CheckoutFormData) => {
     console.log('Form data submitted:', data);
+    setError(null);
 
     const finalBillingAddress: Address = data.useSameAddress 
       ? (data.shippingAddress as Address)
@@ -68,16 +70,17 @@ export const CheckoutForm: React.FC = () => {
       price: item.product.price,
     }));
 
-    const response = await createOrderViewModel.checkout({
-      shippingAddress: data.shippingAddress,
-      billingAddress: finalBillingAddress,
-      paymentMethod: 'card',
-      customerNotes: data.customerNotes || undefined,
-      products,
-    });
-
-    if (response) {
+    try {
+      await createOrderViewModel.checkout({
+        shippingAddress: data.shippingAddress,
+        billingAddress: finalBillingAddress,
+        paymentMethod: 'card',
+        customerNotes: data.customerNotes || undefined,
+        products,
+      });
       setShowPayment(true);
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de la création de la commande');
     }
   };
 
@@ -115,7 +118,7 @@ export const CheckoutForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <ErrorMessage message={submitError} />
+      <ErrorMessage message={error} />
 
       {/* Adresse de livraison */}
       <div className="border rounded-lg p-6">

@@ -7,7 +7,6 @@ export class GetOrdersViewModel {
     orders: [] as Order[],
     pagination: null as Pagination | null,
     loading: false,
-    error: null as string | null,
     currentPage: 1,
   };
 
@@ -41,18 +40,15 @@ export class GetOrdersViewModel {
   }
 
   async loadOrders(page?: number) {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
+    this.state.loading = true;
+    this.notify();
 
+    try {
       const pageToLoad = page || this.state.currentPage;
       const response = await this.getOrdersUseCase.execute(pageToLoad);
       this.state.orders = response.member;
       this.state.pagination = response.pagination;
       this.state.currentPage = pageToLoad;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors du chargement des commandes';
     } finally {
       this.state.loading = false;
       this.notify();

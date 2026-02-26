@@ -8,7 +8,6 @@ export class GetCategoriesViewModel {
     categories: [] as Category[],
     pagination: null as Pagination | null,
     loading: false,
-    error: null as string | null,
     filter: {} as GetCategoriesFilter
   };
 
@@ -42,16 +41,13 @@ export class GetCategoriesViewModel {
   }
 
   async loadCategories() {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
+    this.state.loading = true;
+    this.notify();
 
+    try {
       const response = await this.getCategoriesUseCase.execute(this.state.filter);
       this.state.categories = response.member;
       this.state.pagination = response.pagination;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors du chargement des catégories';
     } finally {
       this.state.loading = false;
       this.notify();

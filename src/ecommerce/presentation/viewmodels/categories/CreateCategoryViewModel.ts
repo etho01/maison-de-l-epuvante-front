@@ -4,7 +4,6 @@ import { CreateCategoryUseCase } from '../../application/usecases/categories';
 export class CreateCategoryViewModel {
   private state = {
     loading: false,
-    error: null as string | null,
     success: false,
   };
 
@@ -21,20 +20,14 @@ export class CreateCategoryViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async createCategory(data: CreateCategoryData): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.state.success = false;
-      this.notify();
+  async createCategory(data: CreateCategoryData): Promise<void> {
+    this.state.loading = true;
+    this.state.success = false;
+    this.notify();
 
+    try {
       await this.createCategoryUseCase.execute(data);
       this.state.success = true;
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la création de la catégorie';
-      this.state.success = false;
-      return false;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -42,7 +35,6 @@ export class CreateCategoryViewModel {
   }
 
   resetState() {
-    this.state.error = null;
     this.state.success = false;
     this.notify();
   }

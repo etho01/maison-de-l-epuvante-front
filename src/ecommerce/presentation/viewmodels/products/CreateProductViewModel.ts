@@ -5,7 +5,6 @@ import { CreateProductData } from "@/src/ecommerce/domain/entities/Product";
 export class CreateProductViewModel {
   private state = {
     loading: false,
-    error: null as string | null,
     success: false,
   };
 
@@ -22,20 +21,14 @@ export class CreateProductViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async createProduct(data: CreateProductData): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.state.success = false;
-      this.notify();
+  async createProduct(data: CreateProductData): Promise<void> {
+    this.state.loading = true;
+    this.state.success = false;
+    this.notify();
 
+    try {
       await this.createProductUseCase.execute(data);
       this.state.success = true;
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la création du produit';
-      this.state.success = false;
-      return false;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -43,7 +36,6 @@ export class CreateProductViewModel {
   }
 
   resetState() {
-    this.state.error = null;
     this.state.success = false;
     this.notify();
   }

@@ -17,10 +17,11 @@ interface AdminCategoryListProps {
 export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit, initialCategories, initialPagination }) => {
   const listViewModel = useGetCategoriesViewModel(initialCategories, initialPagination);
   const deleteViewModel = useDeleteCategoryViewModel();
-  const { categories, loading, error } = listViewModel.getState();
+  const { categories, loading } = listViewModel.getState();
   const { loading: deleteLoading } = deleteViewModel.getState();
 
   const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDeleteClick = (category: Category) => {
     setCategoryToDelete(category);
@@ -29,13 +30,13 @@ export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit, in
   const handleConfirmDelete = async () => {
     if (!categoryToDelete) return;
 
-    const success = await deleteViewModel.deleteCategory(categoryToDelete.id);
-    if (success) {
+    setError(null);
+    try {
+      await deleteViewModel.deleteCategory(categoryToDelete.id);
       setCategoryToDelete(null);
       listViewModel.loadCategories();
-    } else {
-      const deleteError = deleteViewModel.getState().error;
-      if (deleteError) alert(deleteError);
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de la suppression de la catégorie');
     }
   };
 
@@ -47,12 +48,14 @@ export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit, in
     return <div className="text-center py-8">Chargement...</div>;
   }
 
-  if (error) {
-    return <div className="text-red-600 py-8">{error}</div>;
-  }
-
   return (
     <div>
+      {error && (
+        <div className="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg">
+          {error}
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-5">
         {categories.map((category: Category) => (
           <CategoryCard

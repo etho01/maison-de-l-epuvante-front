@@ -11,18 +11,21 @@ interface AdminOrderListProps {
 
 export const AdminOrderList: React.FC<AdminOrderListProps> = ({ onView }) => {
   const viewModel = useGetOrdersViewModel();
-  const { orders, loading, error, pagination } = viewModel.getState();
+  const { orders, loading, pagination } = viewModel.getState();
+  const [error, setError] = React.useState<string | null>(null);
 
   if (loading && orders.length === 0) {
     return <div className="text-center py-8">Chargement...</div>;
   }
 
-  if (error) {
-    return <div className="text-red-600 py-8">{error}</div>;
-  }
-
   return (
     <div>
+      {error && (
+        <div className="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg">
+          {error}
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {orders.map((order) => (
           <OrderCard

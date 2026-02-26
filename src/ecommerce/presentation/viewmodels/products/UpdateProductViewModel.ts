@@ -1,8 +1,9 @@
+import { UpdateProductUseCase } from '@/src/ecommerce/application/usecases';
+import { UpdateProductData } from '@/src/ecommerce/domain/entities/Product';
 
 export class UpdateProductViewModel {
   private state = {
     loading: false,
-    error: null as string | null,
     success: false,
   };
 
@@ -19,20 +20,14 @@ export class UpdateProductViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async updateProduct(id: number, data: UpdateProductData): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.state.success = false;
-      this.notify();
+  async updateProduct(id: number, data: UpdateProductData): Promise<void> {
+    this.state.loading = true;
+    this.state.success = false;
+    this.notify();
 
+    try {
       await this.updateProductUseCase.execute(id, data);
       this.state.success = true;
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la mise à jour du produit';
-      this.state.success = false;
-      return false;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -40,7 +35,6 @@ export class UpdateProductViewModel {
   }
 
   resetState() {
-    this.state.error = null;
     this.state.success = false;
     this.notify();
   }

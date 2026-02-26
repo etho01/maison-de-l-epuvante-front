@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateProductViewModel, useUpdateProductViewModel } from '../../../../hooks/products';
 import { useGetAllCategoriesViewModel } from '../../../../hooks/categories';
-import { Product, CreateProductData, UpdateProductData } from '../../../../../domain/entities/Product';
+import { Product, CreateProductData, UpdateProductData, ProductType } from '../../../../../domain/entities/Product';
 import { Category } from '../../../../../domain/entities/Category';
 import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
@@ -21,11 +21,11 @@ interface AdminProductFormProps {
 export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onSuccess, onCancel, allCategories }) => {
   const createViewModel = useCreateProductViewModel();
   const updateViewModel = useUpdateProductViewModel();
-  const { loading: createLoading, error: createError } = createViewModel.getState();
-  const { loading: updateLoading, error: updateError } = updateViewModel.getState();
+  const { loading: createLoading } = createViewModel.getState();
+  const { loading: updateLoading } = updateViewModel.getState();
   
   const loading = createLoading || updateLoading;
-  const error = createError || updateError;
+  const [error, setError] = useState<string | null>(null);
   console.log(product)
 
   const {
@@ -51,13 +51,15 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
 
   const onSubmit = async (formData: ProductFormData) => {
     console.log('Form data submitted:', formData);
+    setError(null);
+    
     const data: CreateProductData | UpdateProductData = {
       name: formData.name,
       description: formData.description,
       slug: formData.slug,
       price: formData.price,
       stock: formData.stock,
-      type: formData.type,
+      type: formData.type as ProductType,
       sku: formData.sku,
       categoryId: formData.categoryId,
       active: formData.active,
@@ -65,12 +67,15 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
       weight: formData.weight || undefined,
     };
 
-    const success = product 
-      ? await updateViewModel.updateProduct(product.id, data)
-      : await createViewModel.createProduct(data as CreateProductData);
-    
-    if (success) {
+    try {
+      if (product) {
+        await updateViewModel.updateProduct(product.id, data);
+      } else {
+        await createViewModel.createProduct(data as CreateProductData);
+      }
       onSuccess?.();
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de l\'enregistrement du produit');
     }
   };
 
