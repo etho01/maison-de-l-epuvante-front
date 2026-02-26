@@ -1,4 +1,4 @@
-import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
+import { serverApiClient } from '@/src/shared/infrastructure/api/ServerApiClient';
 import { IProductRepository } from '../../domain/repositories/IProductRepository';
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../../domain/entities/Product';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
@@ -21,30 +21,30 @@ export class SymfonyProductRepository implements IProductRepository {
     const queryString = params.toString();
     const endpoint = queryString ? `/products?${queryString}` : '/products';
     
-    return await apiClient.get<PaginatedResponse<Product>>(endpoint);
+    return await serverApiClient.get<PaginatedResponse<Product>>(endpoint);
   }
 
   async getById(id: number): Promise<Product> {
-    return await apiClient.get<Product>(`/products/${id}`);
+    return await serverApiClient.get<Product>(`/products/${id}`);
   }
 
   async getBySlug(slug: string): Promise<Product> {
-    return await apiClient.get<Product>(`/products/slug/${slug}`);
+    return await serverApiClient.get<Product>(`/products/slug/${slug}`);
   }
 
   async getProductBySlug(slug: string): Promise<Product> {
-    return await apiClient.get<Product>(`/products/slug/${slug}`);
+    return await serverApiClient.get<Product>(`/products/slug/${slug}`);
   }
 
   async create(data: CreateProductData): Promise<Product> {
-    return await apiClient.post<Product>('/products', data);
+    return await serverApiClient.post<Product>('/products', data);
   }
 
   async update(id: number, data: UpdateProductData): Promise<Product> {
-    return await apiClient.patch<Product>(`/products/${id}`, data);
+    return await serverApiClient.patch<Product>(`/products/${id}`, data);
   }
 
   async delete(id: number): Promise<void> {
-    await apiClient.delete(`/products/${id}`);
+    await serverApiClient.delete(`/products/${id}`);
   }
 }

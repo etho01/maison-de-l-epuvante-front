@@ -1,4 +1,4 @@
-import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
+import { serverApiClient } from '@/src/shared/infrastructure/api/ServerApiClient';
 import { ISubscriptionRepository } from '../../domain/repositories/ISubscriptionRepository';
 import { Subscription, SubscribeData, RenewSubscriptionData } from '../../domain/entities/Subscription';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
@@ -6,22 +6,22 @@ import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 export class SymfonySubscriptionRepository implements ISubscriptionRepository {
   async getSubscriptions(page?: number): Promise<PaginatedResponse<Subscription>> {
     const endpoint = page ? `/subscriptions?page=${page}` : '/subscriptions';
-    return await apiClient.get<PaginatedResponse<Subscription>>(endpoint);
+    return await serverApiClient.get<PaginatedResponse<Subscription>>(endpoint);
   }
 
   async getById(id: number): Promise<Subscription> {
-    return await apiClient.get<Subscription>(`/subscriptions/${id}`);
+    return await serverApiClient.get<Subscription>(`/subscriptions/${id}`);
   }
 
   async subscribe(data: SubscribeData): Promise<Subscription> {
-    return await apiClient.post<Subscription>('/subscriptions/subscribe', data);
+    return await serverApiClient.post<Subscription>('/subscriptions/subscribe', data);
   }
 
   async cancel(id: number): Promise<Subscription> {
-    return await apiClient.patch<Subscription>(`/subscriptions/${id}/cancel`, {});
+    return await serverApiClient.patch<Subscription>(`/subscriptions/${id}/cancel`, {});
   }
 
   async renew(id: number, data: RenewSubscriptionData): Promise<Subscription> {
-    return await apiClient.patch<Subscription>(`/subscriptions/${id}/renew`, data);
+    return await serverApiClient.patch<Subscription>(`/subscriptions/${id}/renew`, data);
   }
 }

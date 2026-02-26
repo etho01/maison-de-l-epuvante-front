@@ -18,11 +18,11 @@ import {
   VerifyEmailData
 } from '../../domain/entities/User';
 import { UpdateUserData } from '../../domain/entities/UpdateUserData';
-import { apiClient } from '../api/apiClient';
+import { serverApiClient } from '@/src/shared/infrastructure/api/ServerApiClient';
 
 export class SymfonyAuthRepository implements IAuthRepository {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await apiClient.post<{ token: string; user: User }>(
+    const response = await serverApiClient.post<{ token: string; user: User }>(
       '/login',
       credentials
     );
@@ -34,7 +34,7 @@ export class SymfonyAuthRepository implements IAuthRepository {
   }
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await apiClient.post<{ token: string; user: User }>(
+    const response = await serverApiClient.post<{ token: string; user: User }>(
       '/users',
       data
     );
@@ -51,30 +51,30 @@ export class SymfonyAuthRepository implements IAuthRepository {
   }
 
   async getCurrentUser(): Promise<User> {
-    return await apiClient.get<User>('/me');
+    return await serverApiClient.get<User>('/me');
   }
 
   async updateUser(data: UpdateUserData): Promise<User> {
-    return await apiClient.patch<User>('/me', data);
+    return await serverApiClient.patch<User>('/me', data);
   }
 
   async changePassword(data: ChangePasswordData): Promise<void> {
-    await apiClient.post('/change-password', data);
+    await serverApiClient.post('/change-password', data);
   }
 
   async requestPasswordReset(data: ResetPasswordRequestData): Promise<void> {
-    await apiClient.post('/reset-password-request', data);
+    await serverApiClient.post('/reset-password-request', data);
   }
 
   async confirmPasswordReset(data: ResetPasswordConfirmData): Promise<void> {
-    await apiClient.post('/reset-password-confirm', data);
+    await serverApiClient.post('/reset-password-confirm', data);
   }
 
   async verifyEmail(data: VerifyEmailData): Promise<void> {
-    await apiClient.get(`/verify/email?token=${data.token}`);
+    await serverApiClient.get(`/verify/email?token=${data.token}`);
   }
 
   async resendVerificationEmail(): Promise<void> {
-    await apiClient.post('/verify/resend', {});
+    await serverApiClient.post('/verify/resend', {});
   }
 }

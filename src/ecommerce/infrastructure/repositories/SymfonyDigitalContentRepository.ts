@@ -1,4 +1,4 @@
-import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
+import { serverApiClient } from '@/src/shared/infrastructure/api/ServerApiClient';
 import { IDigitalContentRepository } from '../../domain/repositories/IDigitalContentRepository';
 import { DigitalContent } from '../../domain/entities/DigitalContent';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
@@ -6,11 +6,11 @@ import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 export class SymfonyDigitalContentRepository implements IDigitalContentRepository {
   async getDigitalContents(page?: number): Promise<PaginatedResponse<DigitalContent>> {
     const endpoint = page ? `/digital-contents?page=${page}` : '/digital-contents';
-    return await apiClient.get<PaginatedResponse<DigitalContent>>(endpoint);
+    return await serverApiClient.get<PaginatedResponse<DigitalContent>>(endpoint);
   }
 
   async getById(id: number): Promise<DigitalContent> {
-    return await apiClient.get<DigitalContent>(`/digital-contents/${id}`);
+    return await serverApiClient.get<DigitalContent>(`/digital-contents/${id}`);
   }
 
   async download(id: number): Promise<Blob> {

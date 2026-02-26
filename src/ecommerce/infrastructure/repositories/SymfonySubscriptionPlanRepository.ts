@@ -1,4 +1,4 @@
-import { apiClient } from '@/src/auth/infrastructure/api/apiClient';
+import { serverApiClient } from '@/src/shared/infrastructure/api/ServerApiClient';
 import { ISubscriptionPlanRepository } from '../../domain/repositories/ISubscriptionPlanRepository';
 import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../../domain/entities/SubscriptionPlan';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
@@ -15,23 +15,23 @@ export class SymfonySubscriptionPlanRepository implements ISubscriptionPlanRepos
     const queryString = params.toString();
     const url = `/subscription_plans${queryString ? `?${queryString}` : ''}`;
     
-    const response = await apiClient.get<PaginatedResponse<SubscriptionPlan>>(url);
+    const response = await serverApiClient.get<PaginatedResponse<SubscriptionPlan>>(url);
     return response;
   }
 
   async getById(id: number): Promise<SubscriptionPlan> {
-    return await apiClient.get<SubscriptionPlan>(`/subscription_plans/${id}`);
+    return await serverApiClient.get<SubscriptionPlan>(`/subscription_plans/${id}`);
   }
 
   async create(data: CreateSubscriptionPlanData): Promise<SubscriptionPlan> {
-    return await apiClient.post<SubscriptionPlan>('/subscription_plans', data);
+    return await serverApiClient.post<SubscriptionPlan>('/subscription_plans', data);
   }
 
   async update(id: number, data: UpdateSubscriptionPlanData): Promise<SubscriptionPlan> {
-    return await apiClient.patch<SubscriptionPlan>(`/subscription_plans/${id}`, data);
+    return await serverApiClient.patch<SubscriptionPlan>(`/subscription_plans/${id}`, data);
   }
 
   async delete(id: number): Promise<void> {
-    await apiClient.delete(`/subscription_plans/${id}`);
+    await serverApiClient.delete(`/subscription_plans/${id}`);
   }
 }
