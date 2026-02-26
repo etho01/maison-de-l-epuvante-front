@@ -6,8 +6,8 @@ import { Pagination } from '@/src/shared/domain/Pagination';
 import { Category } from '../../domain/entities/Category';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 import { ProductList } from './organisms';
-import { useProductsViewModel } from '../hooks';
 import { ProductFilters } from './molecules';
+import { useGetProductsViewModel } from '../hooks';
 
 interface ProductCatalogProps {
   initialProducts: Product[];
@@ -16,7 +16,7 @@ interface ProductCatalogProps {
 }
 
 export const ProductCatalog: React.FC<ProductCatalogProps> = ({ initialProducts, initialProductPagination, categories }) => {
-  const productsVM = useProductsViewModel(initialProducts, initialProductPagination);
+  const productsVM = useGetProductsViewModel(initialProducts, initialProductPagination);
   
   const { products, loading, error, filters } = productsVM.getState();
 

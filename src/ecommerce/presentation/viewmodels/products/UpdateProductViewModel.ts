@@ -1,5 +1,3 @@
-import { UpdateProductData } from '../../domain/entities/Product';
-import { UpdateProductUseCase } from '../../application/usecases/products';
 
 export class UpdateProductViewModel {
   private state = {

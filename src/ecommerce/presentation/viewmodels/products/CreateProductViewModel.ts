@@ -1,5 +1,6 @@
-import { CreateProductData } from '../../domain/entities/Product';
-import { CreateProductUseCase } from '../../application/usecases/products';
+import { CreateProductUseCase } from "@/src/ecommerce/application/usecases";
+import { CreateProductData } from "@/src/ecommerce/domain/entities/Product";
+
 
 export class CreateProductViewModel {
   private state = {

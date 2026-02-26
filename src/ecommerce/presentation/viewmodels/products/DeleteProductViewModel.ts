@@ -1,4 +1,5 @@
-import { DeleteProductUseCase } from '../../application/usecases/products';
+import { DeleteProductUseCase } from "@/src/ecommerce/application/usecases";
+
 
 export class DeleteProductViewModel {
   private state = {

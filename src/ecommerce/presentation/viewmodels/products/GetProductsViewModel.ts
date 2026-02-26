@@ -1,5 +1,5 @@
-import { Product, ProductFilters } from '../../domain/entities/Product';
-import { GetProductsUseCase } from '../../application/usecases/products';
+import { GetProductsUseCase } from '@/src/ecommerce/application/usecases';
+import { Product, ProductFilters, ProductType } from '@/src/ecommerce/domain/entities/Product';
 import { Pagination } from '@/src/shared/domain/Pagination';
 
 export class GetProductsViewModel {
@@ -63,6 +63,23 @@ export class GetProductsViewModel {
     this.state.filters = { ...this.state.filters, ...filters };
     this.loadProducts();
   }
+
+  setFilter(key: string, value: any) {
+    this.state.filters = {
+      ...this.state.filters,
+      [key]: value,
+    };
+    this.loadProducts();
+  }
+
+  setCategoryFilter(categoryId: number | undefined) {
+    this.setFilter('category.id', categoryId);
+  }
+
+  setTypeFilter(type: ProductType[] | undefined) {
+    this.setFilter('type', type);
+  }
+
 
   getState() {
     return { ...this.state };
