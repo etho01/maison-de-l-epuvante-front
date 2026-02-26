@@ -1,38 +1,13 @@
 import { ISubscriptionPlanRepository } from '../../domain/repositories/ISubscriptionPlanRepository';
 import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../../domain/entities/SubscriptionPlan';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
+import { ClientApiClient } from '@/src/shared/infrastructure/api/ClientApiClient';
 
 export class ClientSubscriptionPlanRepository implements ISubscriptionPlanRepository {
-  private baseURL: string;
+  private client: ClientApiClient;
 
   constructor() {
-    this.baseURL = '/api/ecommerce';
-  }
-
-  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${this.baseURL}${endpoint}`;
-
-    const config: RequestInit = {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      credentials: 'include',
-    };
-
-    const response = await fetch(url, config);
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Une erreur est survenue');
-    }
-
-    if (response.status === 204) {
-      return null as T;
-    }
-
-    return await response.json();
+    this.client = new ClientApiClient('/api/ecommerce');
   }
 
   async getSubscriptionPlans(filters?: { page?: number }): Promise<PaginatedResponse<SubscriptionPlan>> {
@@ -45,30 +20,22 @@ export class ClientSubscriptionPlanRepository implements ISubscriptionPlanReposi
     const queryString = params.toString();
     const endpoint = `/subscription-plans${queryString ? `?${queryString}` : ''}`;
     
-    return await this.request<PaginatedResponse<SubscriptionPlan>>(endpoint);
+    return await this.client.get<PaginatedResponse<SubscriptionPlan>>(endpoint);
   }
 
   async getById(id: number): Promise<SubscriptionPlan> {
-    return await this.request<SubscriptionPlan>(`/subscription-plans/${id}`);
+    return await this.client.get<SubscriptionPlan>(`/subscription-plans/${id}`);
   }
 
   async create(data: CreateSubscriptionPlanData): Promise<SubscriptionPlan> {
-    return await this.request<SubscriptionPlan>('/subscription-plans', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return await this.client.post<SubscriptionPlan>('/subscription-plans', data);
   }
 
   async update(id: number, data: UpdateSubscriptionPlanData): Promise<SubscriptionPlan> {
-    return await this.request<SubscriptionPlan>(`/subscription-plans/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    });
+    return await this.client.patch<SubscriptionPlan>(`/subscription-plans/${id}`, data);
   }
 
   async delete(id: number): Promise<void> {
-    await this.request(`/subscription-plans/${id}`, {
-      method: 'DELETE',
-    });
+    await this.client.delete(`/subscription-plans/${id}`);
   }
 }

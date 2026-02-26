@@ -1,38 +1,13 @@
 import { IProductRepository } from '../../domain/repositories/IProductRepository';
 import { Product, CreateProductData, UpdateProductData, ProductFilters } from '../../domain/entities/Product';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
+import { ClientApiClient } from '@/src/shared/infrastructure/api/ClientApiClient';
 
 export class ClientProductRepository implements IProductRepository {
-  private baseURL: string;
+  private client: ClientApiClient;
 
   constructor() {
-    this.baseURL = '/api/ecommerce';
-  }
-
-  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${this.baseURL}${endpoint}`;
-
-    const config: RequestInit = {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      credentials: 'include',
-    };
-
-    const response = await fetch(url, config);
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Une erreur est survenue');
-    }
-
-    if (response.status === 204) {
-      return null as T;
-    }
-
-    return await response.json();
+    this.client = new ClientApiClient('/api/ecommerce');
   }
 
   async getProducts(filters?: ProductFilters): Promise<PaginatedResponse<Product>> {
@@ -52,38 +27,30 @@ export class ClientProductRepository implements IProductRepository {
     const queryString = params.toString();
     const endpoint = queryString ? `/products?${queryString}` : '/products';
     
-    return await this.request<PaginatedResponse<Product>>(endpoint);
+    return await this.client.get<PaginatedResponse<Product>>(endpoint);
   }
 
   async getById(id: number): Promise<Product> {
-    return await this.request<Product>(`/products/${id}`);
+    return await this.client.get<Product>(`/products/${id}`);
   }
 
   async getBySlug(slug: string): Promise<Product> {
-    return await this.request<Product>(`/products/slug/${slug}`);
+    return await this.client.get<Product>(`/products/slug/${slug}`);
   }
 
   async getProductBySlug(slug: string): Promise<Product> {
-    return await this.request<Product>(`/products/slug/${slug}`);
+    return await this.client.get<Product>(`/products/slug/${slug}`);
   }
 
   async create(data: CreateProductData): Promise<Product> {
-    return await this.request<Product>('/products', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return await this.client.post<Product>('/products', data);
   }
 
   async update(id: number, data: UpdateProductData): Promise<Product> {
-    return await this.request<Product>(`/products/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    });
+    return await this.client.patch<Product>(`/products/${id}`, data);
   }
 
   async delete(id: number): Promise<void> {
-    await this.request(`/products/${id}`, {
-      method: 'DELETE',
-    });
+    await this.client.delete(`/products/${id}`);
   }
 }

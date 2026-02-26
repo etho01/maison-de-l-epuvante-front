@@ -1,60 +1,29 @@
 import { IOrderRepository } from '../../domain/repositories/IOrderRepository';
 import { Order, CheckoutData, UpdateOrderData, CheckoutResponse } from '../../domain/entities/Order';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
+import { ClientApiClient } from '@/src/shared/infrastructure/api/ClientApiClient';
 
 export class ClientOrderRepository implements IOrderRepository {
-  private baseURL: string;
+  private client: ClientApiClient;
 
   constructor() {
-    this.baseURL = '/api/ecommerce';
-  }
-
-  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${this.baseURL}${endpoint}`;
-
-    const config: RequestInit = {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      credentials: 'include',
-    };
-
-    const response = await fetch(url, config);
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Une erreur est survenue');
-    }
-
-    if (response.status === 204) {
-      return null as T;
-    }
-
-    return await response.json();
+    this.client = new ClientApiClient('/api/ecommerce');
   }
 
   async getOrders(page?: number): Promise<PaginatedResponse<Order>> {
     const endpoint = page ? `/orders?page=${page}` : '/orders';
-    return await this.request<PaginatedResponse<Order>>(endpoint);
+    return await this.client.get<PaginatedResponse<Order>>(endpoint);
   }
 
   async getById(id: number): Promise<Order> {
-    return await this.request<Order>(`/orders/${id}`);
+    return await this.client.get<Order>(`/orders/${id}`);
   }
 
   async checkout(data: CheckoutData): Promise<CheckoutResponse> {
-    return await this.request<CheckoutResponse>('/orders/checkout', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return await this.client.post<CheckoutResponse>('/orders/checkout', data);
   }
 
   async update(id: number, data: UpdateOrderData): Promise<Order> {
-    return await this.request<Order>(`/orders/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    });
+    return await this.client.patch<Order>(`/orders/${id}`, data);
   }
 }

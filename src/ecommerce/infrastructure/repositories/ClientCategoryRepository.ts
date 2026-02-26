@@ -2,71 +2,38 @@ import { ICategoryRepository } from '../../domain/repositories/ICategoryReposito
 import { Category, CreateCategoryData, UpdateCategoryData } from '../../domain/entities/Category';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 import { GetCategoriesFilter } from '../../application/usecases/categories/GetCategoriesUseCase';
+import { ClientApiClient } from '@/src/shared/infrastructure/api/ClientApiClient';
 
 export class ClientCategoryRepository implements ICategoryRepository {
-  private baseURL: string;
+  private client: ClientApiClient;
 
   constructor() {
-    this.baseURL = '/api/ecommerce';
-  }
-
-  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${this.baseURL}${endpoint}`;
-
-    const config: RequestInit = {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      credentials: 'include',
-    };
-
-    const response = await fetch(url, config);
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Une erreur est survenue');
-    }
-
-    if (response.status === 204) {
-      return null as T;
-    }
-
-    return await response.json();
+    this.client = new ClientApiClient('/api/ecommerce');
   }
 
   async getCategories(filter?: GetCategoriesFilter): Promise<PaginatedResponse<Category>> {
-    const response = await this.request<PaginatedResponse<Category>>('/categories' + (filter ? `?page=${filter.page || 1}` : ''));
+    const response = await this.client.get<PaginatedResponse<Category>>('/categories' + (filter ? `?page=${filter.page || 1}` : ''));
     return response;
   }
 
   async getAllCategories(): Promise<Category[]> {
-    const response = await this.request<PaginatedResponse<Category>>('/categories/all');
+    const response = await this.client.get<PaginatedResponse<Category>>('/categories/all');
     return response.member;
   }
 
   async getById(id: number): Promise<Category> {
-    return await this.request<Category>(`/categories/${id}`);
+    return await this.client.get<Category>(`/categories/${id}`);
   }
 
   async create(data: CreateCategoryData): Promise<Category> {
-    return await this.request<Category>('/categories', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return await this.client.post<Category>('/categories', data);
   }
 
   async update(id: number, data: UpdateCategoryData): Promise<Category> {
-    return await this.request<Category>(`/categories/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    });
+    return await this.client.patch<Category>(`/categories/${id}`, data);
   }
 
   async delete(id: number): Promise<void> {
-    await this.request(`/categories/${id}`, {
-      method: 'DELETE',
-    });
+    await this.client.delete(`/categories/${id}`);
   }
 }
