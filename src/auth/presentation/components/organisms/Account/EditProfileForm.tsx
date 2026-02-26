@@ -11,8 +11,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@/src/auth/domain/entities/User';
 import { Input, Button, ErrorMessage } from '@/src/shared/components/ui';
-import { useAuth } from '../../context/AuthContext';
-import { UpdateProfileFormData, updateProfileSchema } from '../../schemas/updateProfileSchema';
+import { useAuth } from '../../../context/AuthContext';
+import { UpdateProfileFormData, updateProfileSchema } from '../../../schemas/updateProfileSchema';
 
 interface EditProfileFormProps {
   user: User;

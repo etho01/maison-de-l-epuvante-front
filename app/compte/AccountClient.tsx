@@ -8,8 +8,8 @@
 import { useState } from 'react';
 import { User } from '@/src/auth/domain/entities/User';
 import { Button } from '@/src/shared/components/ui';
-import EditProfileForm from '@/src/auth/presentation/components/organisms/EditProfileForm';
-import ChangePasswordForm from '@/src/auth/presentation/components/organisms/ChangePasswordForm';
+import EditProfileForm from '@/src/auth/presentation/components/organisms/Account/EditProfileForm';
+import ChangePasswordForm from '@/src/auth/presentation/components/organisms/Account/ChangePasswordForm';
 
 interface AccountClientProps {
   initialUser: User;

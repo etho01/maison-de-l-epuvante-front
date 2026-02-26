@@ -5,8 +5,8 @@ export { OrdersManager } from './OrdersManager';
 export { OrderDetail } from './OrderDetail';
 export { OrderList } from './OrderList';
 export { SubscriptionPlansView } from './SubscriptionPlansView';
-export { CartSummary } from './CartSummary';
-export { CheckoutForm } from './CheckoutForm';
+export { CartSummary } from './Cart/CartSummary';
+export { CheckoutForm } from './Cart/CheckoutForm';
 export { StripePaymentWrapper } from './StripePaymentWrapper';
 export { StripePaymentForm } from './StripePaymentForm';
 

@@ -15,7 +15,7 @@ export interface CartItemProduct {
   id: number;
   name: string;
   slug: string;
-  price: string;
+  price: number;
   images?: string[];
   stock: number;
 }
@@ -35,7 +35,7 @@ export const CartItem: React.FC<CartItemProps> = ({
   onUpdateQuantity,
   className = '',
 }) => {
-  const subtotal = parseFloat(product.price) * quantity;
+  const subtotal = product.price * quantity;
 
   return (
     <div className={`border rounded-lg p-4 flex gap-4 ${className}`}>
@@ -71,7 +71,7 @@ export const CartItem: React.FC<CartItemProps> = ({
         />
 
         <div className="mt-2">
-          <PriceDisplay price={subtotal.toFixed(2)} variant="emphasis" size="lg" />
+          <PriceDisplay price={subtotal} variant="emphasis" size="lg" />
         </div>
       </div>
     </div>

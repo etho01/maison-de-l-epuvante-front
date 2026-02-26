@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/src/shared/components/ui';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../../context/CartContext';
 import { CartItem } from '@/src/shared/components/molecules/CartItem';
 import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
 

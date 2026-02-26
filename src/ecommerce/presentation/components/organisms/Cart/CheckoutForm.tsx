@@ -3,16 +3,16 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../../context/CartContext';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
-import { useCreateOrderViewModel } from '../../hooks/orders';
+import { useCreateOrderViewModel } from '../../../hooks/orders';
 import { Address } from '@/src/ecommerce/domain/entities/Order';
 import Input from '@/src/shared/components/atoms/Input';
 import Button from '@/src/shared/components/atoms/Button';
 import ErrorMessage from '@/src/shared/components/atoms/ErrorMessage';
-import { checkoutSchema, CheckoutFormData } from '../../schemas/ecommerceSchemas';
-import { StripePaymentWrapper } from './StripePaymentWrapper';
+import { checkoutSchema, CheckoutFormData } from '../../../schemas/ecommerceSchemas';
+import { StripePaymentWrapper } from '../StripePaymentWrapper';
 
 export const CheckoutForm: React.FC = () => {
   const router = useRouter();
