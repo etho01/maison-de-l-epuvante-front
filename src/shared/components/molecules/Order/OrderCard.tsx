@@ -8,7 +8,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { OrderStatusBadge, OrderStatus } from './OrderStatusBadge';
-import { PriceDisplay } from '../atoms/PriceDisplay';
+import { PriceDisplay } from '../../atoms/PriceDisplay';
 
 export interface OrderCardItem {
   id: number;

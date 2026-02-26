@@ -2,29 +2,17 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { SubscriptionPlan, BillingInterval, SubscriptionFormat } from '../../domain/entities/SubscriptionPlan';
 import { Button } from '@/src/shared/components/ui';
 import { Card } from '@/src/shared/components/atoms/Card';
 import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
 import { Badge } from '@/src/shared/components/atoms/Badge';
+import { BillingInterval, formatLabels, intervalLabels, SubscriptionFormat, SubscriptionPlan } from '@/src/ecommerce/domain/entities/SubscriptionPlan';
 
 interface SubscriptionPlanCardProps {
   plan: SubscriptionPlan;
   onSubscribe: (planId: number) => void;
   loading?: boolean;
 }
-
-const intervalLabels: Record<BillingInterval, string> = {
-  monthly: 'Mensuel',
-  quarterly: 'Trimestriel',
-  yearly: 'Annuel',
-};
-
-const formatLabels: Record<SubscriptionFormat, string> = {
-  paper: 'Papier',
-  digital: 'Numérique',
-  both: 'Papier + Numérique',
-};
 
 export const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
   plan,

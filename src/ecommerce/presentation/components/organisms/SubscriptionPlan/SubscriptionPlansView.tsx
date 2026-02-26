@@ -2,12 +2,12 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { SubscriptionPlanCard } from '../molecules/SubscriptionPlanCard';
+import { SubscriptionPlanCard } from '../../molecules/SubscriptionPlan/SubscriptionPlanCard';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
-import { SubscriptionPlan } from '../../../domain/entities/SubscriptionPlan';
+import { SubscriptionPlan } from '../../../../domain/entities/SubscriptionPlan';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
-import { useSubscriptionPlansViewModel, useSubscribeViewModel } from '../../hooks/subscriptions';
+import { useSubscriptionPlansViewModel, useSubscribeViewModel } from '../../../hooks/subscriptions';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 
 interface SubscriptionPlansViewProps {

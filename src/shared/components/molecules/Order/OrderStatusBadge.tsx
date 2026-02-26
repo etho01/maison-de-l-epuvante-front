@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Badge, BadgeVariant } from '../atoms/Badge';
+import { Badge, BadgeVariant } from '../../atoms/Badge';
 
 export type OrderStatus = 
   | 'pending' 

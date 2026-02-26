@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { LoaderCard } from '@/src/shared/components';
 import { Order } from '@/src/ecommerce/domain/entities/Order';
-import { OrderCard, OrderCardData } from '@/src/shared/components/molecules/OrderCard';
+import { OrderCard, OrderCardData } from '@/src/shared/components/molecules/Order/OrderCard';
 
 interface OrderListProps {
   orders: Order[];

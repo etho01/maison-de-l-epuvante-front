@@ -1,10 +1,9 @@
-export { ProductCatalog } from './ProductCatalog';
 export { ProductList } from './Product/ProductList';
 export { ProductDetailView } from './Product/ProductDetailView';
-export { OrdersManager } from './OrdersManager';
+export { OrdersManager } from './Order/OrdersManager';
 export { OrderDetail } from './OrderDetail';
-export { OrderList } from './OrderList';
-export { SubscriptionPlansView } from './SubscriptionPlansView';
+export { OrderList } from './Order/OrderList';
+export { SubscriptionPlansView } from './SubscriptionPlan/SubscriptionPlansView';
 export { CartSummary } from './Cart/CartSummary';
 export { CheckoutForm } from './Cart/CheckoutForm';
 export { StripePaymentWrapper } from './StripePaymentWrapper';

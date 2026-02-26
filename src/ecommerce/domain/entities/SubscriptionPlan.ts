@@ -33,3 +33,15 @@ export interface UpdateSubscriptionPlanData {
   format?: SubscriptionFormat;
   active?: boolean;
 }
+
+export const intervalLabels: Record<BillingInterval, string> = {
+  monthly: 'Mensuel',
+  quarterly: 'Trimestriel',
+  yearly: 'Annuel',
+};
+
+export const formatLabels: Record<SubscriptionFormat, string> = {
+  paper: 'Papier',
+  digital: 'Numérique',
+  both: 'Papier + Numérique',
+};
