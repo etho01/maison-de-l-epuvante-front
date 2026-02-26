@@ -27,6 +27,8 @@ export const useGetSubscriptionPlansViewModel = (
       forceUpdate({});
     });
 
+    viewModel.init();
+
     return unsubscribe;
   }, [viewModel]);
 

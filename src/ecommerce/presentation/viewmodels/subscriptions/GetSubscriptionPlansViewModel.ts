@@ -35,6 +35,11 @@ export class GetSubscriptionPlansViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
+  async init() {
+    if (this.state.plans.length > 0) return;
+    await this.loadPlans();
+  }
+
   async loadPlans(page: number = 1): Promise<void> {
     try {
       this.state.loading = true;

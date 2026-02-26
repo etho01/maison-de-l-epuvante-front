@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { OrderStatus } from '@/src/ecommerce/domain/entities/Order';
-import { useOrderDetailViewModel } from '../../../hooks/orders';
+import { useGetOrderByIdViewModel } from '../../../hooks/orders';
 
 const statusLabels: Record<OrderStatus, string> = {
   pending: 'En attente',
@@ -21,7 +21,7 @@ interface OrderDetailProps {
 
 export const OrderDetail: React.FC<OrderDetailProps> = ({ orderId }) => {
   const router = useRouter();
-  const viewModel = useOrderDetailViewModel();
+  const viewModel = useGetOrderByIdViewModel();
   const { order, loading, error } = viewModel.getState();
 
   useEffect(() => {

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { OrderList } from './OrderList';
-import { useOrdersViewModel } from '../../../hooks/orders';
+import { useGetOrdersViewModel } from '../../../hooks/orders';
 import { Order } from '@/src/ecommerce/domain/entities/Order';
 import { Pagination } from '@/src/shared/domain/Pagination';
 
@@ -14,7 +14,7 @@ interface OrdersManagerProps {
 
 export const OrdersManager: React.FC<OrdersManagerProps> = ({ initialOrders, initialPagination }) => {
   const searchParams = useSearchParams();
-  const viewModel = useOrdersViewModel(initialOrders, initialPagination);
+  const viewModel = useGetOrdersViewModel(initialOrders, initialPagination);
   const { orders, loading, error } = viewModel.getState();
   const [showSuccess, setShowSuccess] = useState(false);
 

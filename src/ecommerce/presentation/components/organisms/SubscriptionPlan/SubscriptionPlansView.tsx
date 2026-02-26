@@ -7,7 +7,7 @@ import { useAuth } from '@/src/auth/presentation/context/AuthContext';
 import { SubscriptionPlan } from '../../../../domain/entities/SubscriptionPlan';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
-import { useSubscriptionPlansViewModel, useSubscribeViewModel } from '../../../hooks/subscriptions';
+import { useGetSubscriptionPlansViewModel, useSubscribeViewModel } from '../../../hooks/subscriptions';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 
 interface SubscriptionPlansViewProps {
@@ -18,11 +18,14 @@ interface SubscriptionPlansViewProps {
 export const SubscriptionPlansView: React.FC<SubscriptionPlansViewProps> = ({ initialPlans, initialPagination }) => {
   const router = useRouter();
   const { user } = useAuth();
-  const plansViewModel = useSubscriptionPlansViewModel(initialPlans, initialPagination);
+  const plansViewModel = useGetSubscriptionPlansViewModel(initialPlans, initialPagination);
   const subscribeViewModel = useSubscribeViewModel();
 
-  const { plans, pagination, loading, error } = plansViewModel.getState();
+  const { plans: allPlans, pagination, loading, error } = plansViewModel.getState();
   const { subscribing } = subscribeViewModel.getState();
+
+  // Filtrer pour ne montrer que les plans actifs côté client
+  const plans = allPlans.filter((plan) => plan.active);
 
   const handleSubscribe = async (planId: number) => {
     if (!user) {
@@ -71,7 +74,7 @@ export const SubscriptionPlansView: React.FC<SubscriptionPlansViewProps> = ({ in
           </div>
           <PaginationComponent
             pagination={pagination !}
-            onPageChange={(page) => plansViewModel.setFilter('page', page)}
+            onPageChange={(page) => plansViewModel.loadPlans(page)}
           />
         </>
       )}
