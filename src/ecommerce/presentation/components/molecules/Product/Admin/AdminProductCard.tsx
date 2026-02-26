@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Product } from '../../../domain/entities/Product';
-import { ProductStockBadge } from '../atoms/ProductStockBadge';
-import { ProductTypeBadge } from '../atoms/ProductTypeBadge';
+import { Product } from '../../../../../domain/entities/Product';
+import { ProductStockBadge } from '../../../atoms/Product/ProductStockBadge';
+import { ProductTypeBadge } from '../../../atoms/Product/ProductTypeBadge';
 
 interface AdminProductCardProps {
   product: Product;

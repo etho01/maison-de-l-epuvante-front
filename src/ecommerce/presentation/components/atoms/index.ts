@@ -3,7 +3,7 @@
  */
 
 export { AddToCartButton } from './AddToCartButton';
-export { ProductTypeBadge } from './ProductTypeBadge';
-export { ProductStockBadge } from './ProductStockBadge';
+export { ProductTypeBadge } from './Product/ProductTypeBadge';
+export { ProductStockBadge } from './Product/ProductStockBadge';
 export { OrderStatusBadge } from './OrderStatusBadge';
 
