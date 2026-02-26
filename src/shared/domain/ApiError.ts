@@ -1,15 +1,19 @@
 
 export class ApiError extends Error {
-    public status: number;
-    public data?: any;
+    code: number;
+    errors: string[];
+    data?: any;
+
     constructor(
-        message: string,
-        status: number,
-        data?: any
+        code: number,
+        errors: string[] = [],
+        data?: any,
+        message: string = 'Une erreur est survenue',
     ) {
         super(message);
         this.name = 'ApiError';
-        this.status = status;
+        this.code = code;
+        this.errors = errors;
         this.data = data;
     }
 }

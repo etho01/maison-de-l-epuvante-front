@@ -47,7 +47,6 @@ export class ServerApiClient {
 
         try {
             const response = await fetch(url, config);
-            console.log(url, options)
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
@@ -63,9 +62,10 @@ export class ServerApiClient {
                 }
 
                 throw new ApiError(
-                    errorData.message || 'Une erreur est survenue',
                     response.status,
-                    errorData
+                    errorData.errors || [],
+                    errorData.data,
+                    errorData.message || 'Une erreur est survenue lors de la requête'
                 );
             }
 
@@ -73,13 +73,14 @@ export class ServerApiClient {
             if (response.status === 204) {
                 return null as T;
             }
+            let data = await response.json();
 
-            return await response.json();
+            return data['data'] || data;
         } catch (error) {
             if (error instanceof ApiError) {
                 throw error;
             }
-            throw new ApiError('Erreur de connexion au serveur', 500);
+            throw new ApiError(500, ['ERROR_SERVER'], null, 'Erreur de connexion au serveur');
         }
     }
 
@@ -98,7 +99,7 @@ export class ServerApiClient {
     }
 
     async put<T>(endpoint: string, data?: any): Promise<T> {
-        console.log('PATCH request to:', endpoint, 'with data:', data);
+        console.log('PUT request to:', endpoint, 'with data:', data);
         return this.request<T>(endpoint, {
             method: 'PUT',
             body: data ? JSON.stringify(data) : undefined,
@@ -106,6 +107,7 @@ export class ServerApiClient {
     }
 
     async patch<T>(endpoint: string, data?: any): Promise<T> {
+        console.log('PATCH request to:', endpoint, 'with data:', data);
         return this.request<T>(endpoint, {
             method: 'PATCH',
             body: data ? JSON.stringify(data) : undefined,

@@ -4,16 +4,7 @@
  * Authentification par cookies
  */
 
-export class ClientApiError extends Error {
-    constructor(
-        message: string,
-        public status: number,
-        public data?: any
-    ) {
-        super(message);
-        this.name = 'ClientApiError';
-    }
-}
+import { ApiError } from "../../domain/ApiError";
 
 export class ClientApiClient {
     private baseURL: string;
@@ -49,13 +40,13 @@ export class ClientApiClient {
                     status: response.status,
                     data: errorData,
                 });
-                throw new ClientApiError(
-                    errorData.message || 'Une erreur est survenue',
+                throw new ApiError(
                     response.status,
-                    errorData
+                    errorData.errors || [],
+                    errorData.data,
+                    errorData.message || 'Une erreur est survenue lors de la requête'
                 );
             }
-
             // Si status 204 (No Content), retourner null
             if (response.status === 204) {
                 return null as T;
@@ -63,10 +54,10 @@ export class ClientApiClient {
 
             return await response.json();
         } catch (error) {
-            if (error instanceof ClientApiError) {
+            if (error instanceof ApiError) {
                 throw error;
             }
-            throw new ClientApiError('Erreur de connexion au serveur', 500);
+            throw new ApiError(500, ['ERROR_SERVER'], null, 'Erreur de connexion au serveur');
         }
     }
 
@@ -131,10 +122,11 @@ export class ClientApiClient {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new ClientApiError(
-                errorData.message || 'Erreur lors du téléchargement',
+            throw new ApiError(
                 response.status,
-                errorData
+                errorData.errors || [],
+                errorData.data,
+                errorData.message || 'Une erreur est survenue lors du téléchargement'
             );
         }
 
@@ -156,11 +148,12 @@ export class ClientApiClient {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new ClientApiError(
-                errorData.message || 'Erreur lors de l\'upload',
+            throw new ApiError(
                 response.status,
-                errorData
-            );
+                errorData.errors || [],
+                errorData.data,
+                errorData.message || 'Une erreur est survenue lors de l\'upload'
+             );
         }
 
         if (response.status === 204) {
