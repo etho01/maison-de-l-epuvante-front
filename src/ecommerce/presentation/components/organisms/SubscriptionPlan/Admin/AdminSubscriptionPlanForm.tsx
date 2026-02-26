@@ -3,11 +3,11 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateSubscriptionPlanViewModel, useUpdateSubscriptionPlanViewModel } from '../../hooks/subscriptions';
-import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../../../domain/entities/SubscriptionPlan';
+import { useCreateSubscriptionPlanViewModel, useUpdateSubscriptionPlanViewModel } from '../../../../hooks/subscriptions';
+import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanData } from '../../../../../domain/entities/SubscriptionPlan';
 import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
-import { subscriptionPlanSchema, SubscriptionPlanFormData } from '../../schemas/ecommerceSchemas';
+import { subscriptionPlanSchema, SubscriptionPlanFormData } from '../../../../schemas/ecommerceSchemas';
 
 interface AdminSubscriptionPlanFormProps {
   plan?: SubscriptionPlan;

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AdminSubscriptionPlanList } from '@/src/ecommerce/presentation/components/organisms/AdminSubscriptionPlanList';
-import { AdminSubscriptionPlanForm } from '@/src/ecommerce/presentation/components/organisms/AdminSubscriptionPlanForm';
+import { AdminSubscriptionPlanList } from '@/src/ecommerce/presentation/components/organisms/SubscriptionPlan/Admin/AdminSubscriptionPlanList';
+import { AdminSubscriptionPlanForm } from '@/src/ecommerce/presentation/components/organisms/SubscriptionPlan/Admin/AdminSubscriptionPlanForm';
 import { SubscriptionPlan } from '@/src/ecommerce/domain/entities/SubscriptionPlan';
 import { Pagination } from '@/src/shared/domain/Pagination';
 

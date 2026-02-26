@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetSubscriptionPlansViewModel, useDeleteSubscriptionPlanViewModel } from '../../hooks/subscriptions';
-import { SubscriptionPlan } from '../../../domain/entities/SubscriptionPlan';
+import { useGetSubscriptionPlansViewModel, useDeleteSubscriptionPlanViewModel } from '../../../../hooks/subscriptions';
+import { SubscriptionPlan } from '../../../../../domain/entities/SubscriptionPlan';
 import { Input, Select, Button } from '@/src/shared/components/atoms';
 import { ConfirmModal } from '@/src/shared/components/molecules';
 import { Pagination } from '@/src/shared/domain/Pagination';
