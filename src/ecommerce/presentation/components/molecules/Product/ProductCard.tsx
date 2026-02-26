@@ -2,14 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../../context/CartContext';
 import { Product } from '@/src/ecommerce/domain/entities/Product';
 import Button from '@/src/shared/components/atoms/Button';
 import { ProductImage } from '@/src/shared/components/molecules/ProductImage';
 import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
 import { StockIndicator } from '@/src/shared/components/atoms/StockIndicator';
 import { Badge } from '@/src/shared/components/atoms/Badge';
-import { AddToCartButton } from '../atoms/AddToCartButton';
+import { AddToCartButton } from '../../atoms/AddToCartButton';
 
 interface ProductCardProps {
   product: Product;

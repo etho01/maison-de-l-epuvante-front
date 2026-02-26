@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetProductsViewModel, useDeleteProductViewModel } from '../../hooks/products';
-import { Product } from '../../../domain/entities/Product';
-import { AdminProductCard } from '../molecules/AdminProductCard';
+import { useGetProductsViewModel, useDeleteProductViewModel } from '../../../../hooks/products';
+import { Product } from '../../../../../domain/entities/Product';
+import { AdminProductCard } from '../../../molecules/AdminProductCard';
 import { Input, Select, Button } from '@/src/shared/components/atoms';
 import { ConfirmModal } from '@/src/shared/components/molecules';
 import { Pagination } from '@/src/shared/domain/Pagination';

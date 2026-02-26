@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { ProductList } from './ProductList';
-import { ProductFilters } from '../molecules/ProductFilters';
+import { ProductList } from './Product/ProductList';
+import { ProductFilters } from '../molecules/Product/ProductFilters';
 import { Pagination as PaginationType } from '@/src/shared/domain/Pagination';
 import { Product } from '@/src/ecommerce/domain/entities/Product';
 import { Category } from '@/src/ecommerce/domain/entities/Category';

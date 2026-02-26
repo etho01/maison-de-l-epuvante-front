@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ProductCard } from '../molecules/ProductCard';
+import { ProductCard } from '../../molecules/Product/ProductCard';
 import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
 import { Product } from '@/src/ecommerce/domain/entities/Product';
 

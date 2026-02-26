@@ -3,13 +3,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateProductViewModel, useUpdateProductViewModel } from '../../hooks/products';
-import { useGetAllCategoriesViewModel } from '../../hooks/categories';
-import { Product, CreateProductData, UpdateProductData } from '../../../domain/entities/Product';
-import { Category } from '../../../domain/entities/Category';
+import { useCreateProductViewModel, useUpdateProductViewModel } from '../../../../hooks/products';
+import { useGetAllCategoriesViewModel } from '../../../../hooks/categories';
+import { Product, CreateProductData, UpdateProductData } from '../../../../../domain/entities/Product';
+import { Category } from '../../../../../domain/entities/Category';
 import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
-import { productSchema, ProductFormData } from '../../schemas/ecommerceSchemas';
+import { productSchema, ProductFormData } from '../../../../schemas/ecommerceSchemas';
 
 interface AdminProductFormProps {
   product?: Product;

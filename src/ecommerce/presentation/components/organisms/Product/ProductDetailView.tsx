@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/src/shared/components/ui';
 import { Product } from '@/src/ecommerce/domain/entities/Product';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../../context/CartContext';
 
 interface ProductDetailViewProps {
   product: Product

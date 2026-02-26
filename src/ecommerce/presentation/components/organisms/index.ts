@@ -1,6 +1,6 @@
 export { ProductCatalog } from './ProductCatalog';
-export { ProductList } from './ProductList';
-export { ProductDetailView } from './ProductDetailView';
+export { ProductList } from './Product/ProductList';
+export { ProductDetailView } from './Product/ProductDetailView';
 export { OrdersManager } from './OrdersManager';
 export { OrderDetail } from './OrderDetail';
 export { OrderList } from './OrderList';
@@ -11,8 +11,8 @@ export { StripePaymentWrapper } from './StripePaymentWrapper';
 export { StripePaymentForm } from './StripePaymentForm';
 
 // Admin components
-export { AdminProductList } from './AdminProductList';
-export { AdminProductForm } from './AdminProductForm';
+export { AdminProductList } from './Product/Admin/AdminProductList';
+export { AdminProductForm } from './Product/Admin/AdminProductForm';
 export { AdminCategoryList } from './AdminCategoryList';
 export { AdminCategoryForm } from './AdminCategoryForm';
 export { AdminOrderList } from './AdminOrderList';
