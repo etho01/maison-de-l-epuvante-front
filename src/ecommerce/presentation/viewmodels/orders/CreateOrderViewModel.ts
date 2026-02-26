@@ -1,11 +1,23 @@
-import { CheckoutData } from '../../../domain/entities/Order';
+import { CheckoutData, CheckoutResponse } from '../../../domain/entities/Order';
 import { CheckoutUseCase } from '../../../application/usecases/orders';
 
+interface CreateOrderState {
+  loading: boolean;
+  error: string | null;
+  success: boolean;
+  clientSecret: string | null;
+  orderId: number | null;
+  orderNumber: string | null;
+}
+
 export class CreateOrderViewModel {
-  private state = {
+  private state: CreateOrderState = {
     loading: false,
-    error: null as string | null,
+    error: null,
     success: false,
+    clientSecret: null,
+    orderId: null,
+    orderNumber: null,
   };
 
   private listeners: Set<() => void> = new Set();
@@ -21,20 +33,26 @@ export class CreateOrderViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async checkout(data: CheckoutData): Promise<boolean> {
+  async checkout(data: CheckoutData): Promise<CheckoutResponse | null> {
     try {
       this.state.loading = true;
       this.state.error = null;
       this.state.success = false;
+      this.state.clientSecret = null;
       this.notify();
 
-      await this.checkoutUseCase.execute(data);
+      const response = await this.checkoutUseCase.execute(data);
+      
+      this.state.clientSecret = response.stripePayment.clientSecret;
+      this.state.orderId = response.order.id;
+      this.state.orderNumber = response.order.orderNumber;
       this.state.success = true;
-      return true;
+      
+      return response;
     } catch (err: any) {
       this.state.error = err.message || 'Erreur lors de la création de la commande';
       this.state.success = false;
-      return false;
+      return null;
     } finally {
       this.state.loading = false;
       this.notify();
@@ -44,6 +62,9 @@ export class CreateOrderViewModel {
   resetState() {
     this.state.error = null;
     this.state.success = false;
+    this.state.clientSecret = null;
+    this.state.orderId = null;
+    this.state.orderNumber = null;
     this.notify();
   }
 

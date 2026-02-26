@@ -53,10 +53,26 @@ export interface CheckoutData {
     name: string;
     quantity: number;
     price: number;
-  }>;
+  }>
+  ;
 }
 
 export interface UpdateOrderData {
   status?: OrderStatus;
   adminNotes?: string;
+}
+
+export interface CheckoutResponse {
+  message: string;
+  id: number;
+  order: {
+    id: number;
+    orderNumber: string;
+    status: OrderStatus;
+    totalAmount: number;
+  };
+  stripePayment: {
+    paymentIntentId: string;
+    clientSecret: string;
+  };
 }

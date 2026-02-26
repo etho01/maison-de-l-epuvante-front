@@ -1,10 +1,10 @@
 import { IOrderRepository } from '../../../domain/repositories/IOrderRepository';
-import { Order, CheckoutData } from '../../../domain/entities/Order';
+import { CheckoutData, CheckoutResponse } from '../../../domain/entities/Order';
 
 export class CheckoutUseCase {
   constructor(private orderRepository: IOrderRepository) {}
 
-  async execute(data: CheckoutData): Promise<Order> {
+  async execute(data: CheckoutData): Promise<CheckoutResponse> {
     return await this.orderRepository.checkout(data);
   }
 }

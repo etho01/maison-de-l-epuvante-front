@@ -1,5 +1,5 @@
 import { IOrderRepository } from '../../domain/repositories/IOrderRepository';
-import { Order, CheckoutData, UpdateOrderData } from '../../domain/entities/Order';
+import { Order, CheckoutData, UpdateOrderData, CheckoutResponse } from '../../domain/entities/Order';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class ClientOrderRepository implements IOrderRepository {
@@ -44,8 +44,8 @@ export class ClientOrderRepository implements IOrderRepository {
     return await this.request<Order>(`/orders/${id}`);
   }
 
-  async checkout(data: CheckoutData): Promise<Order> {
-    return await this.request<Order>('/orders/checkout', {
+  async checkout(data: CheckoutData): Promise<CheckoutResponse> {
+    return await this.request<CheckoutResponse>('/orders/checkout', {
       method: 'POST',
       body: JSON.stringify(data),
     });

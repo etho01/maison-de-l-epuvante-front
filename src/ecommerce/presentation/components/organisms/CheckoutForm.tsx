@@ -12,14 +12,16 @@ import Input from '@/src/shared/components/atoms/Input';
 import Button from '@/src/shared/components/atoms/Button';
 import ErrorMessage from '@/src/shared/components/atoms/ErrorMessage';
 import { checkoutSchema, CheckoutFormData } from '../../schemas/ecommerceSchemas';
+import { StripePaymentWrapper } from './StripePaymentWrapper';
 
 export const CheckoutForm: React.FC = () => {
   const router = useRouter();
   const { cart, clearCart } = useCart();
   const createOrderViewModel = useCreateOrderViewModel();
   const { user } = useAuth();
+  const [showPayment, setShowPayment] = useState(false);
 
-  const { loading, error: submitError } = createOrderViewModel.getState();
+  const { loading, error: submitError, clientSecret, orderId, orderNumber } = createOrderViewModel.getState();
 
   const {
     register,
@@ -66,7 +68,7 @@ export const CheckoutForm: React.FC = () => {
       price: item.product.price,
     }));
 
-    const success = await createOrderViewModel.checkout({
+    const response = await createOrderViewModel.checkout({
       shippingAddress: data.shippingAddress,
       billingAddress: finalBillingAddress,
       paymentMethod: 'card',
@@ -74,16 +76,39 @@ export const CheckoutForm: React.FC = () => {
       products,
     });
 
-    if (success) {
-      clearCart();
-      router.push('/commandes?success=true');
+    if (response) {
+      setShowPayment(true);
     }
+  };
+
+  const handlePaymentSuccess = () => {
+    clearCart();
+    router.push('/commandes?success=true');
+  };
+
+  const handlePaymentError = (error: string) => {
+    console.error('Payment error:', error);
   };
 
   if (cart.items.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500">Votre panier est vide</p>
+      </div>
+    );
+  }
+
+  // Afficher le formulaire de paiement Stripe après la création de la commande
+  if (showPayment && clientSecret && orderId && orderNumber) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <StripePaymentWrapper
+          clientSecret={clientSecret}
+          orderId={orderId}
+          orderNumber={orderNumber}
+          onSuccess={handlePaymentSuccess}
+          onError={handlePaymentError}
+        />
       </div>
     );
   }

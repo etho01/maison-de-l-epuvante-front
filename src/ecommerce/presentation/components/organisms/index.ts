@@ -7,6 +7,8 @@ export { OrderList } from './OrderList';
 export { SubscriptionPlansView } from './SubscriptionPlansView';
 export { CartSummary } from './CartSummary';
 export { CheckoutForm } from './CheckoutForm';
+export { StripePaymentWrapper } from './StripePaymentWrapper';
+export { StripePaymentForm } from './StripePaymentForm';
 
 // Admin components
 export { AdminProductList } from './AdminProductList';
