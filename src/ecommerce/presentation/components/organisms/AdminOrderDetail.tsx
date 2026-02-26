@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useGetOrderByIdViewModel, useUpdateOrderViewModel } from '../../hooks/orders';
 import { Order, OrderStatus } from '../../../domain/entities/Order';
-import { OrderStatusBadge } from '../atoms/OrderStatusBadge';
+import { OrderStatusBadge } from '../atoms/Order/OrderStatusBadge';
 import { Select, TextArea, Button } from '@/src/shared/components/atoms';
 
 interface AdminOrderDetailProps {

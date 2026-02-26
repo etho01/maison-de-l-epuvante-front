@@ -6,14 +6,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { registerSchema, type RegisterFormData } from '../schemas/authSchemas';
+import { registerSchema, type RegisterFormData } from '../../schemas/authSchemas';
 import { Input, PasswordInput, Button, ErrorMessage, Link } from '@/src/shared/components/ui';
 
-export default function RegisterForm() {
+export const RegisterForm = () => {
   const { register: registerUser } = useAuth();
   const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);

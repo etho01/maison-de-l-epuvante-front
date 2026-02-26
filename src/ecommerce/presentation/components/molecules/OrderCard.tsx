@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Order } from '../../../domain/entities/Order';
-import { OrderStatusBadge } from '../atoms/OrderStatusBadge';
+import { OrderStatusBadge } from '../atoms/Order/OrderStatusBadge';
 
 interface OrderCardProps {
   order: Order;

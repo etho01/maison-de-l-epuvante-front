@@ -3,7 +3,7 @@
  */
 
 import { Suspense } from 'react';
-import VerifyEmail from '@/src/auth/presentation/components/VerifyEmail';
+import { VerifyEmail } from '@/src/auth/presentation/components/organisms/VerifyEmail';
 
 export default function VerifyEmailPage() {
   return (

@@ -1,6 +1,4 @@
 // Categories hooks
-export { useCategoriesViewModel } from './useCategoriesViewModel';
-export { useCategoryFormViewModel } from './useCategoryFormViewModel';
 export { useCreateCategoryViewModel } from './useCreateCategoryViewModel';
 export { useDeleteCategoryViewModel } from './useDeleteCategoryViewModel';
 export { useGetAllCategoriesViewModel } from './useGetAllCategoriesViewModel';

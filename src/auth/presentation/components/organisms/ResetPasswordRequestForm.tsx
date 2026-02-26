@@ -8,10 +8,10 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { resetPasswordRequestSchema, type ResetPasswordRequestFormData } from '../schemas/authSchemas';
+import { resetPasswordRequestSchema, type ResetPasswordRequestFormData } from '../../schemas/authSchemas';
 import { Input, Button, ErrorMessage, Link } from '@/src/shared/components/ui';
 
-export default function ResetPasswordRequestForm() {
+export const ResetPasswordRequestForm = () => {
   const [success, setSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
