@@ -1,5 +1,6 @@
 import { Administrator } from '../../../domain/entities/Administrator';
 import { GetAllAdministratorsUseCase } from '../../../application/usecases/administrators';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetAllAdministratorsViewModel {
   private state = {
@@ -28,21 +29,23 @@ export class GetAllAdministratorsViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async loadAdministrators(): Promise<void> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
+  loadAdministrators(): Promise<void> {
+    this.state.loading = true;
+    this.state.error = null;
+    this.notify();
 
-      const administrators = await this.getAllAdministratorsUseCase.execute();
-      this.state.administrators = administrators;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors du chargement des administrateurs';
-      this.state.administrators = [];
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.getAllAdministratorsUseCase.execute()
+      .then((administrators) => {
+        this.state.administrators = administrators;
+      })
+      .catch((err: ApiError) => {
+        this.state.error = err.message || 'Erreur lors du chargement des administrateurs';
+        this.state.administrators = [];
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   getState() {

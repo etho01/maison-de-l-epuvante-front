@@ -1,5 +1,6 @@
 import { UpdateAdministratorData } from '../../../domain/entities/Administrator';
 import { UpdateAdministratorUseCase } from '../../../application/usecases/administrators';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class UpdateAdministratorViewModel {
   private state = {
@@ -21,24 +22,26 @@ export class UpdateAdministratorViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async updateAdministrator(id: number, data: UpdateAdministratorData): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.state.success = false;
-      this.notify();
+  updateAdministrator(id: number, data: UpdateAdministratorData): Promise<boolean> {
+    this.state.loading = true;
+    this.state.error = null;
+    this.state.success = false;
+    this.notify();
 
-      await this.updateAdministratorUseCase.execute(id, data);
-      this.state.success = true;
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la mise à jour de l\'administrateur';
-      this.state.success = false;
-      return false;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.updateAdministratorUseCase.execute(id, data)
+      .then(() => {
+        this.state.success = true;
+        return true;
+      })
+      .catch((err: ApiError) => {
+        this.state.error = err.message || 'Erreur lors de la mise à jour de l\'administrateur';
+        this.state.success = false;
+        return false;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {

@@ -1,4 +1,5 @@
 import { DeleteAdministratorUseCase } from '../../../application/usecases/administrators';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class DeleteAdministratorViewModel {
   private state = {
@@ -19,21 +20,23 @@ export class DeleteAdministratorViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async deleteAdministrator(id: number): Promise<boolean> {
-    try {
-      this.state.loading = true;
-      this.state.error = null;
-      this.notify();
+  deleteAdministrator(id: number): Promise<boolean> {
+    this.state.loading = true;
+    this.state.error = null;
+    this.notify();
 
-      await this.deleteAdministratorUseCase.execute(id);
-      return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Erreur lors de la suppression de l\'administrateur';
-      return false;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.deleteAdministratorUseCase.execute(id)
+      .then(() => {
+        return true;
+      })
+      .catch((err: ApiError) => {
+        this.state.error = err.message || 'Erreur lors de la suppression de l\'administrateur';
+        return false;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {
