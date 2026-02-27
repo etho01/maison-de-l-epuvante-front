@@ -9,6 +9,7 @@ import { Pagination } from '@/src/shared/domain/Pagination';
 import { LoaderCard } from '@/src/shared/components/atoms/LoaderCard';
 import { useGetSubscriptionPlansViewModel, useSubscribeViewModel } from '../../../hooks/subscriptions';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface SubscriptionPlansViewProps {
   initialPlans?: SubscriptionPlan[];
@@ -28,23 +29,24 @@ export const SubscriptionPlansView: React.FC<SubscriptionPlansViewProps> = ({ in
   // Filtrer pour ne montrer que les plans actifs côté client
   const plans = allPlans.filter((plan) => plan.active);
 
-  const handleSubscribe = async (planId: number) => {
+  const handleSubscribe = (planId: number) => {
     if (!user) {
       router.push('/auth/login?redirect=/abonnements');
       return;
     }
 
     setError(null);
-    try {
-      await subscribeViewModel.subscribeToPlan({
-        plan: `/api/subscription-plans/${planId}`,
-        paymentMethod: 'card',
-        autoRenew: true,
+    subscribeViewModel.subscribeToPlan({
+      plan: `/api/subscription-plans/${planId}`,
+      paymentMethod: 'card',
+      autoRenew: true,
+    })
+      .then(() => {
+        router.push('/compte?tab=abonnements&success=true');
+      })
+      .catch((err: ApiError) => {
+        setError(err.message || 'Erreur lors de l\'abonnement');
       });
-      router.push('/compte?tab=abonnements&success=true');
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de l\'abonnement');
-    }
   };
 
   return (

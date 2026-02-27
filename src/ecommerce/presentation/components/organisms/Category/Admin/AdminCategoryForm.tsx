@@ -8,6 +8,7 @@ import { Category, CreateCategoryData, UpdateCategoryData } from '../../../../..
 import { Input, Select, TextArea, Button, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
 import { categorySchema, CategoryFormData } from '../../../../schemas/ecommerceSchemas';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface AdminCategoryFormProps {
   category?: Category;
@@ -41,7 +42,7 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
       parentId: category?.parent?.id.toString() || '',
     },
   });
-  const onSubmit = async (formData: CategoryFormData) => {
+  const onSubmit = (formData: CategoryFormData) => {
     setError(null);
     
     const data: CreateCategoryData | UpdateCategoryData = {
@@ -51,16 +52,17 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
       parentId: formData.parentId ? Number(formData.parentId) : undefined,
     };
 
-    try {
-      if (category) {
-        await updateViewModel.updateCategory(category.id, data);
-      } else {
-        await createViewModel.createCategory(data as CreateCategoryData);
-      }
-      onSuccess?.();
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de l\'enregistrement de la catégorie');
-    }
+    const promise = category
+      ? updateViewModel.updateCategory(category.id, data)
+      : createViewModel.createCategory(data as CreateCategoryData);
+
+    promise
+      .then(() => {
+        onSuccess?.();
+      })
+      .catch((err: ApiError) => {
+        setError(err.message || 'Erreur lors de l\'enregistrement de la catégorie');
+      });
   };
 
   return (

@@ -9,6 +9,7 @@ import { ConfirmModal } from '@/src/shared/components/molecules';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { init } from 'next/dist/compiled/webpack/webpack';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface AdminProductListProps {
   onEdit?: (product: Product) => void;
@@ -29,17 +30,18 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
     setProductToDelete(product);
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = () => {
     if (!productToDelete) return;
     
     setError(null);
-    try {
-      await deleteViewModel.deleteProduct(productToDelete.id);
-      setProductToDelete(null);
-      listViewModel.loadProducts();
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la suppression du produit');
-    }
+    deleteViewModel.deleteProduct(productToDelete.id)
+      .then(() => {
+        setProductToDelete(null);
+        listViewModel.loadProducts();
+      })
+      .catch((err: ApiError) => {
+        setError(err.message || 'Erreur lors de la suppression du produit');
+      });
   };
 
   const handleCancelDelete = () => {

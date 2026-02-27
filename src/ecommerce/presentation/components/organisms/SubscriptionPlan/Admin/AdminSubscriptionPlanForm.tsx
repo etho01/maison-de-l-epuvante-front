@@ -8,6 +8,7 @@ import { SubscriptionPlan, CreateSubscriptionPlanData, UpdateSubscriptionPlanDat
 import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
 import { subscriptionPlanSchema, SubscriptionPlanFormData } from '../../../../schemas/ecommerceSchemas';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface AdminSubscriptionPlanFormProps {
   plan?: SubscriptionPlan;
@@ -41,7 +42,7 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
     },
   });
 
-  const onSubmit = async (formData: SubscriptionPlanFormData) => {
+  const onSubmit = (formData: SubscriptionPlanFormData) => {
     setError(null);
     
     const data: CreateSubscriptionPlanData | UpdateSubscriptionPlanData = {
@@ -54,16 +55,17 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
       active: formData.active,
     };
 
-    try {
-      if (plan) {
-        await updateViewModel.updatePlan(plan.id, data);
-      } else {
-        await createViewModel.createPlan(data as CreateSubscriptionPlanData);
-      }
-      onSuccess?.();
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de l\'enregistrement du plan d\'abonnement');
-    }
+    const promise = plan
+      ? updateViewModel.updatePlan(plan.id, data)
+      : createViewModel.createPlan(data as CreateSubscriptionPlanData);
+
+    promise
+      .then(() => {
+        onSuccess?.();
+      })
+      .catch((err: ApiError) => {
+        setError(err.message || 'Erreur lors de l\'enregistrement du plan d\'abonnement');
+      });
   };
 
   return (

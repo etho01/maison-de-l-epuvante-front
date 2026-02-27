@@ -7,6 +7,7 @@ import { CategoryCard } from '../../../molecules/CategoryCard';
 import { Pagination } from '@/src/shared/components/ui';
 import { ConfirmModal } from '@/src/shared/components/molecules';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface AdminCategoryListProps {
   onEdit?: (category: Category) => void;
@@ -27,17 +28,18 @@ export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit, in
     setCategoryToDelete(category);
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = () => {
     if (!categoryToDelete) return;
 
     setError(null);
-    try {
-      await deleteViewModel.deleteCategory(categoryToDelete.id);
-      setCategoryToDelete(null);
-      listViewModel.loadCategories();
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la suppression de la catégorie');
-    }
+    deleteViewModel.deleteCategory(categoryToDelete.id)
+      .then(() => {
+        setCategoryToDelete(null);
+        listViewModel.loadCategories();
+      })
+      .catch((err: ApiError) => {
+        setError(err.message || 'Erreur lors de la suppression de la catégorie');
+      });
   };
 
   const handleCancelDelete = () => {

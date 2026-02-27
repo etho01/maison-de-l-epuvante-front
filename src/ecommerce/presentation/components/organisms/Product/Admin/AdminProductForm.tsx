@@ -10,6 +10,7 @@ import { Category } from '../../../../../domain/entities/Category';
 import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
 import { productSchema, ProductFormData } from '../../../../schemas/ecommerceSchemas';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface AdminProductFormProps {
   product?: Product;
@@ -49,7 +50,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
     },
   });
 
-  const onSubmit = async (formData: ProductFormData) => {
+  const onSubmit = (formData: ProductFormData) => {
     console.log('Form data submitted:', formData);
     setError(null);
     
@@ -67,16 +68,17 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
       weight: formData.weight || undefined,
     };
 
-    try {
-      if (product) {
-        await updateViewModel.updateProduct(product.id, data);
-      } else {
-        await createViewModel.createProduct(data as CreateProductData);
-      }
-      onSuccess?.();
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de l\'enregistrement du produit');
-    }
+    const promise = product
+      ? updateViewModel.updateProduct(product.id, data)
+      : createViewModel.createProduct(data as CreateProductData);
+
+    promise
+      .then(() => {
+        onSuccess?.();
+      })
+      .catch((err: ApiError) => {
+        setError(err.message || 'Erreur lors de l\'enregistrement du produit');
+      });
   };
 
   return (

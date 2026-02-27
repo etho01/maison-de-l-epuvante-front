@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { OrderStatus } from '@/src/ecommerce/domain/entities/Order';
 import { useGetOrderByIdViewModel } from '../../../hooks/orders';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 const statusLabels: Record<OrderStatus, string> = {
   pending: 'En attente',
@@ -26,13 +27,12 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ orderId }) => {
   const [error, setError] = React.useState<string | null>(null);
 
   useEffect(() => {
-    const loadOrder = async () => {
+    const loadOrder = () => {
       setError(null);
-      try {
-        await viewModel.loadOrder(orderId);
-      } catch (err: any) {
-        setError(err.message || 'Erreur lors du chargement de la commande');
-      }
+      viewModel.loadOrder(orderId)
+        .catch((err: ApiError) => {
+          setError(err.message || 'Erreur lors du chargement de la commande');
+        });
     };
     loadOrder();
   }, [orderId]);

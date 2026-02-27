@@ -8,6 +8,7 @@ import {
 } from '@stripe/react-stripe-js';
 import Button from '@/src/shared/components/atoms/Button';
 import ErrorMessage from '@/src/shared/components/atoms/ErrorMessage';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface StripePaymentFormProps {
   orderId: number;
@@ -27,7 +28,7 @@ export const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
@@ -37,27 +38,28 @@ export const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
     setLoading(true);
     setError(null);
 
-    try {
-      const { error: submitError } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/commandes?success=true&orderId=${orderId}`,
-        },
+    stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/commandes?success=true&orderId=${orderId}`,
+      },
+    })
+      .then(({ error: submitError }) => {
+        if (submitError) {
+          setError(submitError.message || 'Une erreur est survenue lors du paiement');
+          onError(submitError.message || 'Une erreur est survenue lors du paiement');
+        } else {
+          onSuccess();
+        }
+      })
+      .catch((err: ApiError) => {
+        const errorMessage = err.message || 'Une erreur est survenue';
+        setError(errorMessage);
+        onError(errorMessage);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-
-      if (submitError) {
-        setError(submitError.message || 'Une erreur est survenue lors du paiement');
-        onError(submitError.message || 'Une erreur est survenue lors du paiement');
-      } else {
-        onSuccess();
-      }
-    } catch (err: any) {
-      const errorMessage = err.message || 'Une erreur est survenue';
-      setError(errorMessage);
-      onError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (

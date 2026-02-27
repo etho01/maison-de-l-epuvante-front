@@ -7,12 +7,13 @@ import { useCart } from '../../../context/CartContext';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
 import { useCreateOrderViewModel } from '../../../hooks/orders';
-import { Address } from '@/src/ecommerce/domain/entities/Order';
+import { Address, OrderError } from '@/src/ecommerce/domain/entities/Order';
 import Input from '@/src/shared/components/atoms/Input';
 import Button from '@/src/shared/components/atoms/Button';
 import ErrorMessage from '@/src/shared/components/atoms/ErrorMessage';
 import { checkoutSchema, CheckoutFormData } from '../../../schemas/ecommerceSchemas';
 import { StripePaymentWrapper } from '../StripePaymentWrapper';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export const CheckoutForm: React.FC = () => {
   const router = useRouter();
@@ -55,8 +56,7 @@ export const CheckoutForm: React.FC = () => {
 
   const useSameAddress = watch('useSameAddress');
 
-  const onSubmit = async (data: CheckoutFormData) => {
-    console.log('Form data submitted:', data);
+  const onSubmit = (data: CheckoutFormData) => {
     setError(null);
 
     const finalBillingAddress: Address = data.useSameAddress 
@@ -70,19 +70,35 @@ export const CheckoutForm: React.FC = () => {
       price: item.product.price,
     }));
 
-    try {
-      await createOrderViewModel.checkout({
-        shippingAddress: data.shippingAddress,
-        billingAddress: finalBillingAddress,
-        paymentMethod: 'card',
-        customerNotes: data.customerNotes || undefined,
-        products,
+    createOrderViewModel.checkout({
+      shippingAddress: data.shippingAddress,
+      billingAddress: finalBillingAddress,
+      paymentMethod: 'card',
+      customerNotes: data.customerNotes || undefined,
+      products,
+    })
+      .then(() => {
+        setShowPayment(true);
+      })
+      .catch((err: ApiError) => {
+        let data = err.getData();
+        if (err.hasError(OrderError.INVALID_QUANTITY)) {
+          if (data['quantity'] < 0)
+          {
+            setError('La quantité du produit ' + data['productName'] + ' ne peut pas être négative.');
+          }
+          else if (data['quantity'] >= data['availableStock']) 
+          {
+            setError('Le produit ' + data['productName'] + ' est en rupture de stock. Quantité disponible : ' + data['availableStock']);
+          }
+        } else if (err.hasError(OrderError.ORDER_NOT_FOUND)) {
+          setError('Le produit ' + data?.['productName'] + ' n\'existe pas.');
+        } else {
+          setError(err.message || 'Erreur lors de la création de la commande');
+        }
       });
-      setShowPayment(true);
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la création de la commande');
-    }
   };
+
 
   const handlePaymentSuccess = () => {
     clearCart();

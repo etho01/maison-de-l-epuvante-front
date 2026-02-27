@@ -7,6 +7,7 @@ import { Input, Select, Button } from '@/src/shared/components/atoms';
 import { ConfirmModal } from '@/src/shared/components/molecules';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface AdminSubscriptionPlanListProps {
   onEdit?: (plan: SubscriptionPlan) => void;
@@ -27,17 +28,18 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
     setPlanToDelete(plan);
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = () => {
     if (!planToDelete) return;
     
     setError(null);
-    try {
-      await deleteViewModel.deletePlan(planToDelete.id);
-      setPlanToDelete(null);
-      listViewModel.loadPlans();
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la suppression du plan d\'abonnement');
-    }
+    deleteViewModel.deletePlan(planToDelete.id)
+      .then(() => {
+        setPlanToDelete(null);
+        listViewModel.loadPlans();
+      })
+      .catch((err: ApiError) => {
+        setError(err.message || 'Erreur lors de la suppression du plan d\'abonnement');
+      });
   };
 
   const handleCancelDelete = () => {

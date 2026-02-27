@@ -5,6 +5,7 @@ import { useGetOrderByIdViewModel, useUpdateOrderViewModel } from '../../../../h
 import { Order, OrderStatus } from '../../../../../domain/entities/Order';
 import { OrderStatusBadge } from '../../../atoms/Order/OrderStatusBadge';
 import { Select, TextArea, Button } from '@/src/shared/components/atoms';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface AdminOrderDetailProps {
   orderId: number;
@@ -35,13 +36,12 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
   const [adminNotes, setAdminNotes] = useState('');
 
   useEffect(() => {
-    const loadOrder = async () => {
+    const loadOrder = () => {
       setError(null);
-      try {
-        await getOrderViewModel.loadOrder(orderId);
-      } catch (err: any) {
-        setError(err.message || 'Erreur lors du chargement de la commande');
-      }
+      getOrderViewModel.loadOrder(orderId)
+        .catch((err: ApiError) => {
+          setError(err.message || 'Erreur lors du chargement de la commande');
+        });
     };
     loadOrder();
   }, [orderId]);
@@ -53,19 +53,20 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
     }
   }, [order]);
 
-  const handleUpdateOrder = async () => {
+  const handleUpdateOrder = () => {
     if (!order || !selectedStatus) return;
     
     setError(null);
-    try {
-      await updateOrderViewModel.updateOrder(order.id, {
-        status: selectedStatus,
-        adminNotes: adminNotes || undefined,
+    updateOrderViewModel.updateOrder(order.id, {
+      status: selectedStatus,
+      adminNotes: adminNotes || undefined,
+    })
+      .then(() => {
+        onUpdate?.();
+      })
+      .catch((err: ApiError) => {
+        setError(err.message || 'Erreur lors de la mise à jour de la commande');
       });
-      onUpdate?.();
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la mise à jour de la commande');
-    }
   };
 
   if (loading && !order) {
