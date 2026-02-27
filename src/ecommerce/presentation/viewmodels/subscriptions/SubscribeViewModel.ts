@@ -1,4 +1,5 @@
 import { SubscribeUseCase } from '../../application/usecases/subscriptions';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class SubscribeViewModel {
   private state = {
@@ -18,16 +19,18 @@ export class SubscribeViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async subscribeToPlan(data: SubscriptionCreateData): Promise<void> {
+  subscribeToPlan(data: SubscriptionCreateData): Promise<void> {
     this.state.subscribing = true;
     this.notify();
 
-    try {
-      await this.subscribeUseCase.execute(data);
-    } finally {
-      this.state.subscribing = false;
-      this.notify();
-    }
+    return this.subscribeUseCase.execute(data)
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.subscribing = false;
+        this.notify();
+      });
   }
 
   getState() {

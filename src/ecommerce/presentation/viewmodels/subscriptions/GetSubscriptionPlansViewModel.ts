@@ -34,29 +34,31 @@ export class GetSubscriptionPlansViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async init() {
-    if (this.state.plans.length > 0) return;
-    await this.loadPlans();
+  init(): Promise<void> {
+    if (this.state.plans.length > 0) return Promise.resolve();
+    return this.loadPlans();
   }
 
-  async loadPlans(page: number = 1): Promise<void> {
+  loadPlans(page: number = 1): Promise<void> {
     this.state.loading = true;
     this.notify();
 
-    try {
-      const result = await this.getSubscriptionPlansUseCase.execute({
-        ...this.state.filters,
-        page,
+    return this.getSubscriptionPlansUseCase.execute({
+      ...this.state.filters,
+      page,
+    })
+      .then((result) => {
+        this.state.plans = result.member;
+        this.state.pagination = result.pagination;
+      })
+      .catch((err: ApiError) => {
+        this.state.plans = [];
+        throw err;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
       });
-      this.state.plans = result.member;
-      this.state.pagination = result.pagination;
-    } catch (err: any) {
-      this.state.plans = [];
-      throw err;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
   }
 
   setFilters(filters: Partial<SubscriptionPlansFilters>) {

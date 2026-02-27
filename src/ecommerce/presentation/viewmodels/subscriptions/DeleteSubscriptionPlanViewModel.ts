@@ -1,4 +1,5 @@
 import { DeleteSubscriptionPlanUseCase } from '../../../application/usecases/subscriptions';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class DeleteSubscriptionPlanViewModel {
   private state = {
@@ -18,16 +19,18 @@ export class DeleteSubscriptionPlanViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async deletePlan(id: number): Promise<void> {
+  deletePlan(id: number): Promise<void> {
     this.state.loading = true;
     this.notify();
 
-    try {
-      await this.deleteSubscriptionPlanUseCase.execute(id);
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.deleteSubscriptionPlanUseCase.execute(id)
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {

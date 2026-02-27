@@ -1,5 +1,6 @@
 import { CreateSubscriptionPlanData } from '../../../domain/entities/SubscriptionPlan';
 import { CreateSubscriptionPlanUseCase } from '../../../application/usecases/subscriptions';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class CreateSubscriptionPlanViewModel {
   private state = {
@@ -20,18 +21,22 @@ export class CreateSubscriptionPlanViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async createPlan(data: CreateSubscriptionPlanData): Promise<void> {
+  createPlan(data: CreateSubscriptionPlanData): Promise<void> {
     this.state.loading = true;
     this.state.success = false;
     this.notify();
 
-    try {
-      await this.createSubscriptionPlanUseCase.execute(data);
-      this.state.success = true;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.createSubscriptionPlanUseCase.execute(data)
+      .then(() => {
+        this.state.success = true;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {

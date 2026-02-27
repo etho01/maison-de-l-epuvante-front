@@ -20,20 +20,22 @@ export class GetSubscriptionPlanByIdViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async loadPlan(id: number): Promise<void> {
+  loadPlan(id: number): Promise<void> {
     this.state.loading = true;
     this.notify();
 
-    try {
-      const plan = await this.getSubscriptionPlanByIdUseCase.execute(id);
-      this.state.plan = plan;
-    } catch (err: any) {
-      this.state.plan = null;
-      throw err;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.getSubscriptionPlanByIdUseCase.execute(id)
+      .then((plan) => {
+        this.state.plan = plan;
+      })
+      .catch((err: ApiError) => {
+        this.state.plan = null;
+        throw err;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   getState() {
