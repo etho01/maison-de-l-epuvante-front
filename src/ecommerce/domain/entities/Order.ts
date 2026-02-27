@@ -76,3 +76,8 @@ export interface CheckoutResponse {
     clientSecret: string;
   };
 }
+
+export enum OrderError {
+  ORDER_NOT_FOUND = 'ORDER_NOT_FOUND',
+  INVALID_QUANTITY = 'INVALID_QUANTITY',
+}
