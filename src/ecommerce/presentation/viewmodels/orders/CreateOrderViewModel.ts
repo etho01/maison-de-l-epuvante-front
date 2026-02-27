@@ -1,5 +1,6 @@
 import { CheckoutData, CheckoutResponse } from '../../../domain/entities/Order';
 import { CheckoutUseCase } from '../../../application/usecases/orders';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface CreateOrderState {
   loading: boolean;
@@ -31,25 +32,27 @@ export class CreateOrderViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async checkout(data: CheckoutData): Promise<CheckoutResponse> {
+  checkout(data: CheckoutData): Promise<CheckoutResponse> {
     this.state.loading = true;
     this.state.success = false;
     this.state.clientSecret = null;
     this.notify();
 
-    try {
-      const response = await this.checkoutUseCase.execute(data);
-      
-      this.state.clientSecret = response.stripePayment.clientSecret;
-      this.state.orderId = response.order.id;
-      this.state.orderNumber = response.order.orderNumber;
-      this.state.success = true;
-      
-      return response;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.checkoutUseCase.execute(data)
+      .then((response) => {
+        this.state.clientSecret = response.stripePayment.clientSecret;
+        this.state.orderId = response.order.id;
+        this.state.orderNumber = response.order.orderNumber;
+        this.state.success = true;
+        return response;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {

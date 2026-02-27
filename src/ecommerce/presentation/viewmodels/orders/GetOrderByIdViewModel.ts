@@ -1,5 +1,6 @@
 import { Order, UpdateOrderData } from '../../domain/entities/Order';
 import { GetOrderByIdUseCase } from '../../application/usecases/orders';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetOrderByIdViewModel {
   private state = {
@@ -20,16 +21,21 @@ export class GetOrderByIdViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async loadOrder(id: number) {
+  loadOrder(id: number): Promise<void> {
     this.state.loading = true;
     this.notify();
 
-    try {
-      this.state.order = await this.getOrderByIdUseCase.execute(id);
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.getOrderByIdUseCase.execute(id)
+      .then((order) => {
+        this.state.order = order;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   getState() {

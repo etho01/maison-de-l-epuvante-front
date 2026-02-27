@@ -1,6 +1,7 @@
 import { Order } from '../../domain/entities/Order';
 import { GetOrdersUseCase } from '../../application/usecases/orders';
 import { Pagination } from '@/src/shared/domain/Pagination';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetOrdersViewModel {
   private state = {
@@ -34,25 +35,29 @@ export class GetOrdersViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async init() {
-    if (this.state.orders.length > 0) return;
-    await this.loadOrders();
+  init(): Promise<void> {
+    if (this.state.orders.length > 0) return Promise.resolve();
+    return this.loadOrders();
   }
 
-  async loadOrders(page?: number) {
+  loadOrders(page?: number): Promise<void> {
     this.state.loading = true;
     this.notify();
 
-    try {
-      const pageToLoad = page || this.state.currentPage;
-      const response = await this.getOrdersUseCase.execute(pageToLoad);
-      this.state.orders = response.member;
-      this.state.pagination = response.pagination;
-      this.state.currentPage = pageToLoad;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    const pageToLoad = page || this.state.currentPage;
+    return this.getOrdersUseCase.execute(pageToLoad)
+      .then((response) => {
+        this.state.orders = response.member;
+        this.state.pagination = response.pagination;
+        this.state.currentPage = pageToLoad;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   getState() {

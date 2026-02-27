@@ -1,5 +1,6 @@
 import { Order, UpdateOrderData } from '../../domain/entities/Order';
 import { UpdateOrderUseCase } from '../../application/usecases/orders';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class UpdateOrderViewModel {
   private state = {
@@ -20,19 +21,23 @@ export class UpdateOrderViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async updateOrder(id: number, data: UpdateOrderData): Promise<Order> {
+  updateOrder(id: number, data: UpdateOrderData): Promise<Order> {
     this.state.loading = true;
     this.state.success = false;
     this.notify();
 
-    try {
-      const updatedOrder = await this.updateOrderUseCase.execute(id, data);
-      this.state.success = true;
-      return updatedOrder;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.updateOrderUseCase.execute(id, data)
+      .then((updatedOrder) => {
+        this.state.success = true;
+        return updatedOrder;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {
