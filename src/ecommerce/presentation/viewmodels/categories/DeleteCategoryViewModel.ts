@@ -1,4 +1,5 @@
 import { DeleteCategoryUseCase } from '../../application/usecases/categories';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class DeleteCategoryViewModel {
   private state = {
@@ -19,18 +20,22 @@ export class DeleteCategoryViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async deleteCategory(id: number): Promise<void> {
+  deleteCategory(id: number): Promise<void> {
     this.state.loading = true;
     this.state.success = false;
     this.notify();
 
-    try {
-      await this.deleteCategoryUseCase.execute(id);
-      this.state.success = true;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.deleteCategoryUseCase.execute(id)
+      .then(() => {
+        this.state.success = true;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {

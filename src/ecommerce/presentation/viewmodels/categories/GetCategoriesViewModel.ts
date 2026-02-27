@@ -2,6 +2,7 @@ import { Category } from '../../domain/entities/Category';
 import { GetCategoriesUseCase } from '../../application/usecases/categories';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { GetCategoriesFilter } from '../../application/usecases/categories/GetCategoriesUseCase';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetCategoriesViewModel {
   private state = {
@@ -35,23 +36,27 @@ export class GetCategoriesViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async init() {
-    if (this.state.categories.length > 0) return;
-    await this.loadCategories();
+  init(): Promise<void> {
+    if (this.state.categories.length > 0) return Promise.resolve();
+    return this.loadCategories();
   }
 
-  async loadCategories() {
+  loadCategories(): Promise<void> {
     this.state.loading = true;
     this.notify();
 
-    try {
-      const response = await this.getCategoriesUseCase.execute(this.state.filter);
-      this.state.categories = response.member;
-      this.state.pagination = response.pagination;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.getCategoriesUseCase.execute(this.state.filter)
+      .then((response) => {
+        this.state.categories = response.member;
+        this.state.pagination = response.pagination;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   setFilter(filter: GetCategoriesFilter) 

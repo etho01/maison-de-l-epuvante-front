@@ -1,5 +1,6 @@
 import { Category } from '../../domain/entities/Category';
 import { GetAllCategoriesUseCase } from '../../application/usecases/categories';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetAllCategoriesViewModel {
   private state = {
@@ -20,16 +21,21 @@ export class GetAllCategoriesViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async loadCategories() {
+  loadCategories(): Promise<void> {
     this.state.loading = true;
     this.notify();
 
-    try {
-      this.state.categories = await this.getAllCategoriesUseCase.execute();
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.getAllCategoriesUseCase.execute()
+      .then((categories: any) => {
+        this.state.categories = categories;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   getState() {

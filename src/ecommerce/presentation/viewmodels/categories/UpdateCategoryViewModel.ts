@@ -1,5 +1,6 @@
 import { UpdateCategoryData } from '../../domain/entities/Category';
 import { UpdateCategoryUseCase } from '../../application/usecases/categories';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class UpdateCategoryViewModel {
   private state = {
@@ -20,18 +21,22 @@ export class UpdateCategoryViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async updateCategory(id: number, data: UpdateCategoryData): Promise<void> {
+  updateCategory(id: number, data: UpdateCategoryData): Promise<void> {
     this.state.loading = true;
     this.state.success = false;
     this.notify();
 
-    try {
-      await this.updateCategoryUseCase.execute(id, data);
-      this.state.success = true;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.updateCategoryUseCase.execute(id, data)
+      .then(() => {
+        this.state.success = true;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {
