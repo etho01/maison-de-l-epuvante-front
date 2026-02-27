@@ -36,10 +36,7 @@ export class ClientApiClient {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.error('Client API Error:', {
-                    status: response.status,
-                    data: errorData,
-                });
+                
                 throw new ApiError(
                     response.status,
                     errorData.errors || [],
