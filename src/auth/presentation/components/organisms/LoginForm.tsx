@@ -12,8 +12,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input, PasswordInput, Button, ErrorMessage, Link } from '@/src/shared/components/ui';
 import { LoginFormData, loginSchema } from '../../schemas/authSchemas';
 import { useAuth } from '../../context/AuthContext';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
-export default function LoginForm() {
+interface LoginFormProps {
+  redirectUrl?: string;
+}
+
+export default function LoginForm({ redirectUrl }: LoginFormProps) {
   const { login } = useAuth();
   const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -30,14 +35,15 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      setSubmitError(null);
-      await login(data.email, data.password);
-      router.push('/compte');
-    } catch (error: any) {
-      setSubmitError(error.message || 'Erreur de connexion');
-    }
+  const onSubmit = (data: LoginFormData) => {
+    setSubmitError(null);
+    login(data.email, data.password)
+      .then(() => {
+        router.push(redirectUrl || '/compte');
+      })
+      .catch((error: ApiError) => {
+        setSubmitError(error.message || 'Erreur de connexion');
+      });
   };
 
   return (

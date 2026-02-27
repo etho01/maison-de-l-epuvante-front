@@ -62,7 +62,7 @@ export function AuthProvider({
 
   const login = async (email: string, password: string) => {
     const response = await loginUseCase.execute({ email, password });
-    setUser(response.user);
+    await refreshUser(); // Recharger les données de l'utilisateur après connexion
   };
 
   const register = async (
@@ -77,7 +77,7 @@ export function AuthProvider({
       firstName,
       lastName,
     });
-    setUser(response.user);
+    refreshUser(); // Recharger les données de l'utilisateur après inscription
   };
 
   const logout = async () => {
