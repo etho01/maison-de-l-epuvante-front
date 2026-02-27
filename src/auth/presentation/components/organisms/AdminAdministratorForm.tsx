@@ -46,7 +46,7 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
     },
   });
 
-  const onSubmit = async (formData: CreateAdministratorFormData | UpdateAdministratorFormData) => {
+  const onSubmit = (formData: CreateAdministratorFormData | UpdateAdministratorFormData) => {
     const data = {
       email: formData.email,
       firstName: formData.firstName,
@@ -56,13 +56,16 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
       ...('password' in formData && formData.password ? { password: formData.password } : {}),
     };
 
-    const success = administrator 
-      ? await updateViewModel.updateAdministrator(administrator.id, data)
-      : await createViewModel.createAdministrator(data as CreateAdministratorData);
+    const promise = administrator 
+      ? updateViewModel.updateAdministrator(administrator.id, data)
+      : createViewModel.createAdministrator(data as CreateAdministratorData);
     
-    if (success) {
-      onSuccess?.();
-    }
+    promise
+      .then((success) => {
+        if (success) {
+          onSuccess?.();
+        }
+      });
   };
 
   return (

@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordRequestSchema, type ResetPasswordRequestFormData } from '../../schemas/authSchemas';
 import { Input, Button, ErrorMessage, Link } from '@/src/shared/components/ui';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export const ResetPasswordRequestForm = () => {
   const [success, setSuccess] = useState(false);
@@ -26,24 +27,27 @@ export const ResetPasswordRequestForm = () => {
     },
   });
 
-  const onSubmit = async (data: ResetPasswordRequestFormData) => {
-    try {
-      setSubmitError(null);
-      const response = await fetch('/api/auth/reset-password-request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+  const onSubmit = (data: ResetPasswordRequestFormData) => {
+    setSubmitError(null);
+    fetch('/api/auth/reset-password-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw new Error(error.message);
+          });
+        }
+        return response.json();
+      })
+      .then(() => {
+        setSuccess(true);
+      })
+      .catch((error: ApiError) => {
+        setSubmitError(error.message || 'Erreur lors de la demande');
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
-      }
-
-      setSuccess(true);
-    } catch (error: any) {
-      setSubmitError(error.message || 'Erreur lors de la demande');
-    }
   };
 
   if (success) {

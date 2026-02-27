@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PasswordInput, Button, ErrorMessage } from '@/src/shared/components/ui';
 import { ChangePasswordFormData, changePasswordSchema } from '../../../schemas/authSchemas';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export default function ChangePasswordForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -28,27 +29,30 @@ export default function ChangePasswordForm() {
     },
   });
 
-  const onSubmit = async (data: ChangePasswordFormData) => {
-    try {
-      setSubmitError(null);
-      setSuccessMessage(null);
+  const onSubmit = (data: ChangePasswordFormData) => {
+    setSubmitError(null);
+    setSuccessMessage(null);
 
-      const response = await fetch('/api/auth/change-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+    fetch('/api/auth/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw new Error(error.message || 'Erreur lors du changement de mot de passe');
+          });
+        }
+        return response.json();
+      })
+      .then(() => {
+        setSuccessMessage('Mot de passe modifié avec succès');
+        reset();
+      })
+      .catch((error: ApiError) => {
+        setSubmitError(error.message || 'Erreur lors du changement de mot de passe');
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erreur lors du changement de mot de passe');
-      }
-
-      setSuccessMessage('Mot de passe modifié avec succès');
-      reset();
-    } catch (error: any) {
-      setSubmitError(error.message || 'Erreur lors du changement de mot de passe');
-    }
   };
 
   return (

@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterFormData } from '../../schemas/authSchemas';
 import { Input, PasswordInput, Button, ErrorMessage, Link } from '@/src/shared/components/ui';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export const RegisterForm = () => {
   const { register: registerUser } = useAuth();
@@ -32,19 +33,20 @@ export const RegisterForm = () => {
     },
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
-    try {
-      setSubmitError(null);
-      await registerUser(
-        data.email,
-        data.password,
-        data.firstName,
-        data.lastName
-      );
-      router.push('/compte');
-    } catch (error: any) {
-      setSubmitError(error.message || 'Erreur lors de l\'inscription');
-    }
+  const onSubmit = (data: RegisterFormData) => {
+    setSubmitError(null);
+    registerUser(
+      data.email,
+      data.password,
+      data.firstName,
+      data.lastName
+    )
+      .then(() => {
+        router.push('/compte');
+      })
+      .catch((error: ApiError) => {
+        setSubmitError(error.message || 'Erreur lors de l\'inscription');
+      });
   };
 
   return (

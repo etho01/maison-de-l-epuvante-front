@@ -23,17 +23,19 @@ export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ 
     setAdminToDelete(admin);
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = () => {
     if (!adminToDelete) return;
     
-    const success = await deleteViewModel.deleteAdministrator(adminToDelete.id);
-    if (success) {
-      setAdminToDelete(null);
-      listViewModel.loadAdministrators();
-    } else {
-      const deleteError = deleteViewModel.getState().error;
-      if (deleteError) alert(deleteError);
-    }
+    deleteViewModel.deleteAdministrator(adminToDelete.id)
+      .then((success) => {
+        if (success) {
+          setAdminToDelete(null);
+          listViewModel.loadAdministrators();
+        } else {
+          const deleteError = deleteViewModel.getState().error;
+          if (deleteError) alert(deleteError);
+        }
+      });
   };
 
   const handleCancelDelete = () => {

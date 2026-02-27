@@ -13,6 +13,7 @@ import { User } from '@/src/auth/domain/entities/User';
 import { Input, Button, ErrorMessage } from '@/src/shared/components/ui';
 import { useAuth } from '../../../context/AuthContext';
 import { UpdateProfileFormData, updateProfileSchema } from '../../../schemas/updateProfileSchema';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 interface EditProfileFormProps {
   user: User;
@@ -37,30 +38,34 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
     },
   });
 
-  const onSubmit = async (data: UpdateProfileFormData) => {
-    try {
-      setSubmitError(null);
-      setSuccessMessage(null);
+  const onSubmit = (data: UpdateProfileFormData) => {
+    setSubmitError(null);
+    setSuccessMessage(null);
 
-      const response = await fetch('/api/auth/update-profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+    fetch('/api/auth/update-profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw new Error(error.message || 'Erreur lors de la mise à jour');
+          });
+        }
+        return response.json();
+      })
+      .then(() => {
+        setSuccessMessage('Profil mis à jour avec succès');
+        // Rafraîchir les données utilisateur
+        return refreshUser();
+      })
+      .then(() => {
+        router.refresh();
+      })
+      .catch((error: ApiError) => {
+        setSubmitError(error.message || 'Erreur lors de la mise à jour du profil');
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erreur lors de la mise à jour');
-      }
-
-      setSuccessMessage('Profil mis à jour avec succès');
-      
-      // Rafraîchir les données utilisateur
-      await refreshUser();
-      router.refresh();
-    } catch (error: any) {
-      setSubmitError(error.message || 'Erreur lors de la mise à jour du profil');
-    }
   };
 
   return (

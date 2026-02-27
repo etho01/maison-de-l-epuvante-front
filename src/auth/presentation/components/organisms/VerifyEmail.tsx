@@ -24,27 +24,29 @@ export default function VerifyEmail() {
       return;
     }
 
-    const verifyEmail = async () => {
-      try {
-        const response = await fetch(`/api/auth/verify-email?token=${token}`);
-        const data = await response.json();
-
-        if (response.ok) {
-          setStatus('success');
-          setMessage(data.message || 'Email vérifié avec succès');
-          
-          // Redirection après 3 secondes
-          setTimeout(() => {
-            router.push('/auth/login');
-          }, 3000);
-        } else {
+    const verifyEmail = () => {
+      fetch(`/api/auth/verify-email?token=${token}`)
+        .then((response) => {
+          return response.json().then((data) => ({ response, data }));
+        })
+        .then(({ response, data }) => {
+          if (response.ok) {
+            setStatus('success');
+            setMessage(data.message || 'Email vérifié avec succès');
+            
+            // Redirection après 3 secondes
+            setTimeout(() => {
+              router.push('/auth/login');
+            }, 3000);
+          } else {
+            setStatus('error');
+            setMessage(data.message || 'Erreur lors de la vérification');
+          }
+        })
+        .catch(() => {
           setStatus('error');
-          setMessage(data.message || 'Erreur lors de la vérification');
-        }
-      } catch (error) {
-        setStatus('error');
-        setMessage('Erreur de connexion au serveur');
-      }
+          setMessage('Erreur de connexion au serveur');
+        });
     };
 
     verifyEmail();
