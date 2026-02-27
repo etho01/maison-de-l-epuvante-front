@@ -1,5 +1,6 @@
 import { CreateProductUseCase } from "@/src/ecommerce/application/usecases";
 import { CreateProductData } from "@/src/ecommerce/domain/entities/Product";
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 
 export class CreateProductViewModel {
@@ -21,18 +22,22 @@ export class CreateProductViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async createProduct(data: CreateProductData): Promise<void> {
+  createProduct(data: CreateProductData): Promise<void> {
     this.state.loading = true;
     this.state.success = false;
     this.notify();
 
-    try {
-      await this.createProductUseCase.execute(data);
-      this.state.success = true;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.createProductUseCase.execute(data)
+      .then(() => {
+        this.state.success = true;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {

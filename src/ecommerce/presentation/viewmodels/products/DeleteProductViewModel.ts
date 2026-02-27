@@ -1,4 +1,5 @@
 import { DeleteProductUseCase } from "@/src/ecommerce/application/usecases";
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 
 export class DeleteProductViewModel {
@@ -20,18 +21,22 @@ export class DeleteProductViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async deleteProduct(id: number): Promise<void> {
+  deleteProduct(id: number): Promise<void> {
     this.state.loading = true;
     this.state.success = false;
     this.notify();
 
-    try {
-      await this.deleteProductUseCase.execute(id);
-      this.state.success = true;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.deleteProductUseCase.execute(id)
+      .then(() => {
+        this.state.success = true;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {

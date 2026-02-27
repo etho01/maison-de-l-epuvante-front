@@ -1,6 +1,7 @@
 import { GetProductsUseCase } from '@/src/ecommerce/application/usecases';
 import { Product, ProductFilters, ProductType } from '@/src/ecommerce/domain/entities/Product';
 import { Pagination } from '@/src/shared/domain/Pagination';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetProductsViewModel {
   private state = {
@@ -36,23 +37,27 @@ export class GetProductsViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async init() {
-    if (this.state.products.length > 0) return;
-    await this.loadProducts();
+  init(): Promise<void> {
+    if (this.state.products.length > 0) return Promise.resolve();
+    return this.loadProducts();
   }
 
-  async loadProducts() {
+  loadProducts(): Promise<void> {
     this.state.loading = true;
     this.notify();
 
-    try {
-      const response = await this.getProductsUseCase.execute(this.state.filters);
-      this.state.products = response.member;
-      this.state.pagination = response.pagination;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.getProductsUseCase.execute(this.state.filters)
+      .then((response) => {
+        this.state.products = response.member;
+        this.state.pagination = response.pagination;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   setFilters(filters: Partial<ProductFilters>) {

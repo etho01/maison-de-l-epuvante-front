@@ -1,5 +1,6 @@
 import { UpdateProductUseCase } from '@/src/ecommerce/application/usecases';
 import { UpdateProductData } from '@/src/ecommerce/domain/entities/Product';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class UpdateProductViewModel {
   private state = {
@@ -20,18 +21,22 @@ export class UpdateProductViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  async updateProduct(id: number, data: UpdateProductData): Promise<void> {
+  updateProduct(id: number, data: UpdateProductData): Promise<void> {
     this.state.loading = true;
     this.state.success = false;
     this.notify();
 
-    try {
-      await this.updateProductUseCase.execute(id, data);
-      this.state.success = true;
-    } finally {
-      this.state.loading = false;
-      this.notify();
-    }
+    return this.updateProductUseCase.execute(id, data)
+      .then(() => {
+        this.state.success = true;
+      })
+      .catch((error: ApiError) => {
+        throw error;
+      })
+      .finally(() => {
+        this.state.loading = false;
+        this.notify();
+      });
   }
 
   resetState() {
