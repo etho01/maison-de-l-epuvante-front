@@ -1,4 +1,4 @@
-export { Pagination } from './Pagination';
+export { PaginationComponent as Pagination } from './Pagination';
 export { ProductImage } from './ProductImage';
 export { FilterSection } from './FilterSection';
 export type { FilterOption } from './FilterSection';
@@ -9,8 +9,18 @@ export type { CartItemProduct } from './CartItem';
 export { OrderCard } from './Order/OrderCard';
 export type { OrderCardData, OrderCardItem } from './Order/OrderCard';
 export { FormSection } from './FormSection';
+export type { FormSectionProps } from './FormSection';
 export { FormActions } from './FormActions';
 export { Modal, ModalHeader, ModalBody, ModalFooter } from './Modal';
 export type { ModalProps } from './Modal';
 export { ConfirmModal } from './ConfirmModal';
-
+export { DataTable } from './DataTable';
+export type { Column, DataTableProps } from './DataTable';
+export { PageHeader } from './PageHeader';
+export type { PageHeaderProps } from './PageHeader';
+export { SearchBar } from './SearchBar';
+export type { SearchBarProps } from './SearchBar';
+export { ActionMenu } from './ActionMenu';
+export type { ActionMenuItem, ActionMenuProps } from './ActionMenu';
+export { StatCard } from './StatCard';
+export type { StatCardProps, StatTrend, StatColor } from './StatCard';

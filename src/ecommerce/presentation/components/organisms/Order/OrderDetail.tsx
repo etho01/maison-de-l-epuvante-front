@@ -1,128 +1,110 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Order, OrderStatus } from '@/src/ecommerce/domain/entities/Order';
-import { useGetOrderByIdViewModel } from '../../../hooks/orders';
-import { ApiError } from '@/src/shared/domain/ApiError';
-
-const statusLabels: Record<OrderStatus, string> = {
-  pending: 'En attente',
-  processing: 'En cours',
-  paid: 'Payée',
-  shipped: 'Expédiée',
-  delivered: 'Livrée',
-  cancelled: 'Annulée',
-  refunded: 'Remboursée',
-};
+import { Card, CardHeader, CardTitle, CardBody } from '@/src/shared/components/atoms/Card';
+import { OrderStatusBadge } from '@/src/shared/components/molecules/Order/OrderStatusBadge';
+import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
 
 interface OrderDetailProps {
-  order : Order;
+  order: Order;
 }
 
 export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   const router = useRouter();
 
+  const orderDate = new Date(order.createdAt).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   return (
     <>
       <button
         onClick={() => router.push('/commandes')}
-        className="text-red-600 hover:underline mb-6"
+        className="text-red-600 hover:underline mb-6 flex items-center gap-1 text-sm"
       >
         ← Retour aux commandes
       </button>
 
-      <div className="border rounded-lg p-6">
-        <div className="flex justify-between items-start mb-6">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">Commande #{order.orderNumber}</h1>
-            <p className="text-gray-600">
-              Passée le{' '}
-              {new Date(order.createdAt).toLocaleDateString('fr-FR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </p>
+      <Card variant="default" padding="lg">
+        {/* En-tête */}
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div>
+              <CardTitle>Commande #{order.orderNumber}</CardTitle>
+              <p className="text-sm text-gray-500 mt-1">Passée le {orderDate}</p>
+            </div>
+            <OrderStatusBadge status={order.status as OrderStatus} size="md" />
           </div>
-          <span className="px-4 py-2 rounded bg-blue-100 text-blue-800 font-medium">
-            {statusLabels[order.status as OrderStatus]}
-          </span>
-        </div>
+        </CardHeader>
 
-        {/* Articles */}
-        <div className="mb-6">
-          <h2 className="text-xl font-bold mb-4">Articles commandés</h2>
-          <div className="space-y-3">
-            {order.items.map((item: any) => (
-              <div key={item.id} className="flex justify-between border-b pb-3">
-                <div>
-                  <p className="font-medium">{item.product.name}</p>
-                  <p className="text-sm text-gray-600">Quantité: {item.quantity}</p>
-                  <p className="text-sm text-gray-600">Prix unitaire: {item.unitPrice} €</p>
+        <CardBody>
+          {/* Articles */}
+          <section className="mb-6">
+            <h2 className="text-base font-semibold text-gray-900 mb-3">Articles commandés</h2>
+            <div className="space-y-3">
+              {order.items.map((item: any) => (
+                <div key={item.id} className="flex justify-between border-b border-gray-100 pb-3 last:border-0">
+                  <div>
+                    <p className="font-medium text-gray-900">{item.product.name}</p>
+                    <p className="text-sm text-gray-500">Quantité : {item.quantity}</p>
+                    <p className="text-sm text-gray-500">Prix unitaire : <PriceDisplay price={item.unitPrice} size="sm" /></p>
+                  </div>
+                  <PriceDisplay price={item.totalPrice} variant="emphasis" size="md" />
                 </div>
-                <p className="font-bold">{item.totalPrice} €</p>
+              ))}
+            </div>
+            <div className="flex justify-between items-center pt-4 border-t border-gray-200 mt-2">
+              <span className="font-semibold text-gray-900">Total</span>
+              <PriceDisplay price={order.totalAmount} variant="emphasis" size="lg" />
+            </div>
+          </section>
+
+          {/* Adresses */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {[
+              { label: 'Adresse de livraison', addr: order.shippingAddress },
+              { label: 'Adresse de facturation', addr: order.billingAddress },
+            ].map(({ label, addr }) => (
+              <div key={label}>
+                <h3 className="text-sm font-semibold text-gray-700 mb-2">{label}</h3>
+                <address className="not-italic text-sm text-gray-600 space-y-0.5">
+                  <p>{addr.firstName} {addr.lastName}</p>
+                  <p>{addr.address}</p>
+                  <p>{addr.postalCode} {addr.city}</p>
+                  <p>{addr.country}</p>
+                </address>
               </div>
             ))}
-          </div>
-          <div className="flex justify-between pt-4 border-t mt-4">
-            <span className="text-xl font-bold">Total:</span>
-            <span className="text-2xl font-bold text-red-600">{order.totalAmount} €</span>
-          </div>
-        </div>
+          </section>
 
-        {/* Adresses */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <h3 className="font-bold mb-2">Adresse de livraison</h3>
-            <div className="text-sm text-gray-700">
-              <p>
-                {order.shippingAddress.firstName} {order.shippingAddress.lastName}
-              </p>
-              <p>{order.shippingAddress.address}</p>
-              <p>
-                {order.shippingAddress.postalCode} {order.shippingAddress.city}
-              </p>
-              <p>{order.shippingAddress.country}</p>
-            </div>
-          </div>
-          <div>
-            <h3 className="font-bold mb-2">Adresse de facturation</h3>
-            <div className="text-sm text-gray-700">
-              <p>
-                {order.billingAddress.firstName} {order.billingAddress.lastName}
-              </p>
-              <p>{order.billingAddress.address}</p>
-              <p>
-                {order.billingAddress.postalCode} {order.billingAddress.city}
-              </p>
-              <p>{order.billingAddress.country}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Informations supplémentaires */}
-        <div>
-          <h3 className="font-bold mb-2">Informations supplémentaires</h3>
-          <p className="text-sm text-gray-700">
-            Méthode de paiement: <span className="font-medium">{order.paymentMethod}</span>
-          </p>
-          {order.customerNotes && (
-            <div className="mt-2">
-              <p className="text-sm font-medium">Notes du client:</p>
-              <p className="text-sm text-gray-700">{order.customerNotes}</p>
-            </div>
-          )}
-          {order.adminNotes && (
-            <div className="mt-2">
-              <p className="text-sm font-medium">Notes de l'administration:</p>
-              <p className="text-sm text-gray-700">{order.adminNotes}</p>
-            </div>
-          )}
-        </div>
-      </div>
+          {/* Informations supplémentaires */}
+          <section>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Informations supplémentaires</h3>
+            <p className="text-sm text-gray-600">
+              Méthode de paiement : <span className="font-medium text-gray-900">{order.paymentMethod}</span>
+            </p>
+            {order.customerNotes && (
+              <div className="mt-2">
+                <p className="text-sm font-medium text-gray-700">Notes du client</p>
+                <p className="text-sm text-gray-600 mt-0.5">{order.customerNotes}</p>
+              </div>
+            )}
+            {order.adminNotes && (
+              <div className="mt-2">
+                <p className="text-sm font-medium text-gray-700">Notes de l'administration</p>
+                <p className="text-sm text-gray-600 mt-0.5">{order.adminNotes}</p>
+              </div>
+            )}
+          </section>
+        </CardBody>
+      </Card>
     </>
   );
 };
+

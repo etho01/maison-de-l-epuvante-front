@@ -1,37 +1,20 @@
 'use client';
 
 import React from 'react';
-import { OrderStatus } from '../../../domain/entities/Order';
+import { OrderStatus, ORDER_STATUS_LABELS } from '@/src/ecommerce/domain/entities/Order';
+import { ORDER_STATUS_VARIANTS } from '@/src/ecommerce/presentation/constants/orderStatus';
+import { Badge } from '@/src/shared/components/atoms/Badge';
 
 interface OrderStatusBadgeProps {
   status: OrderStatus;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  className?: string;
 }
 
-export const OrderStatusBadge: React.FC<OrderStatusBadgeProps> = ({ status }) => {
-  const getStatusConfig = () => {
-    switch (status) {
-      case 'pending':
-        return { label: 'En attente', color: 'bg-yellow-100 text-yellow-800' };
-      case 'processing':
-        return { label: 'En cours', color: 'bg-blue-100 text-blue-800' };
-      case 'paid':
-        return { label: 'Payée', color: 'bg-green-100 text-green-800' };
-      case 'shipped':
-        return { label: 'Expédiée', color: 'bg-indigo-100 text-indigo-800' };
-      case 'delivered':
-        return { label: 'Livrée', color: 'bg-teal-100 text-teal-800' };
-      case 'cancelled':
-        return { label: 'Annulée', color: 'bg-red-100 text-red-800' };
-      case 'refunded':
-        return { label: 'Remboursée', color: 'bg-gray-100 text-gray-800' };
-    }
-  };
-
-  const config = getStatusConfig();
-
+export const OrderStatusBadge: React.FC<OrderStatusBadgeProps> = ({ status, size = 'sm', className = '' }) => {
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
-      {config.label}
-    </span>
+    <Badge variant={ORDER_STATUS_VARIANTS[status]} size={size} className={className}>
+      {ORDER_STATUS_LABELS[status]}
+    </Badge>
   );
 };

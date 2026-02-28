@@ -4,16 +4,12 @@
  */
 
 import React from 'react';
-import { Badge, BadgeVariant } from '../../atoms/Badge';
+import { Badge } from '../../atoms/Badge';
+import { OrderStatus, ORDER_STATUS_LABELS } from '@/src/ecommerce/domain/entities/Order';
+import { ORDER_STATUS_VARIANTS } from '@/src/ecommerce/presentation/constants/orderStatus';
 
-export type OrderStatus = 
-  | 'pending' 
-  | 'processing' 
-  | 'paid' 
-  | 'shipped' 
-  | 'delivered' 
-  | 'cancelled' 
-  | 'refunded';
+// Ré-exporté pour rétrocompatibilité des consommateurs existants
+export type { OrderStatus };
 
 interface OrderStatusBadgeProps {
   status: OrderStatus;
@@ -21,34 +17,14 @@ interface OrderStatusBadgeProps {
   className?: string;
 }
 
-const statusLabels: Record<OrderStatus, string> = {
-  pending: 'En attente',
-  processing: 'En cours',
-  paid: 'Payée',
-  shipped: 'Expédiée',
-  delivered: 'Livrée',
-  cancelled: 'Annulée',
-  refunded: 'Remboursée',
-};
-
-const statusVariants: Record<OrderStatus, BadgeVariant> = {
-  pending: 'warning',
-  processing: 'info',
-  paid: 'success',
-  shipped: 'secondary',
-  delivered: 'success',
-  cancelled: 'danger',
-  refunded: 'default',
-};
-
 export const OrderStatusBadge: React.FC<OrderStatusBadgeProps> = ({
   status,
   size = 'sm',
   className = '',
 }) => {
   return (
-    <Badge variant={statusVariants[status]} size={size} className={className}>
-      {statusLabels[status]}
+    <Badge variant={ORDER_STATUS_VARIANTS[status]} size={size} className={className}>
+      {ORDER_STATUS_LABELS[status]}
     </Badge>
   );
 };
