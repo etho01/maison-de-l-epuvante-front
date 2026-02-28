@@ -2,15 +2,12 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { DeleteAdministratorViewModel } from '../../viewmodels/administrators/DeleteAdministratorViewModel';
-import { DeleteAdministratorUseCase } from '../../../application/usecases/administrators';
-import { ClientAdministratorRepository } from '../../../infrastructure/repositories/ClientAdministratorRepository';
+import { authContainer } from '@/src/auth/container';
 
-const administratorRepository = new ClientAdministratorRepository();
-const deleteAdministratorUseCase = new DeleteAdministratorUseCase(administratorRepository);
 
 export const useDeleteAdministratorViewModel = () => {
   const viewModel = useMemo(
-    () => new DeleteAdministratorViewModel(deleteAdministratorUseCase),
+    () => new DeleteAdministratorViewModel(authContainer.deleteAdministratorUseCase),
     []
   );
 

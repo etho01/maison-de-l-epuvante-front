@@ -10,6 +10,7 @@
  */
 
 import { AuthRepositoryImpl } from './infrastructure/repositories/AuthRepositoryImpl';
+import { ClientAdministratorRepository } from './infrastructure/repositories/ClientAdministratorRepository';
 import { LoginUseCase } from './application/usecases/LoginUseCase';
 import { RegisterUseCase } from './application/usecases/RegisterUseCase';
 import { GetCurrentUserUseCase } from './application/usecases/GetCurrentUserUseCase';
@@ -20,6 +21,13 @@ import { RequestPasswordResetUseCase } from './application/usecases/RequestPassw
 import { ConfirmPasswordResetUseCase } from './application/usecases/ConfirmPasswordResetUseCase';
 import { VerifyEmailUseCase } from './application/usecases/VerifyEmailUseCase';
 import { ResendVerificationEmailUseCase } from './application/usecases/ResendVerificationEmailUseCase';
+import {
+  CreateAdministratorUseCase,
+  UpdateAdministratorUseCase,
+  DeleteAdministratorUseCase,
+  GetAllAdministratorsUseCase,
+  GetAdministratorByIdUseCase,
+} from './application/usecases/administrators';
 
 class AuthContainer {
   // ─── Repository (lazy) ────────────────────────────────────────────────────
@@ -77,6 +85,37 @@ class AuthContainer {
   private _resendVerificationEmailUseCase?: ResendVerificationEmailUseCase;
   get resendVerificationEmailUseCase() {
     return (this._resendVerificationEmailUseCase ??= new ResendVerificationEmailUseCase(this.repository));
+  }
+
+  // ─── Administrators (lazy) ───────────────────────────────────────────────────
+  private _adminRepository?: ClientAdministratorRepository;
+  private get adminRepository() {
+    return (this._adminRepository ??= new ClientAdministratorRepository());
+  }
+
+  private _getAllAdministratorsUseCase?: GetAllAdministratorsUseCase;
+  get getAllAdministratorsUseCase() {
+    return (this._getAllAdministratorsUseCase ??= new GetAllAdministratorsUseCase(this.adminRepository));
+  }
+
+  private _getAdministratorByIdUseCase?: GetAdministratorByIdUseCase;
+  get getAdministratorByIdUseCase() {
+    return (this._getAdministratorByIdUseCase ??= new GetAdministratorByIdUseCase(this.adminRepository));
+  }
+
+  private _createAdministratorUseCase?: CreateAdministratorUseCase;
+  get createAdministratorUseCase() {
+    return (this._createAdministratorUseCase ??= new CreateAdministratorUseCase(this.adminRepository));
+  }
+
+  private _updateAdministratorUseCase?: UpdateAdministratorUseCase;
+  get updateAdministratorUseCase() {
+    return (this._updateAdministratorUseCase ??= new UpdateAdministratorUseCase(this.adminRepository));
+  }
+
+  private _deleteAdministratorUseCase?: DeleteAdministratorUseCase;
+  get deleteAdministratorUseCase() {
+    return (this._deleteAdministratorUseCase ??= new DeleteAdministratorUseCase(this.adminRepository));
   }
 }
 

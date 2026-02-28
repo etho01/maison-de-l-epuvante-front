@@ -2,15 +2,12 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { UpdateAdministratorViewModel } from '../../viewmodels/administrators/UpdateAdministratorViewModel';
-import { UpdateAdministratorUseCase } from '../../../application/usecases/administrators';
-import { ClientAdministratorRepository } from '../../../infrastructure/repositories/ClientAdministratorRepository';
+import { authContainer } from '@/src/auth/container';
 
-const administratorRepository = new ClientAdministratorRepository();
-const updateAdministratorUseCase = new UpdateAdministratorUseCase(administratorRepository);
 
 export const useUpdateAdministratorViewModel = () => {
   const viewModel = useMemo(
-    () => new UpdateAdministratorViewModel(updateAdministratorUseCase),
+    () => new UpdateAdministratorViewModel(authContainer.updateAdministratorUseCase),
     []
   );
 

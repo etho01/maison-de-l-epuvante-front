@@ -3,15 +3,12 @@
 import { useMemo, useEffect, useState } from 'react';
 import { Administrator } from '../../../domain/entities/Administrator';
 import { GetAllAdministratorsViewModel } from '../../viewmodels/administrators/GetAllAdministratorsViewModel';
-import { GetAllAdministratorsUseCase } from '../../../application/usecases/administrators';
-import { ClientAdministratorRepository } from '../../../infrastructure/repositories/ClientAdministratorRepository';
+import { authContainer } from '@/src/auth/container';
 
-const administratorRepository = new ClientAdministratorRepository();
-const getAllAdministratorsUseCase = new GetAllAdministratorsUseCase(administratorRepository);
 
 export const useGetAllAdministratorsViewModel = (initialAdministrators?: Administrator[]) => {
   const viewModel = useMemo(
-    () => new GetAllAdministratorsViewModel(getAllAdministratorsUseCase, initialAdministrators),
+    () => new GetAllAdministratorsViewModel(authContainer.getAllAdministratorsUseCase, initialAdministrators),
     [initialAdministrators]
   );
 
