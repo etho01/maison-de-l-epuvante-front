@@ -1,12 +1,12 @@
 /**
- * Auth Container — Injection de dépendances
+ * Auth Container — Injection de dépendances (CLIENT-SIDE)
  *
- * Singleton côté CLIENT uniquement (composants 'use client').
- * Une seule instance de AuthRepositoryImpl est partagée par tous les use cases.
+ * Lazy singletons : le repository et les use cases sont instanciés uniquement
+ * au premier accès, puis mis en cache. Rien n'est créé au chargement du module.
  *
  * Usage :
  *   import { authContainer } from '@/src/auth/container';
- *   const result = await authContainer.loginUseCase.execute({ email, password });
+ *   await authContainer.loginUseCase.execute({ email, password });
  */
 
 import { AuthRepositoryImpl } from './infrastructure/repositories/AuthRepositoryImpl';
@@ -21,20 +21,63 @@ import { ConfirmPasswordResetUseCase } from './application/usecases/ConfirmPassw
 import { VerifyEmailUseCase } from './application/usecases/VerifyEmailUseCase';
 import { ResendVerificationEmailUseCase } from './application/usecases/ResendVerificationEmailUseCase';
 
-const repository = new AuthRepositoryImpl();
+class AuthContainer {
+  // ─── Repository (lazy) ────────────────────────────────────────────────────
+  private _repository?: AuthRepositoryImpl;
+  get repository() {
+    return (this._repository ??= new AuthRepositoryImpl());
+  }
 
-export const authContainer = {
-  /** Repository partagé (utile pour logout qui ne possède pas encore son use case dans le context) */
-  repository,
+  // ─── Use Cases (lazy) ─────────────────────────────────────────────────────
+  private _loginUseCase?: LoginUseCase;
+  get loginUseCase() {
+    return (this._loginUseCase ??= new LoginUseCase(this.repository));
+  }
 
-  loginUseCase: new LoginUseCase(repository),
-  registerUseCase: new RegisterUseCase(repository),
-  getCurrentUserUseCase: new GetCurrentUserUseCase(repository),
-  logoutUseCase: new LogoutUseCase(repository),
-  changePasswordUseCase: new ChangePasswordUseCase(repository),
-  updateUserUseCase: new UpdateUserUseCase(repository),
-  requestPasswordResetUseCase: new RequestPasswordResetUseCase(repository),
-  confirmPasswordResetUseCase: new ConfirmPasswordResetUseCase(repository),
-  verifyEmailUseCase: new VerifyEmailUseCase(repository),
-  resendVerificationEmailUseCase: new ResendVerificationEmailUseCase(repository),
-};
+  private _registerUseCase?: RegisterUseCase;
+  get registerUseCase() {
+    return (this._registerUseCase ??= new RegisterUseCase(this.repository));
+  }
+
+  private _getCurrentUserUseCase?: GetCurrentUserUseCase;
+  get getCurrentUserUseCase() {
+    return (this._getCurrentUserUseCase ??= new GetCurrentUserUseCase(this.repository));
+  }
+
+  private _logoutUseCase?: LogoutUseCase;
+  get logoutUseCase() {
+    return (this._logoutUseCase ??= new LogoutUseCase(this.repository));
+  }
+
+  private _changePasswordUseCase?: ChangePasswordUseCase;
+  get changePasswordUseCase() {
+    return (this._changePasswordUseCase ??= new ChangePasswordUseCase(this.repository));
+  }
+
+  private _updateUserUseCase?: UpdateUserUseCase;
+  get updateUserUseCase() {
+    return (this._updateUserUseCase ??= new UpdateUserUseCase(this.repository));
+  }
+
+  private _requestPasswordResetUseCase?: RequestPasswordResetUseCase;
+  get requestPasswordResetUseCase() {
+    return (this._requestPasswordResetUseCase ??= new RequestPasswordResetUseCase(this.repository));
+  }
+
+  private _confirmPasswordResetUseCase?: ConfirmPasswordResetUseCase;
+  get confirmPasswordResetUseCase() {
+    return (this._confirmPasswordResetUseCase ??= new ConfirmPasswordResetUseCase(this.repository));
+  }
+
+  private _verifyEmailUseCase?: VerifyEmailUseCase;
+  get verifyEmailUseCase() {
+    return (this._verifyEmailUseCase ??= new VerifyEmailUseCase(this.repository));
+  }
+
+  private _resendVerificationEmailUseCase?: ResendVerificationEmailUseCase;
+  get resendVerificationEmailUseCase() {
+    return (this._resendVerificationEmailUseCase ??= new ResendVerificationEmailUseCase(this.repository));
+  }
+}
+
+export const authContainer = new AuthContainer();
