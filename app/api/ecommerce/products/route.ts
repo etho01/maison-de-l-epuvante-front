@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
 import { ProductFilters } from '@/src/ecommerce/domain/entities/Product';
 import { GetProductsUseCase } from '@/src/ecommerce/application/usecases/products';
@@ -24,11 +25,11 @@ export async function GET(request: NextRequest) {
     const products = await getProductsUseCase.execute(filters);
 
     return NextResponse.json(products);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Erreur lors de la récupération des produits' },
-      { status: error.status || 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
 
@@ -37,10 +38,10 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const product = await productRepository.create(data);
     return NextResponse.json(product, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Erreur lors de la création du produit' },
-      { status: error.status || 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
