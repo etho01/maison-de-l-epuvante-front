@@ -15,9 +15,9 @@
  */
 
 import { 
-  IAuthRepository, 
-  AuthResponse 
+  IAuthRepository
 } from '../../domain/repositories/IAuthRepository';
+import { AuthResponse } from '../../domain/entities/AuthResponse';
 import { 
   User, 
   LoginCredentials, 

@@ -5,7 +5,8 @@
 
 import React from 'react';
 import { Badge } from '../../atoms/Badge';
-import { OrderStatus, ORDER_STATUS_LABELS } from '@/src/ecommerce/domain/entities/Order';
+import { OrderStatus } from '@/src/ecommerce/domain/entities/Order';
+import { ORDER_STATUS_LABELS } from '@/src/ecommerce/domain/constants/orderStatus';
 import { ORDER_STATUS_VARIANTS } from '@/src/ecommerce/presentation/constants/orderStatus';
 
 // Ré-exporté pour rétrocompatibilité des consommateurs existants

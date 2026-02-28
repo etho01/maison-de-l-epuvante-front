@@ -2,7 +2,7 @@
  * Constantes de présentation pour les statuts de commande.
  *
  * Séparation des responsabilités :
- *  - Les LABELS (libellés métier) → domaine : `Order.ts` › `ORDER_STATUS_LABELS`
+ *  - Les LABELS (libellés métier) → domaine : `domain/constants/orderStatus.ts` › `ORDER_STATUS_LABELS`
  *  - Les VARIANTS/COULEURS       → ici (couche présentation)
  *
  * On n'importe jamais de classes CSS ou de logique d'affichage dans le domaine.

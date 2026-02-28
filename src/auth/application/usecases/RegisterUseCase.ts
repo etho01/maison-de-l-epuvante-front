@@ -3,7 +3,8 @@
  * Logique métier pour l'inscription
  */
 
-import { IAuthRepository, AuthResponse } from '../../domain/repositories/IAuthRepository';
+import { IAuthRepository } from '../../domain/repositories/IAuthRepository';
+import { AuthResponse } from '../../domain/entities/AuthResponse';
 import { RegisterData } from '../../domain/entities/User';
 
 export class RegisterUseCase {

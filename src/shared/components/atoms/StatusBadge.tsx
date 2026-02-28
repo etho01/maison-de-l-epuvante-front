@@ -10,7 +10,7 @@
 
 import React from 'react';
 import { Badge, BadgeVariant, BadgeSize } from './Badge';
-import { ORDER_STATUS_LABELS } from '@/src/ecommerce/domain/entities/Order';
+import { ORDER_STATUS_LABELS } from '@/src/ecommerce/domain/constants/orderStatus';
 import { ORDER_STATUS_VARIANTS } from '@/src/ecommerce/presentation/constants/orderStatus';
 
 export interface StatusConfig {
