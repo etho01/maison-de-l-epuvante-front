@@ -1,6 +1,7 @@
-import { Order, UpdateOrderData } from '../../domain/entities/Order';
-import { GetOrderByIdUseCase } from '../../application/usecases/orders';
+
+import { GetOrderByIdUseCase } from '@/src/ecommerce/application/usecases';
 import { ApiError } from '@/src/shared/domain/ApiError';
+import { Order } from '@stripe/stripe-js';
 
 export class GetOrderByIdViewModel {
   private state = {
@@ -26,7 +27,7 @@ export class GetOrderByIdViewModel {
     this.notify();
 
     return this.getOrderByIdUseCase.execute(id)
-      .then((order) => {
+      .then((order : Order) => {
         this.state.order = order;
       })
       .catch((error: ApiError) => {

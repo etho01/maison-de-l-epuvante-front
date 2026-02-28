@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { OrderStatus } from '@/src/ecommerce/domain/entities/Order';
+import { Order, OrderStatus } from '@/src/ecommerce/domain/entities/Order';
 import { useGetOrderByIdViewModel } from '../../../hooks/orders';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
@@ -17,43 +17,11 @@ const statusLabels: Record<OrderStatus, string> = {
 };
 
 interface OrderDetailProps {
-  orderId: number;
+  order : Order;
 }
 
-export const OrderDetail: React.FC<OrderDetailProps> = ({ orderId }) => {
+export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   const router = useRouter();
-  const viewModel = useGetOrderByIdViewModel();
-  const { order, loading } = viewModel.getState();
-  const [error, setError] = React.useState<string | null>(null);
-
-  useEffect(() => {
-    const loadOrder = () => {
-      setError(null);
-      viewModel.loadOrder(orderId)
-        .catch((err: ApiError) => {
-          setError(err.message || 'Erreur lors du chargement de la commande');
-        });
-    };
-    loadOrder();
-  }, [orderId]);
-
-  if (loading) {
-    return <p>Chargement...</p>;
-  }
-
-  if (error || !order) {
-    return (
-      <div className="text-center">
-        <p className="text-red-600 text-lg mb-4">{error || 'Commande non trouvée'}</p>
-        <button
-          onClick={() => router.push('/commandes')}
-          className="text-red-600 hover:underline"
-        >
-          ← Retour aux commandes
-        </button>
-      </div>
-    );
-  }
 
   return (
     <>

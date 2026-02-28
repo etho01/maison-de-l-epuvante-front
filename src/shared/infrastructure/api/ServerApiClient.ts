@@ -40,7 +40,7 @@ export class ServerApiClient {
             ...options,
             headers: {
                 'Content-Type': 'application/json',
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                ...((token && !hasAlledgedlyRetried) ? { Authorization: `Bearer ${token}` } : {}),
                 ...options.headers,
             },
         };
@@ -50,7 +50,6 @@ export class ServerApiClient {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.log('Error response data:', errorData, response.status);
 
                 if (response.status === 401) {
                     // Token invalide ou expiré, supprimer le token stocké
@@ -80,6 +79,7 @@ export class ServerApiClient {
             if (error instanceof ApiError) {
                 throw error;
             }
+            console.error('Erreur de connexion au serveur:', error);
             throw new ApiError(500, ['ERROR_SERVER'], null, 'Erreur de connexion au serveur');
         }
     }

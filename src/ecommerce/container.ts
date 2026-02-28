@@ -9,14 +9,12 @@
  *   const products = await ecommerceContainer.getProductsUseCase.execute();
  */
 
-import {
-  ClientCategoryRepository,
-  ClientProductRepository,
-  ClientOrderRepository,
-  ClientSubscriptionRepository,
-  ClientSubscriptionPlanRepository,
-  ClientDigitalContentRepository,
-} from './infrastructure/repositories';
+import { ClientCategoryRepository } from './infrastructure/repositories/ClientCategoryRepository';
+import { ClientProductRepository } from './infrastructure/repositories/ClientProductRepository';
+import { ClientOrderRepository } from './infrastructure/repositories/ClientOrderRepository';
+import { ClientSubscriptionRepository } from './infrastructure/repositories/ClientSubscriptionRepository';
+import { ClientSubscriptionPlanRepository } from './infrastructure/repositories/ClientSubscriptionPlanRepository';
+import { ClientDigitalContentRepository } from './infrastructure/repositories/ClientDigitalContentRepository';
 
 import {
   GetCategoriesUseCase,
