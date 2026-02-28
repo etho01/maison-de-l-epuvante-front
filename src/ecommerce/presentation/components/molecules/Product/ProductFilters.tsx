@@ -31,7 +31,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   ];
 
   return (
-    <aside className="w-64 flex-shrink-0 space-y-4">
+    <aside className="w-64 shrink-0 space-y-4">
       <FilterSection
         title="Catégories"
         options={categoryOptions}
