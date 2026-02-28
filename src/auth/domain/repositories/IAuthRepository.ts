@@ -13,11 +13,7 @@ import {
   VerifyEmailData 
 } from '../entities/User';
 import { UpdateUserData } from '../entities/UpdateUserData';
-
-export interface AuthResponse {
-  token: string;
-  user: User;
-}
+import { AuthResponse } from '../entities/AuthResponse';
 
 export interface IAuthRepository {
   login(credentials: LoginCredentials): Promise<AuthResponse>;
