@@ -4,6 +4,7 @@
  */
 
 import { NextResponse } from 'next/server';
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyAuthRepository } from '@/src/auth/infrastructure/repositories/SymfonyAuthRepository';
 import { LogoutUseCase } from '@/src/auth/application/usecases/LogoutUseCase';
 import { TokenStorage } from '@/src/auth/infrastructure/storage/TokenStorage';
@@ -20,10 +21,10 @@ export async function POST() {
     await TokenStorage.removeTokenServer();
 
     return NextResponse.json({ message: 'Déconnexion réussie' }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: 'Erreur lors de la déconnexion' },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }

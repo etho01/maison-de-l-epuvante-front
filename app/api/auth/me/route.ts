@@ -4,6 +4,7 @@
  */
 
 import { NextResponse } from 'next/server';
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyAuthRepository } from '@/src/auth/infrastructure/repositories/SymfonyAuthRepository';
 import { GetCurrentUserUseCase } from '@/src/auth/application/usecases/GetCurrentUserUseCase';
 
@@ -16,10 +17,10 @@ export async function GET() {
     const user = await getCurrentUserUseCase.execute();
 
     return NextResponse.json(user, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Erreur lors de la récupération de l\'utilisateur' },
-      { status: error.status || 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }

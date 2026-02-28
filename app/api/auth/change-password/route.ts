@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyAuthRepository } from '@/src/auth/infrastructure/repositories/SymfonyAuthRepository';
 import { ChangePasswordUseCase } from '@/src/auth/application/usecases/ChangePasswordUseCase';
 
@@ -21,10 +22,10 @@ export async function POST(request: NextRequest) {
       { message: 'Mot de passe modifié avec succès' },
       { status: 200 }
     );
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Erreur lors du changement de mot de passe' },
-      { status: error.status || 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
