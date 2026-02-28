@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonySubscriptionPlanRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonySubscriptionPlanRepository';
 import { GetSubscriptionPlanByIdUseCase, UpdateSubscriptionPlanUseCase, DeleteSubscriptionPlanUseCase } from '@/src/ecommerce/application/usecases/subscriptions';
 
@@ -15,11 +16,11 @@ export async function GET(
     const { id } = await params;
     const plan = await getSubscriptionPlanByIdUseCase.execute(parseInt(id));
     return NextResponse.json(plan);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Plan d\'abonnement non trouvé' },
-      { status: error.status || 404 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
 
@@ -33,11 +34,11 @@ export async function PATCH(
     
     const plan = await updateSubscriptionPlanUseCase.execute(parseInt(id), data);
     return NextResponse.json(plan);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Erreur lors de la modification du plan d\'abonnement' },
-      { status: error.status || 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
 
@@ -49,10 +50,10 @@ export async function DELETE(
     const { id } = await params;
     await deleteSubscriptionPlanUseCase.execute(parseInt(id));
     return new NextResponse(null, { status: 204 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Erreur lors de la suppression du plan d\'abonnement' },
-      { status: error.status || 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
