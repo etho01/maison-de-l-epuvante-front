@@ -76,7 +76,7 @@ export const changePasswordSchema = z.object({
   newPassword: z
     .string()
     .min(1, 'Le nouveau mot de passe est requis')
-    .min(6, 'Le mot de passe doit contenir au moins 6 caractères')
+    .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
     .regex(/[A-Z]/, 'Le mot de passe doit contenir au moins une majuscule')
     .regex(/[0-9]/, 'Le mot de passe doit contenir au moins un chiffre'),
 });
