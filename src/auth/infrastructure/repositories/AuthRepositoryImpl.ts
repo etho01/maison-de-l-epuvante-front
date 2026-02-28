@@ -1,7 +1,17 @@
 /**
- * Infrastructure: Auth Repository Implementation
- * Implémentation concrète du repository d'authentification
- * Communique avec les API routes Next.js (qui servent de proxy vers Symfony)
+ * Infrastructure: Auth Repository Implementation (CLIENT-SIDE)
+ *
+ * ✅ À utiliser dans :
+ *   - Les composants React 'use client'
+ *   - Les hooks de présentation
+ *   - Le AuthContext
+ *
+ * ❌ NE PAS utiliser dans :
+ *   - Les API Routes Next.js  → utiliser SymfonyAuthRepository
+ *   - Les Server Components  → utiliser SymfonyAuthRepository
+ *
+ * Fonctionnement : appelle les API Routes Next.js (/api/auth/*)
+ * qui servent de proxy sécurisé vers Symfony (cookie httpOnly).
  */
 
 import { 

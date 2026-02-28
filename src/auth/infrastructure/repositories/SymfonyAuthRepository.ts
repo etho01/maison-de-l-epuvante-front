@@ -1,7 +1,17 @@
 /**
- * Infrastructure: Symfony Auth Repository
- * Implémentation pour les appels serveur directs à Symfony
- * Utilisé dans les API Routes Next.js et le Layout serveur
+ * Infrastructure: Symfony Auth Repository (SERVER-SIDE)
+ *
+ * ✅ À utiliser dans :
+ *   - Les API Routes Next.js  (app/api/auth/**)
+ *   - Les Server Components  (ex: app/compte/page.tsx)
+ *   - Le layout serveur
+ *
+ * ❌ NE PAS utiliser dans :
+ *   - Les composants 'use client'  → utiliser AuthRepositoryImpl
+ *   - Les hooks de présentation   → utiliser AuthRepositoryImpl
+ *
+ * Fonctionnement : appelle directement l’API Symfony via serverApiClient
+ * (dispose du cookie de session lors du rendu serveur).
  */
 
 import { 
