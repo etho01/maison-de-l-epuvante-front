@@ -10,7 +10,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PasswordInput, Button, ErrorMessage } from '@/src/shared/components/ui';
 import { ChangePasswordFormData, changePasswordSchema } from '../../../schemas/authSchemas';
-import { ApiError } from '@/src/shared/domain/ApiError';
+import { authContainer } from '@/src/auth/container';
+
+const { changePasswordUseCase } = authContainer;
 
 export default function ChangePasswordForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -29,30 +31,21 @@ export default function ChangePasswordForm() {
     },
   });
 
-  const onSubmit = (data: ChangePasswordFormData) => {
+  const onSubmit = async (data: ChangePasswordFormData) => {
     setSubmitError(null);
     setSuccessMessage(null);
 
-    fetch('/api/auth/change-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            throw new Error(error.message || 'Erreur lors du changement de mot de passe');
-          });
-        }
-        return response.json();
-      })
-      .then(() => {
-        setSuccessMessage('Mot de passe modifié avec succès');
-        reset();
-      })
-      .catch((error: ApiError) => {
-        setSubmitError(error.message || 'Erreur lors du changement de mot de passe');
-      });
+    try {
+      await changePasswordUseCase.execute(data);
+      setSuccessMessage('Mot de passe modifié avec succès');
+      reset();
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : 'Erreur lors du changement de mot de passe'
+      );
+    }
   };
 
   return (
@@ -64,7 +57,7 @@ export default function ChangePasswordForm() {
         
         {successMessage && (
           <div className="bg-green-900/30 border border-green-700 text-green-400 px-4 py-3 rounded-md flex items-start gap-3">
-            <span className="text-xl flex-shrink-0">✅</span>
+            <span className="text-xl shrink-0">✅</span>
             <div className="flex-1">{successMessage}</div>
           </div>
         )}
@@ -89,7 +82,7 @@ export default function ChangePasswordForm() {
           <p className="text-sm text-gray-300">
             <strong className="text-red-500">Exigences :</strong>
             <ul className="mt-2 space-y-1 list-disc list-inside">
-              <li>Minimum 6 caractères</li>
+              <li>Minimum 8 caractères</li>
               <li>Au moins 1 majuscule</li>
               <li>Au moins 1 chiffre</li>
             </ul>

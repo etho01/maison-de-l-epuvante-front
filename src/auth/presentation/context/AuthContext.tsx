@@ -6,11 +6,8 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { GetCurrentUserUseCase } from '../../application/usecases/GetCurrentUserUseCase';
-import { AuthRepositoryImpl } from '../../infrastructure/repositories/AuthRepositoryImpl';
-import { LoginUseCase } from '../../application/usecases/LoginUseCase';
-import { RegisterUseCase } from '../../application/usecases/RegisterUseCase';
 import { User } from '../../domain/entities/User';
+import { authContainer } from '@/src/auth/container';
 
 interface AuthContextType {
   user: User | null;
@@ -24,11 +21,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Initialisation des use cases
-const authRepository = new AuthRepositoryImpl();
-const loginUseCase = new LoginUseCase(authRepository);
-const registerUseCase = new RegisterUseCase(authRepository);
-const getCurrentUserUseCase = new GetCurrentUserUseCase(authRepository);
+const { loginUseCase, registerUseCase, getCurrentUserUseCase, logoutUseCase, repository } = authContainer;
 
 export function AuthProvider({ 
   children,
@@ -81,7 +74,7 @@ export function AuthProvider({
   };
 
   const logout = async () => {
-    await authRepository.logout();
+    await logoutUseCase.execute();
     setUser(null);
   };
 

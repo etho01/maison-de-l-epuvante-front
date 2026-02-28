@@ -1,15 +1,17 @@
 /**
  * Component: Account Client
- * Composant client pour la page compte
+ * Composant client de la page compte
+ *
+ * ⚠️ Ce fichier appartient à src/auth/presentation/ — pas à app/.
+ * app/compte/page.tsx l'importe d'ici.
  */
 
 'use client';
 
 import { useState } from 'react';
 import { User } from '@/src/auth/domain/entities/User';
-import { Button } from '@/src/shared/components/ui';
-import EditProfileForm from '@/src/auth/presentation/components/organisms/Account/EditProfileForm';
-import ChangePasswordForm from '@/src/auth/presentation/components/organisms/Account/ChangePasswordForm';
+import EditProfileForm from './EditProfileForm';
+import ChangePasswordForm from './ChangePasswordForm';
 
 interface AccountClientProps {
   initialUser: User;
@@ -21,7 +23,7 @@ export default function AccountClient({ initialUser }: AccountClientProps) {
   const [activeTab, setActiveTab] = useState<Tab>('profile');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-red-950 to-black py-12 px-4">
+    <div className="min-h-screen bg-linear-to-br from-black via-red-950 to-black py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-black border-2 border-red-700 rounded-lg shadow-2xl shadow-red-900/50">
           {/* Header */}

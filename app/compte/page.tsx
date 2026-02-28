@@ -4,11 +4,11 @@
  */
 
 import { redirect } from 'next/navigation';
-import { SymfonyAuthRepository } from '@/src/auth/infrastructure/repositories/SymfonyAuthRepository';
-import AccountClient from './AccountClient';
+import { getServerAuthRepository } from '@/src/auth/infrastructure/repositories';
+import AccountClient from '@/src/auth/presentation/components/organisms/Account/AccountClient';
 
 export default async function AccountPage() {
-  const authRepository = new SymfonyAuthRepository();
+  const authRepository = getServerAuthRepository();
   
   try {
     const user = await authRepository.getCurrentUser();

@@ -13,7 +13,9 @@ import { User } from '@/src/auth/domain/entities/User';
 import { Input, Button, ErrorMessage } from '@/src/shared/components/ui';
 import { useAuth } from '../../../context/AuthContext';
 import { UpdateProfileFormData, updateProfileSchema } from '../../../schemas/updateProfileSchema';
-import { ApiError } from '@/src/shared/domain/ApiError';
+import { authContainer } from '@/src/auth/container';
+
+const { updateUserUseCase } = authContainer;
 
 interface EditProfileFormProps {
   user: User;
@@ -38,34 +40,22 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
     },
   });
 
-  const onSubmit = (data: UpdateProfileFormData) => {
+  const onSubmit = async (data: UpdateProfileFormData) => {
     setSubmitError(null);
     setSuccessMessage(null);
 
-    fetch('/api/auth/update-profile', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            throw new Error(error.message || 'Erreur lors de la mise à jour');
-          });
-        }
-        return response.json();
-      })
-      .then(() => {
-        setSuccessMessage('Profil mis à jour avec succès');
-        // Rafraîchir les données utilisateur
-        return refreshUser();
-      })
-      .then(() => {
-        router.refresh();
-      })
-      .catch((error: ApiError) => {
-        setSubmitError(error.message || 'Erreur lors de la mise à jour du profil');
-      });
+    try {
+      await updateUserUseCase.execute(data);
+      setSuccessMessage('Profil mis à jour avec succès');
+      await refreshUser();
+      router.refresh();
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : 'Erreur lors de la mise à jour du profil'
+      );
+    }
   };
 
   return (
@@ -77,7 +67,7 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
         
         {successMessage && (
           <div className="bg-green-900/30 border border-green-700 text-green-400 px-4 py-3 rounded-md flex items-start gap-3">
-            <span className="text-xl flex-shrink-0">✅</span>
+            <span className="text-xl shrink-0">✅</span>
             <div className="flex-1">{successMessage}</div>
           </div>
         )}
