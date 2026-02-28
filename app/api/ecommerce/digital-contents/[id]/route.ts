@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyDigitalContentRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyDigitalContentRepository';
 import { GetDigitalContentByIdUseCase } from '@/src/ecommerce/application/usecases/digital-content';
 
@@ -12,10 +13,10 @@ export async function GET(
   try {
     const content = await getDigitalContentByIdUseCase.execute(parseInt(params.id));
     return NextResponse.json(content);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Contenu non trouvé' },
-      { status: error.status || 404 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
