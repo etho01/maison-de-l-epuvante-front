@@ -2,16 +2,12 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { GetAllCategoriesViewModel } from '../../viewmodels/categories/GetAllCategoriesViewModel';
-import { GetAllCategoriesUseCase } from '../../../application/usecases/categories';
-import { ClientCategoryRepository } from '../../../infrastructure/repositories/ClientCategoryRepository';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 
-// Singleton repositories
-const categoryRepository = new ClientCategoryRepository();
-const getAllCategoriesUseCase = new GetAllCategoriesUseCase(categoryRepository);
 
 export const useGetAllCategoriesViewModel = () => {
   const viewModel = useMemo(
-    () => new GetAllCategoriesViewModel(getAllCategoriesUseCase),
+    () => new GetAllCategoriesViewModel(ecommerceContainer.getAllCategoriesUseCase),
     []
   );
 

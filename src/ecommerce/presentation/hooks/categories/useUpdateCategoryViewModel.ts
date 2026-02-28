@@ -2,16 +2,12 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { UpdateCategoryViewModel } from '../../viewmodels/categories/UpdateCategoryViewModel';
-import { UpdateCategoryUseCase } from '../../../application/usecases/categories';
-import { ClientCategoryRepository } from '../../../infrastructure/repositories/ClientCategoryRepository';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 
-// Singleton repositories
-const categoryRepository = new ClientCategoryRepository();
-const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository);
 
 export const useUpdateCategoryViewModel = () => {
   const viewModel = useMemo(
-    () => new UpdateCategoryViewModel(updateCategoryUseCase),
+    () => new UpdateCategoryViewModel(ecommerceContainer.updateCategoryUseCase),
     []
   );
 

@@ -2,16 +2,12 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { UpdateSubscriptionPlanViewModel } from '../../viewmodels/subscriptions/UpdateSubscriptionPlanViewModel';
-import { UpdateSubscriptionPlanUseCase } from '../../../application/usecases/subscriptions';
-import { ClientSubscriptionPlanRepository } from '../../../infrastructure/repositories/ClientSubscriptionPlanRepository';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 
-// Singleton repositories
-const subscriptionPlanRepository = new ClientSubscriptionPlanRepository();
-const updateSubscriptionPlanUseCase = new UpdateSubscriptionPlanUseCase(subscriptionPlanRepository);
 
 export const useUpdateSubscriptionPlanViewModel = () => {
   const viewModel = useMemo(
-    () => new UpdateSubscriptionPlanViewModel(updateSubscriptionPlanUseCase),
+    () => new UpdateSubscriptionPlanViewModel(ecommerceContainer.updateSubscriptionPlanUseCase),
     []
   );
 

@@ -2,19 +2,15 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { GetProductsViewModel } from '../../viewmodels/products/GetProductsViewModel';
-import { GetProductsUseCase } from '../../../application/usecases/products';
-import { ClientProductRepository } from '../../../infrastructure/repositories/ClientProductRepository';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 import { Product } from '../../../domain/entities/Product';
 import { Pagination } from '@/src/shared/domain/Pagination';
 
-// Singleton repositories
-const productRepository = new ClientProductRepository();
-const getProductsUseCase = new GetProductsUseCase(productRepository);
 
 export const useGetProductsViewModel = (initialProducts?: Product[], initialPagination?: Pagination) => {
   const viewModel = useMemo(
     () => new GetProductsViewModel(
-      getProductsUseCase,
+      ecommerceContainer.getProductsUseCase,
       initialProducts,
       initialPagination
     ),

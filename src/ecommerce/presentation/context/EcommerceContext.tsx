@@ -1,66 +1,30 @@
 'use client';
 
 import React, { createContext, useContext, ReactNode } from 'react';
-
-// Client Repositories (pour les Client Components)
-import { ClientProductRepository } from '../../infrastructure/repositories/ClientProductRepository';
-import { ClientCategoryRepository } from '../../infrastructure/repositories/ClientCategoryRepository';
-import { ClientOrderRepository } from '../../infrastructure/repositories/ClientOrderRepository';
-import { ClientSubscriptionRepository } from '../../infrastructure/repositories/ClientSubscriptionRepository';
-import { ClientSubscriptionPlanRepository } from '../../infrastructure/repositories/ClientSubscriptionPlanRepository';
-import { ClientDigitalContentRepository } from '../../infrastructure/repositories/ClientDigitalContentRepository';
-
-// Use Cases
-import { GetProductsUseCase, GetProductByIdUseCase } from '../../application/usecases/products';
-import { GetCategoriesUseCase } from '../../application/usecases/categories';
-import { GetOrdersUseCase, GetOrderByIdUseCase, CheckoutUseCase } from '../../application/usecases/orders';
-import { GetSubscriptionsUseCase, GetSubscriptionPlansUseCase, SubscribeUseCase, CancelSubscriptionUseCase } from '../../application/usecases/subscriptions';
-import { GetDigitalContentsUseCase, DownloadDigitalContentUseCase } from '../../application/usecases/digital-content';
-
-// Client Repositories instances (utilisent localStorage pour le token)
-const productRepository = new ClientProductRepository();
-const categoryRepository = new ClientCategoryRepository();
-const orderRepository = new ClientOrderRepository();
-const subscriptionRepository = new ClientSubscriptionRepository();
-const subscriptionPlanRepository = new ClientSubscriptionPlanRepository();
-const digitalContentRepository = new ClientDigitalContentRepository();
-
-// Use Cases instances
-const getProductsUseCase = new GetProductsUseCase(productRepository);
-const getProductByIdUseCase = new GetProductByIdUseCase(productRepository);
-const getCategoriesUseCase = new GetCategoriesUseCase(categoryRepository);
-const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
-const getOrderByIdUseCase = new GetOrderByIdUseCase(orderRepository);
-const checkoutUseCase = new CheckoutUseCase(orderRepository);
-const getSubscriptionsUseCase = new GetSubscriptionsUseCase(subscriptionRepository);
-const getSubscriptionPlansUseCase = new GetSubscriptionPlansUseCase(subscriptionPlanRepository);
-const subscribeUseCase = new SubscribeUseCase(subscriptionRepository);
-const cancelSubscriptionUseCase = new CancelSubscriptionUseCase(subscriptionRepository);
-const getDigitalContentsUseCase = new GetDigitalContentsUseCase(digitalContentRepository);
-const downloadDigitalContentUseCase = new DownloadDigitalContentUseCase(digitalContentRepository);
+import { ecommerceContainer } from '@/src/ecommerce/container';
 
 interface EcommerceContextType {
   // Products
-  getProducts: typeof getProductsUseCase.execute;
-  getProductById: typeof getProductByIdUseCase.execute;
-  
+  getProducts: typeof ecommerceContainer.getProductsUseCase.execute;
+  getProductById: typeof ecommerceContainer.getProductByIdUseCase.execute;
+
   // Categories
-  getCategories: typeof getCategoriesUseCase.execute;
-  
+  getCategories: typeof ecommerceContainer.getCategoriesUseCase.execute;
+
   // Orders
-  getOrders: typeof getOrdersUseCase.execute;
-  getOrderById: typeof getOrderByIdUseCase.execute;
-  checkout: typeof checkoutUseCase.execute;
-  
+  getOrders: typeof ecommerceContainer.getOrdersUseCase.execute;
+  getOrderById: typeof ecommerceContainer.getOrderByIdUseCase.execute;
+  checkout: typeof ecommerceContainer.checkoutUseCase.execute;
+
   // Subscriptions
-  getSubscriptions: typeof getSubscriptionsUseCase.execute;
-  getSubscriptionPlans: typeof getSubscriptionPlansUseCase.execute;
-  subscribe: typeof subscribeUseCase.execute;
-  cancelSubscription: typeof cancelSubscriptionUseCase.execute;
-  
+  getSubscriptions: typeof ecommerceContainer.getSubscriptionsUseCase.execute;
+  getSubscriptionPlans: typeof ecommerceContainer.getSubscriptionPlansUseCase.execute;
+  subscribe: typeof ecommerceContainer.subscribeUseCase.execute;
+  cancelSubscription: typeof ecommerceContainer.cancelSubscriptionUseCase.execute;
+
   // Digital Content
-  getDigitalContents: typeof getDigitalContentsUseCase.execute;
-  downloadDigitalContent: typeof downloadDigitalContentUseCase.execute;
+  getDigitalContents: typeof ecommerceContainer.getDigitalContentsUseCase.execute;
+  downloadDigitalContent: typeof ecommerceContainer.downloadDigitalContentUseCase.execute;
 }
 
 const EcommerceContext = createContext<EcommerceContextType | undefined>(undefined);
@@ -68,26 +32,26 @@ const EcommerceContext = createContext<EcommerceContextType | undefined>(undefin
 export const EcommerceProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const value: EcommerceContextType = {
     // Products
-    getProducts: getProductsUseCase.execute.bind(getProductsUseCase),
-    getProductById: getProductByIdUseCase.execute.bind(getProductByIdUseCase),
-    
+    getProducts:    ecommerceContainer.getProductsUseCase.execute.bind(ecommerceContainer.getProductsUseCase),
+    getProductById: ecommerceContainer.getProductByIdUseCase.execute.bind(ecommerceContainer.getProductByIdUseCase),
+
     // Categories
-    getCategories: getCategoriesUseCase.execute.bind(getCategoriesUseCase),
-    
+    getCategories: ecommerceContainer.getCategoriesUseCase.execute.bind(ecommerceContainer.getCategoriesUseCase),
+
     // Orders
-    getOrders: getOrdersUseCase.execute.bind(getOrdersUseCase),
-    getOrderById: getOrderByIdUseCase.execute.bind(getOrderByIdUseCase),
-    checkout: checkoutUseCase.execute.bind(checkoutUseCase),
-    
+    getOrders:   ecommerceContainer.getOrdersUseCase.execute.bind(ecommerceContainer.getOrdersUseCase),
+    getOrderById: ecommerceContainer.getOrderByIdUseCase.execute.bind(ecommerceContainer.getOrderByIdUseCase),
+    checkout:    ecommerceContainer.checkoutUseCase.execute.bind(ecommerceContainer.checkoutUseCase),
+
     // Subscriptions
-    getSubscriptions: getSubscriptionsUseCase.execute.bind(getSubscriptionsUseCase),
-    getSubscriptionPlans: getSubscriptionPlansUseCase.execute.bind(getSubscriptionPlansUseCase),
-    subscribe: subscribeUseCase.execute.bind(subscribeUseCase),
-    cancelSubscription: cancelSubscriptionUseCase.execute.bind(cancelSubscriptionUseCase),
-    
+    getSubscriptions:    ecommerceContainer.getSubscriptionsUseCase.execute.bind(ecommerceContainer.getSubscriptionsUseCase),
+    getSubscriptionPlans: ecommerceContainer.getSubscriptionPlansUseCase.execute.bind(ecommerceContainer.getSubscriptionPlansUseCase),
+    subscribe:           ecommerceContainer.subscribeUseCase.execute.bind(ecommerceContainer.subscribeUseCase),
+    cancelSubscription:  ecommerceContainer.cancelSubscriptionUseCase.execute.bind(ecommerceContainer.cancelSubscriptionUseCase),
+
     // Digital Content
-    getDigitalContents: getDigitalContentsUseCase.execute.bind(getDigitalContentsUseCase),
-    downloadDigitalContent: downloadDigitalContentUseCase.execute.bind(downloadDigitalContentUseCase),
+    getDigitalContents:     ecommerceContainer.getDigitalContentsUseCase.execute.bind(ecommerceContainer.getDigitalContentsUseCase),
+    downloadDigitalContent: ecommerceContainer.downloadDigitalContentUseCase.execute.bind(ecommerceContainer.downloadDigitalContentUseCase),
   };
 
   return (

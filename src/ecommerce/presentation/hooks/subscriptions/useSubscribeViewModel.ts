@@ -2,15 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { SubscribeViewModel } from '../../viewmodels/subscriptions/SubscribeViewModel';
-import { ClientSubscriptionRepository } from '../../../infrastructure/repositories/ClientSubscriptionRepository';
-import { SubscribeUseCase } from '../../../application/usecases/subscriptions';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 
-// Singletons
-const subscriptionRepository = new ClientSubscriptionRepository();
-const subscribeUseCase = new SubscribeUseCase(subscriptionRepository);
 
 export const useSubscribeViewModel = () => {
-  const viewModel = useMemo(() => new SubscribeViewModel(subscribeUseCase), []);
+  const viewModel = useMemo(() => new SubscribeViewModel(ecommerceContainer.subscribeUseCase), []);
 
   const [, forceUpdate] = useState({});
 

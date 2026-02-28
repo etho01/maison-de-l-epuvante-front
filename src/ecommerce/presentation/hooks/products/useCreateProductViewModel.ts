@@ -2,16 +2,12 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { CreateProductViewModel } from '../../viewmodels/products/CreateProductViewModel';
-import { CreateProductUseCase } from '../../../application/usecases/products';
-import { ClientProductRepository } from '../../../infrastructure/repositories/ClientProductRepository';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 
-// Singleton repositories
-const productRepository = new ClientProductRepository();
-const createProductUseCase = new CreateProductUseCase(productRepository);
 
 export const useCreateProductViewModel = () => {
   const viewModel = useMemo(
-    () => new CreateProductViewModel(createProductUseCase),
+    () => new CreateProductViewModel(ecommerceContainer.createProductUseCase),
     []
   );
 

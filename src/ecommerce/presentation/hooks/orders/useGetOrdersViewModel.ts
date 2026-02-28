@@ -2,19 +2,15 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { GetOrdersViewModel } from '../../viewmodels/orders/GetOrdersViewModel';
-import { GetOrdersUseCase } from '../../../application/usecases/orders';
-import { ClientOrderRepository } from '../../../infrastructure/repositories/ClientOrderRepository';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 import { Order } from '../../../domain/entities/Order';
 import { Pagination } from '@/src/shared/domain/Pagination';
 
-// Singleton repositories
-const orderRepository = new ClientOrderRepository();
-const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
 
 export const useGetOrdersViewModel = (initialOrders?: Order[], initialPagination?: Pagination) => {
   const viewModel = useMemo(
     () => new GetOrdersViewModel(
-      getOrdersUseCase,
+      ecommerceContainer.getOrdersUseCase,
       initialOrders,
       initialPagination
     ),

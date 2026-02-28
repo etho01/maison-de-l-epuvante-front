@@ -2,16 +2,12 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { CreateOrderViewModel } from '../../viewmodels/orders/CreateOrderViewModel';
-import { CheckoutUseCase } from '../../../application/usecases/orders';
-import { ClientOrderRepository } from '../../../infrastructure/repositories/ClientOrderRepository';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 
-// Singleton repositories
-const orderRepository = new ClientOrderRepository();
-const checkoutUseCase = new CheckoutUseCase(orderRepository);
 
 export const useCreateOrderViewModel = () => {
   const viewModel = useMemo(
-    () => new CreateOrderViewModel(checkoutUseCase),
+    () => new CreateOrderViewModel(ecommerceContainer.checkoutUseCase),
     []
   );
 

@@ -2,16 +2,12 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { DeleteCategoryViewModel } from '../../viewmodels/categories/DeleteCategoryViewModel';
-import { DeleteCategoryUseCase } from '../../../application/usecases/categories';
-import { ClientCategoryRepository } from '../../../infrastructure/repositories/ClientCategoryRepository';
+import { ecommerceContainer } from '@/src/ecommerce/container';
 
-// Singleton repositories
-const categoryRepository = new ClientCategoryRepository();
-const deleteCategoryUseCase = new DeleteCategoryUseCase(categoryRepository);
 
 export const useDeleteCategoryViewModel = () => {
   const viewModel = useMemo(
-    () => new DeleteCategoryViewModel(deleteCategoryUseCase),
+    () => new DeleteCategoryViewModel(ecommerceContainer.deleteCategoryUseCase),
     []
   );
 
