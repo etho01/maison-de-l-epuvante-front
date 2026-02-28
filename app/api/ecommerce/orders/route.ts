@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyOrderRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyOrderRepository';
 import { GetOrdersUseCase } from '@/src/ecommerce/application/usecases/orders';
 
@@ -12,10 +13,10 @@ export async function GET(request: NextRequest) {
 
     const orders = await getOrdersUseCase.execute(page);
     return NextResponse.json(orders);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Erreur lors de la récupération des commandes' },
-      { status: error.status || 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }

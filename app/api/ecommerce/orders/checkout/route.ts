@@ -15,6 +15,6 @@ export async function POST(request: NextRequest) {
     if (error instanceof ApiError) {
       return NextResponse.json(error.getError(), { status: error.getStatusCode() });
     }
-    throw error;
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }

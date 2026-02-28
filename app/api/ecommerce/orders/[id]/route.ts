@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyOrderRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyOrderRepository';
 import { GetOrderByIdUseCase, UpdateOrderUseCase } from '@/src/ecommerce/application/usecases/orders';
 
@@ -13,11 +14,11 @@ export async function GET(
   try {
     const order = await getOrderByIdUseCase.execute(parseInt(params.id));
     return NextResponse.json(order);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Commande non trouvée' },
-      { status: error.status || 404 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
 
@@ -29,10 +30,10 @@ export async function PATCH(
     const data = await request.json();
     const order = await updateOrderUseCase.execute(parseInt(params.id), data);
     return NextResponse.json(order);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message || 'Erreur lors de la modification de la commande' },
-      { status: error.status || 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(error.getError(), { status: error.getStatusCode() });
+    }
+    return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
 }
