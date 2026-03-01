@@ -4,6 +4,7 @@
  */
 
 import { NextResponse } from 'next/server';
+import { redirect } from 'next/navigation';
 import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyAuthRepository } from '@/src/auth/infrastructure/repositories/SymfonyAuthRepository';
 import { LogoutUseCase } from '@/src/auth/application/usecases/LogoutUseCase';
@@ -27,4 +28,15 @@ export async function POST() {
     }
     return NextResponse.json({ message: 'Une erreur est survenue', errors: [] }, { status: 500 });
   }
+}
+
+/**
+ * GET /api/auth/logout
+ * Utilisé pour forcer la déconnexion depuis un RSC (page.tsx) où les cookies
+ * ne peuvent pas être supprimés directement. Cette Route Handler peut modifier
+ * les cookies, puis redirige vers la page de login.
+ */
+export async function GET() {
+  await TokenStorage.removeTokenServer();
+  redirect('/auth/login');
 }

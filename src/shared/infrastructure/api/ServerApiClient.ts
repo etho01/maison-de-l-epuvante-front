@@ -6,6 +6,7 @@
 
 import { ApiError } from '@/src/shared/domain/ApiError';
 import { TokenStorage } from '@/src/auth/infrastructure/storage/TokenStorage';
+import { redirect } from 'next/navigation';
 
 
 export class ServerApiClient {
@@ -28,8 +29,7 @@ export class ServerApiClient {
 
     private async request<T>(
         endpoint: string,
-        options: RequestInit = {},
-        hasAlledgedlyRetried: boolean = false
+        options: RequestInit = {}
     ): Promise<T> {
         const url = `${this.baseURL}${endpoint}`;
 
@@ -40,24 +40,29 @@ export class ServerApiClient {
             ...options,
             headers: {
                 'Content-Type': 'application/json',
-                ...((token && !hasAlledgedlyRetried) ? { Authorization: `Bearer ${token}` } : {}),
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
                 ...options.headers,
             },
         };
 
         try {
             const response = await fetch(url, config);
+            
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
+                console.log(config, await errorData, response.status);
 
                 if (response.status === 401) {
-                    // Token invalide ou expiré, supprimer le token stocké
-                    await TokenStorage.removeTokenServer();
-                    if (!hasAlledgedlyRetried) {
-                        // Retenter la requête une fois après suppression du token
-                        return this.request<T>(endpoint, options, true);
+                    try 
+                    {
+                        TokenStorage.removeTokenClient();
+                        console.log(await response.json())
+                    } catch (error)
+                    {
+                        redirect('/api/auth/logout');
                     }
+
                 }
 
                 throw new ApiError(
@@ -77,6 +82,10 @@ export class ServerApiClient {
             return data['data'] || data;
         } catch (error) {
             if (error instanceof ApiError) {
+                throw error;
+            }
+            // Re-émettre les signaux internes Next.js (redirect, notFound, etc.)
+            if (error instanceof Error && 'digest' in error) {
                 throw error;
             }
             console.error('Erreur de connexion au serveur:', error);

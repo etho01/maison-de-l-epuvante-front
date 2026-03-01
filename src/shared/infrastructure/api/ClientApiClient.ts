@@ -36,6 +36,7 @@ export class ClientApiClient {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
+                console.log(errorData, response.status);
                 
                 throw new ApiError(
                     response.status,
@@ -52,6 +53,14 @@ export class ClientApiClient {
             return await response.json();
         } catch (error) {
             if (error instanceof ApiError) {
+                if (error.hasError('ACCESS_DENIED'))
+                {
+                    const fullPath = window.location.pathname + window.location.search;
+                    // Rediriger vers la page de login avec l'URL de redirection
+                    window.location.href = `/auth/login?redirect=${encodeURIComponent(fullPath)}`;
+                    //router.push('/auth/login?redirect=/abonnements');
+                }
+
                 throw error;
             }
             throw new ApiError(500, ['ERROR_SERVER'], null, 'Erreur de connexion au serveur');
