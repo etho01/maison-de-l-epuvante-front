@@ -3,6 +3,7 @@
 import React from 'react';
 import { Order } from '../../../domain/entities/Order';
 import { OrderStatusBadge } from '../atoms/Order/OrderStatusBadge';
+import { Button } from '@/src/shared/components/atoms';
 
 interface OrderCardProps {
   order: Order;
@@ -34,15 +35,16 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onView }) => {
       
       <div className="flex items-center justify-between pt-2 border-t border-neutral-800/50">
         <span className="text-2xl font-bold text-neutral-100">{order.totalAmount} €</span>
-        <button
+        <Button
           onClick={(e) => {
             e.stopPropagation();
             onView?.(order);
           }}
-          className="px-3 py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          variant="secondary"
+          size="sm"
         >
           Voir détails
-        </button>
+        </Button>
       </div>
     </div>
   );

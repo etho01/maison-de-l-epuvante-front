@@ -4,6 +4,7 @@ import React from 'react';
 import { useGetOrdersViewModel } from '../../../../hooks/orders';
 import { Order } from '../../../../../domain/entities/Order';
 import { OrderCard } from '../../../molecules/OrderCard';
+import { Button } from '@/src/shared/components/atoms';
 
 interface AdminOrderListProps {
   onView?: (order: Order) => void;
@@ -46,23 +47,25 @@ export const AdminOrderList: React.FC<AdminOrderListProps> = ({ onView }) => {
       {/* Pagination */}
       {pagination && pagination.totalPages > 1 && (
         <div className="flex justify-center gap-2">
-          <button
+          <Button
             onClick={() => viewModel.loadOrders(Math.max(1, pagination.page - 1))}
             disabled={!pagination.hasPreviousPage}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-neutral-800 disabled:text-neutral-500 disabled:cursor-not-allowed transition-colors"
+            variant="secondary"
+            size="sm"
           >
             Précédent
-          </button>
+          </Button>
           <span className="px-4 py-2 text-neutral-300">
             Page {pagination.page} / {pagination.totalPages}
           </span>
-          <button
+          <Button
             onClick={() => viewModel.loadOrders(Math.min(pagination.totalPages, pagination.page + 1))}
             disabled={!pagination.hasNextPage}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-neutral-800 disabled:text-neutral-500 disabled:cursor-not-allowed transition-colors"
+            variant="secondary"
+            size="sm"
           >
             Suivant
-          </button>
+          </Button>
         </div>
       )}
     </div>

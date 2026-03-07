@@ -92,14 +92,16 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
           <p className="text-neutral-400">{new Date(order.createdAt).toLocaleString('fr-FR')}</p>
         </div>
         {onClose && (
-          <button
+          <Button
             onClick={onClose}
-            className="text-neutral-400 hover:text-neutral-100 transition-colors"
+            variant="ghost"
+            size="sm"
+            aria-label="Fermer"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
-          </button>
+          </Button>
         )}
       </div>
 

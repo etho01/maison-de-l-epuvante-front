@@ -6,6 +6,7 @@ import { Order, OrderStatus } from '@/src/ecommerce/domain/entities/Order';
 import { Card, CardHeader, CardTitle, CardBody } from '@/src/shared/components/atoms/Card';
 import { OrderStatusBadge } from '@/src/shared/components/molecules/Order/OrderStatusBadge';
 import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
+import { Button } from '@/src/shared/components/atoms';
 
 interface OrderDetailProps {
   order: Order;
@@ -24,12 +25,14 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
 
   return (
     <>
-      <button
+      <Button
         onClick={() => router.push('/commandes')}
-        className="text-crimson-400 hover:text-crimson-300 mb-6 flex items-center gap-1 text-sm transition-colors"
+        variant="ghost"
+        size="sm"
+        className="mb-6"
       >
         ← Retour aux commandes
-      </button>
+      </Button>
 
       <Card variant="default" padding="lg">
         {/* En-tête */}
