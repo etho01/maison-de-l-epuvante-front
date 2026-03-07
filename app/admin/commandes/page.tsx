@@ -1,11 +1,20 @@
-import React from 'react';
-import AdminOrdersClient from './AdminOrdersClient';
 import { AdminLayout } from '@/src/shared/components/organisms/AdminLayout';
+import { GetOrdersUseCase } from '@/src/ecommerce/application/usecases/orders/GetOrdersUseCase';
+import { SymfonyOrderRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyOrderRepository';
+import { AdminOrderList } from '@/src/ecommerce/presentation/components/organisms/Order/Admin/AdminOrderList';
 
-export default function AdminOrdersPage() {
+const orderRepository = new SymfonyOrderRepository();
+const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
+
+export default async function AdminOrdersPage() {
+  const orders = await getOrdersUseCase.execute({ page: 1 });
+
   return (
     <AdminLayout>
-      <AdminOrdersClient />
+      <AdminOrderList 
+        initialOrders={orders.member}
+        initialPagination={orders.pagination}
+      />
     </AdminLayout>
   );
 }

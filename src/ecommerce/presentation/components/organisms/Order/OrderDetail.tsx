@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Address, Order, OrderStatus } from '@/src/ecommerce/domain/entities/Order';
 import { DeliveryStatus } from '@/src/ecommerce/domain/entities/Devivery';
 import { Card, CardHeader, CardTitle, CardBody } from '@/src/shared/components/atoms/Card';
-import { OrderStatusBadge } from '@/src/shared/components/molecules/Order/OrderStatusBadge';
 import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
 import { Button } from '@/src/shared/components/atoms';
+import { OrderStatusBadge } from '../../atoms';
 
 interface OrderDetailProps {
   order: Order;

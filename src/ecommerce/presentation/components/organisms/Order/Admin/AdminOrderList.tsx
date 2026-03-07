@@ -6,15 +6,20 @@ import { Order, OrderStatus, OrderStatusEnum } from '../../../../../domain/entit
 import { OrderCard } from '../../../molecules/OrderCard';
 import { Button, Select } from '@/src/shared/components/atoms';
 import { ORDER_STATUS_LABELS } from '@/src/ecommerce/domain/constants/orderStatus';
+import { Pagination } from '@/src/shared/domain/Pagination';
+import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
+import { useRouter } from 'next/navigation';
 
 interface AdminOrderListProps {
-  onView?: (order: Order) => void;
+  initialOrders?: Order[];
+  initialPagination?: Pagination;
 }
 
-export const AdminOrderList: React.FC<AdminOrderListProps> = ({ onView }) => {
-  const viewModel = useGetOrdersViewModel();
+export const AdminOrderList: React.FC<AdminOrderListProps> = ({ initialOrders, initialPagination }) => {
+  const viewModel = useGetOrdersViewModel(initialOrders, initialPagination);
   const { orders, loading, pagination, currentStatus } = viewModel.getState();
   const [error, setError] = React.useState<string | null>(null);
+  const router = useRouter();
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -25,7 +30,12 @@ export const AdminOrderList: React.FC<AdminOrderListProps> = ({ onView }) => {
   };
 
   if (loading && orders.length === 0) {
-    return <div className="text-center py-8 text-neutral-400">Chargement...</div>;
+    return <div className=
+    "text-center py-8 text-neutral-400">Chargement...</div>;
+  }
+
+  const showOrder = (order: Order) => {
+    router.push(`/admin/commandes/${order.id}`);
   }
 
   return (
@@ -64,7 +74,7 @@ export const AdminOrderList: React.FC<AdminOrderListProps> = ({ onView }) => {
           <OrderCard
             key={order.id}
             order={order}
-            onView={onView}
+            onView={showOrder}
           />
         ))}
       </div>
@@ -73,30 +83,12 @@ export const AdminOrderList: React.FC<AdminOrderListProps> = ({ onView }) => {
         <div className="text-center py-8 text-neutral-400">Aucune commande trouvée</div>
       )}
 
-      {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && (
-        <div className="flex justify-center gap-2">
-          <Button
-            onClick={() => viewModel.loadOrders(Math.max(1, pagination.page - 1))}
-            disabled={!pagination.hasPreviousPage || loading}
-            variant="secondary"
-            size="sm"
-          >
-            Précédent
-          </Button>
-          <span className="px-4 py-2 text-neutral-300">
-            Page {pagination.page} / {pagination.totalPages}
-          </span>
-          <Button
-            onClick={() => viewModel.loadOrders(Math.min(pagination.totalPages, pagination.page + 1))}
-            disabled={!pagination.hasNextPage || loading}
-            variant="secondary"
-            size="sm"
-          >
-            Suivant
-          </Button>
-        </div>
-      )}
+      <PaginationComponent
+        pagination={initialPagination}
+        onPageChange={(page: number) => viewModel.loadOrders(
+          page
+        )}
+      />
     </div>
   );
 };

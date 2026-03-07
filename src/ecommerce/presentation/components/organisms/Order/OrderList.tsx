@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { LoaderCard } from '@/src/shared/components';
 import { Order } from '@/src/ecommerce/domain/entities/Order';
-import { OrderCard, OrderCardData } from '@/src/shared/components/molecules/Order/OrderCard';
+import { OrderCard } from '../../molecules';
 
 interface OrderListProps {
   orders: Order[];
@@ -39,7 +39,7 @@ export const OrderList: React.FC<OrderListProps> = ({ orders, loading }) => {
       {orders.map((order) => (
         <OrderCard
           key={order.id}
-          order={order as OrderCardData}
+          order={order}
         />
       ))}
     </div>

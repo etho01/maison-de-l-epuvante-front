@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Select, TextArea, Button } from '@/src/shared/components/atoms';
+import { Select, Button } from '@/src/shared/components/atoms';
 import { ApiError } from '@/src/shared/domain/ApiError';
-import { OrderStatus, OrderStatusBadge, DeliveryStatusBadge } from '@/src/shared/components';
-import { useGetOrderByIdViewModel, useUpdateOrderStatusViewModel } from '@/src/ecommerce/presentation/hooks';
-import { OrderStatusEnum } from '@/src/ecommerce/domain/entities/Order';
+import { useUpdateOrderStatusViewModel } from '@/src/ecommerce/presentation/hooks';
+import { Order, OrderStatus, OrderStatusEnum } from '@/src/ecommerce/domain/entities/Order';
+import { DeliveryStatusBadge } from '../../../atoms/Delivery/DeliveryStatusBadge';
+import { OrderStatusBadge } from '../../../atoms';
+import { useRouter } from 'next/navigation';
 
 interface AdminOrderDetailProps {
-  orderId: number;
-  onUpdate?: () => void;
-  onClose?: () => void;
+  order: Order
 }
 
 const ORDER_STATUSES = {
@@ -22,27 +22,15 @@ const ORDER_STATUSES = {
   [OrderStatusEnum.REFUNDED]: 'Remboursée',
 }
 
-export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onUpdate, onClose }) => {
-  const getOrderViewModel = useGetOrderByIdViewModel();
+export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ order }) => {
   const updateOrderStatusViewModel = useUpdateOrderStatusViewModel();
-  const { order, loading: getLoading } = getOrderViewModel.getState();
   const { loading: updateLoading } = updateOrderStatusViewModel.getState();
 
-  const loading = getLoading || updateLoading;
+  const loading = updateLoading;
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus | null>(null);
-
-  useEffect(() => {
-    const loadOrder = () => {
-      setError(null);
-      getOrderViewModel.loadOrder(orderId)
-        .catch((err: ApiError) => {
-          setError(err.message || 'Erreur lors du chargement de la commande');
-        });
-    };
-    loadOrder();
-  }, [orderId]);
 
   useEffect(() => {
     if (order) {
@@ -50,13 +38,17 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
     }
   }, [order]);
 
+  const showList = () => {
+    router.push('/admin/commandes');
+  }
+
   const handleUpdateOrder = () => {
     if (!order || !selectedStatus) return;
 
     setError(null);
     updateOrderStatusViewModel.updateStatus(order.id, selectedStatus)
       .then(() => {
-        onUpdate?.();
+        showList();
       })
       .catch((err: ApiError) => {
         setError(err.message || 'Erreur lors de la mise à jour de la commande');
@@ -77,7 +69,6 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
       </div>
     );
   }
-  console.log('Order details:', order);
 
   return (
     <div className="glass-effect border border-crimson-900/30 p-6 rounded-xl shadow-crimson-md max-w-4xl mx-auto">
@@ -89,9 +80,8 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
           <h2 className="text-2xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Commande #{order.orderNumber}</h2>
           <p className="text-neutral-400">{new Date(order.createdAt).toLocaleString('fr-FR')}</p>
         </div>
-        {onClose && (
           <Button
-            onClick={onClose}
+            onClick={showList}
             variant="ghost"
             size="sm"
             aria-label="Fermer"
@@ -100,7 +90,6 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </Button>
-        )}
       </div>
 
       {error && (
@@ -209,40 +198,6 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
           <p className="text-neutral-300">{order.customerNotes}</p>
         </div>
       )}
-
-      {/* Order Status Management */}
-      <div className="border-t border-neutral-800/50 pt-6">
-        <h3 className="font-semibold mb-4 text-neutral-100">Gestion de la commande</h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-sm font-medium text-neutral-300 mb-2">
-              Statut actuel
-            </label>
-            <div className="mb-2">
-              <OrderStatusBadge status={order.status} size="md" />
-            </div>
-            <Select
-              value={selectedStatus || ''}
-              onChange={(e) => setSelectedStatus(e.target.value as OrderStatus)}
-            >
-              {Object.entries(ORDER_STATUSES).map(([status, label]) => (
-                <option key={status} value={status}>
-                  {label}
-                </option>
-              ))}
-            </Select>
-          </div>
-        </div>
-
-        <Button
-          onClick={handleUpdateOrder}
-          disabled={loading || selectedStatus === order.status}
-          variant="primary"
-        >
-          {loading ? 'Mise à jour...' : 'Mettre à jour le statut'}
-        </Button>
-      </div>
     </div>
   );
 };
