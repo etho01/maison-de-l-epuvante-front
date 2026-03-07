@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { User } from '@/src/auth/domain/entities/User';
 import EditProfileForm from './EditProfileForm';
 import ChangePasswordForm from './ChangePasswordForm';
+import { Button } from '@/src/shared/components/atoms';
 
 interface AccountClientProps {
   initialUser: User;
@@ -37,32 +38,34 @@ export default function AccountClient({ initialUser }: AccountClientProps) {
           {/* Tabs */}
           <div className="border-b border-crimson-900/30">
             <div className="flex">
-              <button
+              <Button
                 onClick={() => setActiveTab('profile')}
-                className={`px-6 py-4 font-medium transition-all duration-200 ${
+                variant={activeTab === 'profile' ? 'primary' : 'ghost'}
+                className={`flex-1 rounded-none border-b-2 ${
                   activeTab === 'profile'
-                    ? 'text-crimson-400 border-b-2 border-crimson-500'
-                    : 'text-neutral-400 hover:text-neutral-300'
+                    ? 'border-crimson-500'
+                    : 'border-transparent'
                 }`}
               >
-                Profil
-              </button>
-              <button
+                Informations personnelles
+              </Button>
+              <Button
                 onClick={() => setActiveTab('password')}
-                className={`px-6 py-4 font-medium transition-all duration-200 ${
+                variant={activeTab === 'password' ? 'primary' : 'ghost'}
+                className={`flex-1 rounded-none border-b-2 ${
                   activeTab === 'password'
-                    ? 'text-crimson-400 border-b-2 border-crimson-500'
-                    : 'text-neutral-400 hover:text-neutral-300'
+                    ? 'border-crimson-500'
+                    : 'border-transparent'
                 }`}
               >
                 Mot de passe
-              </button>
+              </Button>
             </div>
           </div>
 
           {/* Content */}
           <div className="p-6">
-            {activeTab === 'profile' && <EditProfileForm user={initialUser} />}
+            {activeTab === 'profile' && <EditProfileForm initialUser={initialUser} />}
             {activeTab === 'password' && <ChangePasswordForm />}
           </div>
         </div>
