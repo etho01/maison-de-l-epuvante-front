@@ -1,11 +1,18 @@
 import { serverApiClient } from '@/src/shared/infrastructure/api/ServerApiClient';
-import { IOrderRepository } from '../../domain/repositories/IOrderRepository';
+import { IOrderRepository, OrderFilters } from '../../domain/repositories/IOrderRepository';
 import { Order, CheckoutData, UpdateOrderData, CheckoutResponse } from '../../domain/entities/Order';
 import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export class SymfonyOrderRepository implements IOrderRepository {
-  async getOrders(page?: number): Promise<PaginatedResponse<Order>> {
-    const endpoint = page ? `/orders?page=${page}` : '/orders';
+  async getOrders(filters?: OrderFilters): Promise<PaginatedResponse<Order>> {
+    const params = new URLSearchParams();
+    if (filters?.page) {
+      params.append('page', filters.page.toString());
+    }
+    if (filters?.status) {
+      params.append('status', filters.status);
+    }
+    const endpoint = params.toString() ? `/orders?${params.toString()}` : '/orders';
     return await serverApiClient.get<PaginatedResponse<Order>>(endpoint);
   }
 

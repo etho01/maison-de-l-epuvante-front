@@ -1,5 +1,6 @@
-import { Order } from '../../domain/entities/Order';
+import { Order, OrderStatus } from '../../domain/entities/Order';
 import { GetOrdersUseCase } from '../../application/usecases/orders';
+import { OrderFilters } from '../../domain/repositories/IOrderRepository';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
@@ -9,6 +10,7 @@ export class GetOrdersViewModel {
     pagination: null as Pagination | null,
     loading: false,
     currentPage: 1,
+    currentStatus: null as OrderStatus | null,
   };
 
   private listeners: Set<() => void> = new Set();
@@ -40,16 +42,27 @@ export class GetOrdersViewModel {
     return this.loadOrders();
   }
 
-  loadOrders(page?: number): Promise<void> {
+  loadOrders(page?: number, status?: OrderStatus | null): Promise<void> {
     this.state.loading = true;
     this.notify();
 
     const pageToLoad = page || this.state.currentPage;
-    return this.getOrdersUseCase.execute(pageToLoad)
+    const statusToFilter = status !== undefined ? status : this.state.currentStatus;
+    
+    const filters: OrderFilters = {
+      page: pageToLoad,
+    };
+    
+    if (statusToFilter) {
+      filters.status = statusToFilter;
+    }
+
+    return this.getOrdersUseCase.execute(filters)
       .then((response) => {
         this.state.orders = response.member;
         this.state.pagination = response.pagination;
         this.state.currentPage = pageToLoad;
+        this.state.currentStatus = statusToFilter;
       })
       .catch((error: ApiError) => {
         throw error;
@@ -58,6 +71,10 @@ export class GetOrdersViewModel {
         this.state.loading = false;
         this.notify();
       });
+  }
+
+  setStatus(status: OrderStatus | null): Promise<void> {
+    return this.loadOrders(1, status);
   }
 
   getState() {

@@ -14,3 +14,6 @@ export * from './orders';
 
 // Subscriptions
 export * from './subscriptions';
+
+// Deliveries
+export * from './deliveries';

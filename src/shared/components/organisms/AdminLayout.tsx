@@ -43,7 +43,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { href: '/admin/commandes', label: 'Commandes' },
     { href: '/admin/subscriptions', label: 'Abonnements' },
     { href: '/admin/subscription-plans', label: 'Plans d\'abonnement' },
-    { href: '/admin/administrateurs', label: 'Administrateurs' }
+    { href: '/admin/administrateurs', label: 'Administrateurs' },
+    { href: '/admin/livraisons', label: 'Livraisons' },
   ];
 
   return (

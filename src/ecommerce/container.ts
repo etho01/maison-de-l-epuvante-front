@@ -15,6 +15,7 @@ import { ClientOrderRepository } from './infrastructure/repositories/ClientOrder
 import { ClientSubscriptionRepository } from './infrastructure/repositories/ClientSubscriptionRepository';
 import { ClientSubscriptionPlanRepository } from './infrastructure/repositories/ClientSubscriptionPlanRepository';
 import { ClientDigitalContentRepository } from './infrastructure/repositories/ClientDigitalContentRepository';
+import { ClientDeliveryRepository } from './infrastructure/repositories/ClientDeliveryRepository';
 
 import {
   GetCategoriesUseCase,
@@ -61,6 +62,12 @@ import {
   DownloadDigitalContentUseCase,
 } from './application/usecases/digital-content';
 
+import {
+  GetDeliveriesUseCase,
+  GetDeliveryByIdUseCase,
+  UpdateDeliveryStatusUseCase,
+} from './application/usecases/deliveries';
+
 class EcommerceContainer {
   // ─── Repositories (lazy) ──────────────────────────────────────────────────
   private _categoryRepository?: ClientCategoryRepository;
@@ -91,6 +98,11 @@ class EcommerceContainer {
   private _digitalContentRepository?: ClientDigitalContentRepository;
   private get digitalContentRepository() {
     return (this._digitalContentRepository ??= new ClientDigitalContentRepository());
+  }
+
+  private _deliveryRepository?: ClientDeliveryRepository;
+  private get deliveryRepository() {
+    return (this._deliveryRepository ??= new ClientDeliveryRepository());
   }
 
   // ─── Categories ───────────────────────────────────────────────────────────
@@ -246,6 +258,22 @@ class EcommerceContainer {
   private _downloadDigitalContentUseCase?: DownloadDigitalContentUseCase;
   get downloadDigitalContentUseCase() {
     return (this._downloadDigitalContentUseCase ??= new DownloadDigitalContentUseCase(this.digitalContentRepository));
+  }
+
+  // ─── Deliveries ────────────────────────────────────────────────────────
+  private _getDeliveriesUseCase?: GetDeliveriesUseCase;
+  get getDeliveriesUseCase() {
+    return (this._getDeliveriesUseCase ??= new GetDeliveriesUseCase(this.deliveryRepository));
+  }
+
+  private _getDeliveryByIdUseCase?: GetDeliveryByIdUseCase;
+  get getDeliveryByIdUseCase() {
+    return (this._getDeliveryByIdUseCase ??= new GetDeliveryByIdUseCase(this.deliveryRepository));
+  }
+
+  private _updateDeliveryStatusUseCase?: UpdateDeliveryStatusUseCase;
+  get updateDeliveryStatusUseCase() {
+    return (this._updateDeliveryStatusUseCase ??= new UpdateDeliveryStatusUseCase(this.deliveryRepository));
   }
 }
 

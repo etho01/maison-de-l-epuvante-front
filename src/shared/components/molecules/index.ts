@@ -4,6 +4,8 @@ export { FilterSection } from './FilterSection';
 export type { FilterOption } from './FilterSection';
 export { OrderStatusBadge } from './Order/OrderStatusBadge';
 export type { OrderStatus } from './Order/OrderStatusBadge';
+export { DeliveryStatusBadge } from './Order/DeliveryStatusBadge';
+export type { DeliveryStatus } from './Order/DeliveryStatusBadge';
 export { CartItem } from './CartItem';
 export type { CartItemProduct } from './CartItem';
 export { OrderCard } from './Order/OrderCard';

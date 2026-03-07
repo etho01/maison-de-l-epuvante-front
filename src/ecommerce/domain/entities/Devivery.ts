@@ -2,16 +2,20 @@ import { Address } from "./Order";
 
 export enum DeliveryStatus {
     PENDING = 'pending',
+    PREPARING = 'preparing',
     SHIPPED = 'shipped',
+    IN_TRANSIT = 'in_transit',
     DELIVERED = 'delivered',
+    FAILED = 'failed',
     CANCELLED = 'cancelled'
 }
 
 export interface DeliveryItem {
     id: number;
-    name: string;
+    productName: string;
     quantity: number;
-    price: number;
+    totalPrice: number;
+    unitPrice: number;
 }
 
 export interface Delivery {
