@@ -1,11 +1,11 @@
 /**
  * Component: Card
- * Atom - Conteneur de carte réutilisable avec sous-composants
+ * Atom - Conteneur de carte réutilisable avec sous-composants - Style professionnel
  */
 
 import React, { ReactNode } from 'react';
 
-export type CardVariant = 'default' | 'elevated' | 'outlined' | 'ghost' | 'dark';
+export type CardVariant = 'default' | 'elevated' | 'outlined' | 'ghost' | 'glass';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface CardProps {
@@ -29,22 +29,24 @@ export const Card: React.FC<CardProps> = ({
   as: Tag = 'div',
 }) => {
   const variantStyles: Record<CardVariant, string> = {
-    default:  'border border-gray-200 rounded-lg bg-white',
-    elevated: 'rounded-lg bg-white shadow-md',
-    outlined: 'border-2 border-gray-300 rounded-lg bg-white',
-    ghost:    'rounded-lg bg-transparent',
-    dark:     'border border-gray-700 rounded-lg bg-gray-900 text-white',
+    default:  'border border-crimson-900/30 rounded-xl bg-neutral-900/50',
+    elevated: 'rounded-xl bg-neutral-900/70 shadow-lg shadow-black/20',
+    outlined: 'border-2 border-crimson-800/50 rounded-xl bg-neutral-900/30',
+    ghost:    'rounded-xl bg-transparent',
+    glass:    'glass-effect rounded-2xl',
   };
 
   const paddingStyles: Record<CardPadding, string> = {
     none: '',
-    sm:   'p-3',
-    md:   'p-4',
-    lg:   'p-6',
-    xl:   'p-8',
+    sm:   'p-4',
+    md:   'p-6',
+    lg:   'p-8',
+    xl:   'p-10',
   };
 
-  const hoverStyles = hoverable ? 'hover:shadow-lg transition-shadow cursor-pointer' : '';
+  const hoverStyles = hoverable 
+    ? 'hover:shadow-crimson-md hover:border-crimson-700/50 transition-all duration-300 cursor-pointer hover:scale-[1.02]' 
+    : '';
 
   return (
     <Tag
@@ -62,26 +64,26 @@ export const CardHeader: React.FC<{ children: ReactNode; className?: string }> =
   children,
   className = '',
 }) => (
-  <div className={`mb-4 pb-4 border-b border-gray-100 ${className}`}>{children}</div>
+  <div className={`mb-6 pb-4 border-b border-crimson-900/30 ${className}`}>{children}</div>
 );
 
 export const CardTitle: React.FC<{ children: ReactNode; className?: string }> = ({
   children,
   className = '',
 }) => (
-  <h3 className={`text-lg font-semibold text-gray-900 ${className}`}>{children}</h3>
+  <h3 className={`text-xl font-bold text-neutral-100 ${className}`}>{children}</h3>
 );
 
 export const CardBody: React.FC<{ children: ReactNode; className?: string }> = ({
   children,
   className = '',
-}) => <div className={className}>{children}</div>;
+}) => <div className={`text-neutral-300 ${className}`}>{children}</div>;
 
 export const CardFooter: React.FC<{ children: ReactNode; className?: string }> = ({
   children,
   className = '',
 }) => (
-  <div className={`mt-4 pt-4 border-t border-gray-100 flex items-center gap-3 ${className}`}>
+  <div className={`mt-6 pt-4 border-t border-crimson-900/30 flex items-center gap-3 ${className}`}>
     {children}
   </div>
 );

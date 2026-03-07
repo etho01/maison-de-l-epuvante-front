@@ -42,14 +42,16 @@ export function FilterSection<T>({
   }
 
   return (
-    <div className={`border rounded-lg p-4 ${className}`}>
-      <h3 className="font-bold mb-3">{title}</h3>
-      <div className="space-y-2">
+    <div className={`border border-crimson-900/30 rounded-xl p-4 glass-effect ${className}`}>
+      <h3 className="font-bold text-neutral-100 mb-3">{title}</h3>
+      <div className="space-y-1">
         {allowClear && (
           <button
             onClick={() => onChange(valueClearLabel)}
-            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-100 transition-colors ${
-              selectedValue === undefined || isValueEqual(selectedValue, valueClearLabel) ? 'bg-red-100 text-red-800' : ''
+            className={`block w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
+              selectedValue === undefined || isValueEqual(selectedValue, valueClearLabel) 
+                ? 'bg-crimson-600 text-white shadow-crimson-sm' 
+                : 'text-neutral-300 hover:bg-neutral-800/50 hover:text-crimson-400'
             }`}
           >
             {clearLabel}
@@ -59,8 +61,10 @@ export function FilterSection<T>({
           <button
             key={index}
             onClick={() => onChange(option.value)}
-            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-100 transition-colors ${
-              isValueEqual(selectedValue, option.value) ? 'bg-red-100 text-red-800' : ''
+            className={`block w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
+              isValueEqual(selectedValue, option.value) 
+                ? 'bg-crimson-600 text-white shadow-crimson-sm' 
+                : 'text-neutral-300 hover:bg-neutral-800/50 hover:text-crimson-400'
             }`}
           >
             {option.label}

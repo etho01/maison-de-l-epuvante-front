@@ -1,6 +1,6 @@
 /**
  * Component: FormActions
- * Composant molecule pour les actions de formulaire (boutons)
+ * Composant molecule pour les actions de formulaire - Style professionnel
  */
 
 import { ReactNode } from 'react';
@@ -24,7 +24,7 @@ export const FormActions: React.FC<FormActionsProps> = ({
   };
 
   return (
-    <div className={`flex gap-4 pt-4 ${alignmentClasses[align]} ${className}`}>
+    <div className={`flex gap-3 pt-6 border-t border-crimson-900/30 ${alignmentClasses[align]} ${className}`}>
       {children}
     </div>
   );

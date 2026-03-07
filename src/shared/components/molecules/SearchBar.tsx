@@ -1,7 +1,6 @@
 /**
  * Component: SearchBar
- * Molecule - Barre de recherche avec icône loupe et bouton clear.
- * Utilisée dans tous les listings (produits, commandes, utilisateurs…).
+ * Molecule - Barre de recherche - Style professionnel
  */
 
 'use client';
@@ -18,15 +17,15 @@ export interface SearchBarProps {
 }
 
 const sizeClasses: Record<string, string> = {
-  sm: 'h-8 text-sm pl-8 pr-8',
-  md: 'h-10 text-sm pl-10 pr-10',
-  lg: 'h-12 text-base pl-11 pr-11',
+  sm: 'h-9 text-sm pl-9 pr-9',
+  md: 'h-11 text-sm pl-11 pr-11',
+  lg: 'h-14 text-base pl-12 pr-12',
 };
 
 const iconClasses: Record<string, string> = {
-  sm: 'left-2.5 w-3.5 h-3.5',
-  md: 'left-3 w-4 h-4',
-  lg: 'left-3.5 w-5 h-5',
+  sm: 'left-3 w-4 h-4',
+  md: 'left-3.5 w-5 h-5',
+  lg: 'left-4 w-6 h-6',
 };
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -49,7 +48,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     <div className={`relative ${className}`}>
       {/* Loupe */}
       <svg
-        className={`absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none ${iconClasses[size]}`}
+        className={`absolute top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none ${iconClasses[size]}`}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -70,9 +69,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className={[
-          'w-full rounded-lg border border-gray-200 bg-white text-gray-900',
-          'placeholder-gray-400 outline-none transition',
-          'focus:border-red-400 focus:ring-2 focus:ring-red-100',
+          'w-full rounded-xl border border-crimson-900/30 bg-neutral-900/50 text-neutral-100',
+          'placeholder-neutral-500 outline-none transition-all duration-200',
+          'focus:border-crimson-600 focus:ring-2 focus:ring-crimson-600/30',
           sizeClasses[size],
         ].join(' ')}
       />
@@ -83,7 +82,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           type="button"
           onClick={handleClear}
           aria-label="Effacer la recherche"
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-crimson-400 transition-colors p-1 rounded-lg hover:bg-neutral-800/50"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

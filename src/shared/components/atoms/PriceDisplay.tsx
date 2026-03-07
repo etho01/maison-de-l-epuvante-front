@@ -1,6 +1,6 @@
 /**
  * Component: PriceDisplay
- * Atom - Affichage du prix d'un produit
+ * Atom - Affichage du prix d'un produit - Style professionnel
  */
 
 import React from 'react';
@@ -23,18 +23,18 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   const sizeStyles = {
     sm: 'text-sm',
     md: 'text-lg',
-    lg: 'text-xl',
-    xl: 'text-2xl',
+    lg: 'text-2xl',
+    xl: 'text-3xl',
   };
 
   const variantStyles = {
-    default: 'text-gray-900',
-    emphasis: 'text-red-600 font-bold',
-    muted: 'text-gray-500',
+    default: 'text-neutral-100 font-semibold',
+    emphasis: 'text-crimson-400 font-bold',
+    muted: 'text-neutral-500 font-medium',
   };
 
   return (
-    <span className={`${sizeStyles[size]} ${variantStyles[variant]} ${className}`}>
+    <span className={`${sizeStyles[size]} ${variantStyles[variant]} tabular-nums ${className}`}>
       {price} {currency}
     </span>
   );

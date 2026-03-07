@@ -12,45 +12,49 @@ export function Header() {
     const { cart } = useCart();
 
     return (
-        <header className="bg-gradient-to-r from-black via-red-950 to-black border-b-2 border-red-700 shadow-lg shadow-red-900/50">
-            <nav className="container mx-auto px-4 py-4">
+        <header className="sticky top-0 z-50 glass-effect border-b border-crimson-900/30">
+            <nav className="container mx-auto px-4 lg:px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="text-2xl md:text-3xl font-bold text-red-600 group-hover:text-red-500 transition-colors">
-                            🏚️
+                        <div className="relative">
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-crimson rounded-lg flex items-center justify-center shadow-crimson-md group-hover:shadow-crimson-glow transition-all duration-300">
+                                <svg className="w-6 h-6 md:w-7 md:h-7 text-crimson-100" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 2.18l8 3.6v8.55c0 4.45-3.08 8.63-7 9.67-3.92-1.04-7-5.22-7-9.67V7.78l6-2.7V2.18z"/>
+                                </svg>
+                            </div>
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-xl md:text-2xl font-bold text-red-600 group-hover:text-red-500 transition-colors">
+                            <span className="text-lg md:text-xl font-bold text-neutral-100 group-hover:text-crimson-400 transition-colors">
                                 La Petite Maison
                             </span>
-                            <span className="text-sm md:text-base text-red-400 tracking-widest">
+                            <span className="text-xs md:text-sm text-crimson-500 tracking-wider font-medium">
                                 de l'Épouvante
                             </span>
                         </div>
                     </Link>
 
                     {/* Desktop Menu */}
-                    <div className="hidden lg:flex items-center gap-8">
+                    <div className="hidden lg:flex items-center gap-1">
                         <Link
                             href="/produits"
-                            className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                            className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                         >
-                            🛍️ Boutique
+                            Boutique
                         </Link>
 
                         <div className="relative group">
-                            <button className="text-gray-300 hover:text-red-500 transition-colors font-medium">
-                                📚 Fanzine
+                            <button className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200">
+                                Fanzine
                             </button>
-                            <div className="absolute top-full left-0 mt-2 w-48 bg-black border border-red-700 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <Link href="/abonnements" className="block px-4 py-2 text-gray-300 hover:bg-red-950 hover:text-red-400">
+                            <div className="absolute top-full left-0 mt-2 w-56 glass-effect rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden">
+                                <Link href="/abonnements" className="block px-4 py-3 text-sm text-neutral-300 hover:bg-crimson-950/50 hover:text-crimson-400 transition-colors">
                                     S'abonner
                                 </Link>
-                                <Link href="/fanzine/numeros" className="block px-4 py-2 text-gray-300 hover:bg-red-950 hover:text-red-400">
+                                <Link href="/fanzine/numeros" className="block px-4 py-3 text-sm text-neutral-300 hover:bg-crimson-950/50 hover:text-crimson-400 transition-colors">
                                     Numéros digitaux
                                 </Link>
-                                <Link href="/fanzine/collection" className="block px-4 py-2 text-gray-300 hover:bg-red-950 hover:text-red-400">
+                                <Link href="/fanzine/collection" className="block px-4 py-3 text-sm text-neutral-300 hover:bg-crimson-950/50 hover:text-crimson-400 transition-colors">
                                     Ma collection
                                 </Link>
                             </div>
@@ -58,84 +62,89 @@ export function Header() {
 
                         <Link
                             href="/evil-ed"
-                            className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                            className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                         >
-                            💀 Evil Ed Collection
+                            Evil Ed Collection
                         </Link>
 
                         <Link
                             href="/troc"
-                            className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                            className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                         >
-                            🔄 Espace Troc
+                            Espace Troc
                         </Link>
 
                         <Link
                             href="/communaute"
-                            className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                            className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                         >
-                            💬 Communauté
+                            Communauté
                         </Link>
+
+                        <div className="h-6 w-px bg-neutral-700 mx-2"></div>
 
                         {isAuthenticated ? (
                             <>
                                 {isAdmin(user) && (
                                     <Link
                                         href="/admin"
-                                        className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                                        className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                                     >
-                                        ⚙️ Admin
+                                        Admin
                                     </Link>
                                 )}
 
                                 <Link
                                     href="/commandes"
-                                    className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                                    className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                                 >
-                                    📦 Mes Commandes
+                                    Mes Commandes
                                 </Link>
 
                                 <Link
                                     href="/compte"
-                                    className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                                    className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                                 >
-                                    👤 {user?.firstName || 'Mon Compte'}
+                                    {user?.firstName || 'Mon Compte'}
                                 </Link>
 
                                 <button
                                     onClick={logout}
-                                    className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                                    className="px-4 py-2 text-sm font-medium text-neutral-400 hover:text-crimson-500 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                                 >
-                                    🚪 Déconnexion
+                                    Déconnexion
                                 </button>
                             </>
                         ) : (
                             <Link
                                 href="/auth/login"
-                                className="text-gray-300 hover:text-red-500 transition-colors font-medium"
+                                className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
                             >
-                                🔐 Connexion
+                                Connexion
                             </Link>
                         )}
 
                         <Link
                             href="/panier"
-                            className="relative bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors font-medium"
+                            className="relative ml-2 bg-crimson-600 hover:bg-crimson-500 text-white px-5 py-2.5 rounded-lg transition-all duration-200 font-medium text-sm shadow-crimson-sm hover:shadow-crimson-md"
                         >
-                            🛒 Panier
-                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                {cart.totalItems}
-                            </span>
+                            Panier
+                            {cart.totalItems > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-crimson-400 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ring-2 ring-neutral-950">
+                                    {cart.totalItems}
+                                </span>
+                            )}
                         </Link>
                     </div>
 
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="lg:hidden text-red-500 hover:text-red-400 transition-colors"
+                        className="lg:hidden p-2 text-crimson-400 hover:text-crimson-300 hover:bg-neutral-800/50 rounded-lg transition-all"
+                        aria-label="Menu"
                     >
                         <svg
-                            className="w-8 h-8"
+                            className="w-6 h-6"
                             fill="none"
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -154,34 +163,34 @@ export function Header() {
 
                 {/* Mobile Menu */}
                 {isMenuOpen && (
-                    <div className="lg:hidden mt-4 space-y-2 border-t border-red-700 pt-4">
+                    <div className="lg:hidden mt-4 space-y-1 border-t border-crimson-900/30 pt-4 animate-fadeIn">
                         <Link
                             href="/produits"
-                            className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                            className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all"
                             onClick={() => setIsMenuOpen(false)}
                         >
-                            🛍️ Boutique
+                            Boutique
                         </Link>
 
                         <div className="space-y-1">
-                            <div className="text-gray-300 py-2 font-medium">📚 Fanzine</div>
+                            <div className="px-4 py-3 text-sm font-medium text-neutral-400">Fanzine</div>
                             <Link
                                 href="/abonnements"
-                                className="block pl-6 text-gray-400 hover:text-red-500 py-1 transition-colors"
+                                className="block pl-8 pr-4 py-2 text-sm text-neutral-400 hover:text-crimson-400 hover:bg-neutral-800/30 rounded-lg transition-all"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 S'abonner
                             </Link>
                             <Link
                                 href="/fanzine/numeros"
-                                className="block pl-6 text-gray-400 hover:text-red-500 py-1 transition-colors"
+                                className="block pl-8 pr-4 py-2 text-sm text-neutral-400 hover:text-crimson-400 hover:bg-neutral-800/30 rounded-lg transition-all"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Numéros digitaux
                             </Link>
                             <Link
                                 href="/fanzine/collection"
-                                className="block pl-6 text-gray-400 hover:text-red-500 py-1 transition-colors"
+                                className="block pl-8 pr-4 py-2 text-sm text-neutral-400 hover:text-crimson-400 hover:bg-neutral-800/30 rounded-lg transition-all"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Ma collection
@@ -190,47 +199,26 @@ export function Header() {
 
                         <Link
                             href="/evil-ed"
-                            className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                            className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all"
                             onClick={() => setIsMenuOpen(false)}
                         >
-                            💀 Evil Ed Collection
+                            Evil Ed Collection
                         </Link>
-                        {isAuthenticated ? (
-                            <>
-                                <Link
-                                    href="/compte"
-                                    className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
-                                    👤 {user?.firstName || 'Mon Compte'}
-                                </Link>
 
-                                <button
-                                    onClick={() => {
-                                        logout();
-                                        setIsMenuOpen(false);
-                                    }}
-                                    className="block w-full text-left text-gray-300 hover:text-red-500 py-2 transition-colors"
-                                >
-                                    🚪 Déconnexion
-                                </button>
-                            </>
-                        ) : (
-                            <Link
-                                href="/auth/login"
-                                className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                🔐 Connexion
-                            </Link>
-                        )}
+                        <Link
+                            href="/troc"
+                            className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            Espace Troc
+                        </Link>
 
                         <Link
                             href="/communaute"
-                            className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                            className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all"
                             onClick={() => setIsMenuOpen(false)}
                         >
-                            💬 Communauté
+                            Communauté
                         </Link>
 
                         {isAuthenticated ? (
@@ -238,27 +226,27 @@ export function Header() {
                                 {isAdmin(user) && (
                                     <Link
                                         href="/admin"
-                                        className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                        className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all"
                                         onClick={() => setIsMenuOpen(false)}
                                     >
-                                        ⚙️ Admin
+                                        Admin
                                     </Link>
                                 )}
 
                                 <Link
                                     href="/commandes"
-                                    className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                    className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all"
                                     onClick={() => setIsMenuOpen(false)}
                                 >
-                                    📦 Mes Commandes
+                                    Mes Commandes
                                 </Link>
 
                                 <Link
                                     href="/compte"
-                                    className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                    className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all"
                                     onClick={() => setIsMenuOpen(false)}
                                 >
-                                    👤 {user?.firstName || 'Mon Compte'}
+                                    {user?.firstName || 'Mon Compte'}
                                 </Link>
 
                                 <button
@@ -266,34 +254,38 @@ export function Header() {
                                         logout();
                                         setIsMenuOpen(false);
                                     }}
-                                    className="block w-full text-left text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                    className="block w-full text-left px-4 py-3 text-sm font-medium text-neutral-400 hover:text-crimson-500 hover:bg-neutral-800/50 rounded-lg transition-all"
                                 >
-                                    🚪 Déconnexion
+                                    Déconnexion
                                 </button>
                             </>
                         ) : (
                             <Link
                                 href="/auth/login"
-                                className="block text-gray-300 hover:text-red-500 py-2 transition-colors"
+                                className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                🔐 Connexion
+                                Connexion
                             </Link>
                         )}
 
-                        <div className="border-t border-red-700 pt-2 mt-2">
-
+                        <div className="border-t border-crimson-900/30 pt-3 mt-3">
                             <Link
                                 href="/panier"
-                                className="block bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors mt-2"
+                                className="flex items-center justify-between bg-crimson-600 hover:bg-crimson-500 text-white px-5 py-3 rounded-lg transition-all font-medium text-sm shadow-crimson-sm"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                🛒 Panier ({cart.totalItems})
+                                <span>Panier</span>
+                                {cart.totalItems > 0 && (
+                                    <span className="bg-crimson-400 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                                        {cart.totalItems}
+                                    </span>
+                                )}
                             </Link>
                         </div>
                     </div>
                 )}
             </nav>
-        </header >
+        </header>
     );
 }

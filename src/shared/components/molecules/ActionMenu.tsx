@@ -53,7 +53,7 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label={triggerLabel}
-        className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+        className="flex items-center justify-center w-8 h-8 rounded-lg text-neutral-400 hover:text-crimson-400 hover:bg-neutral-800/50 transition-all duration-200"
       >
         {/* Icône ⋮ */}
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -67,14 +67,14 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
         <div
           role="menu"
           className={[
-            'absolute z-50 mt-1 w-44 rounded-lg bg-white shadow-lg ring-1 ring-gray-200 py-1',
+            'absolute z-50 mt-1 w-44 rounded-xl glass-effect border border-crimson-900/30 shadow-crimson-md py-1 animate-fadeIn',
             align === 'right' ? 'right-0' : 'left-0',
           ].join(' ')}
         >
           {items.map((item, i) => (
             <React.Fragment key={i}>
               {item.separator && i > 0 && (
-                <div className="my-1 border-t border-gray-100" role="separator" />
+                <div className="my-1 border-t border-crimson-900/30" role="separator" />
               )}
               <button
                 role="menuitem"
@@ -85,10 +85,10 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
                   setOpen(false);
                 }}
                 className={[
-                  'w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors',
+                  'w-full flex items-center gap-2 px-3 py-2 text-sm transition-all duration-200',
                   item.variant === 'danger'
-                    ? 'text-red-600 hover:bg-red-50'
-                    : 'text-gray-700 hover:bg-gray-50',
+                    ? 'text-crimson-400 hover:bg-crimson-950/50'
+                    : 'text-neutral-300 hover:bg-neutral-800/50',
                   item.disabled ? 'opacity-40 cursor-not-allowed' : '',
                 ]
                   .filter(Boolean)

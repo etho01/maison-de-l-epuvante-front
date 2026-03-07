@@ -1,6 +1,6 @@
 /**
  * Component: Modal
- * Composant modal générique et réutilisable
+ * Composant modal générique et réutilisable - Style professionnel
  */
 
 import React, { useEffect, ReactNode } from 'react';
@@ -53,7 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
     sm: 'max-w-sm',
     md: 'max-w-md',
     lg: 'max-w-lg',
-    xl: 'max-w-xl',
+    xl: 'max-w-2xl',
     full: 'max-w-full mx-4',
   };
 
@@ -65,27 +65,27 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 glass-effect animate-fadeIn"
       onClick={handleBackdropClick}
     >
       <div 
-        className={`bg-gray-900 border-2 border-red-700 rounded-lg shadow-2xl shadow-red-900/50 ${sizeClasses[size]} w-full animate-in zoom-in-95 duration-200 ${className}`}
+        className={`glass-effect border-2 border-crimson-700/50 rounded-2xl shadow-crimson-lg ${sizeClasses[size]} w-full animate-fadeIn ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header avec titre optionnel */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-6 border-b border-gray-700">
+          <div className="flex items-center justify-between p-6 border-b border-crimson-900/30">
             {title && (
-              <h3 className="text-xl font-bold text-white">{title}</h3>
+              <h3 className="text-xl font-bold text-neutral-100">{title}</h3>
             )}
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="ml-auto text-gray-400 hover:text-white transition-colors"
+                className="ml-auto text-neutral-400 hover:text-crimson-400 transition-colors p-1 rounded-lg hover:bg-neutral-800/50"
                 aria-label="Fermer"
               >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             )}

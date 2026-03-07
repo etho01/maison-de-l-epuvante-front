@@ -1,6 +1,6 @@
 /**
  * Component: PageHeader
- * Molecule - En-tête de page cohérent : titre, sous-titre, fil d'Ariane et actions.
+ * Molecule - En-tête de page - Style professionnel
  */
 
 import React, { ReactNode } from 'react';
@@ -23,17 +23,17 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`mb-6 ${className}`}>
+    <div className={`mb-8 ${className}`}>
       {breadcrumb && (
-        <nav aria-label="fil d'Ariane" className="mb-2 text-sm text-gray-500">
+        <nav aria-label="fil d'Ariane" className="mb-3 text-sm text-neutral-500">
           {breadcrumb}
         </nav>
       )}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+          <h1 className="text-3xl font-bold text-neutral-100">{title}</h1>
           {subtitle && (
-            <p className="mt-1 text-sm text-gray-500">{subtitle}</p>
+            <p className="mt-2 text-sm text-neutral-400 leading-relaxed">{subtitle}</p>
           )}
         </div>
         {actions && (

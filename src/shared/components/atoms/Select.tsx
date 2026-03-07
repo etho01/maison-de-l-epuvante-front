@@ -1,11 +1,11 @@
 /**
  * Component: Select
- * Composant réutilisable pour les champs de sélection
+ * Composant réutilisable pour les champs de sélection - Style professionnel
  */
 
 import { forwardRef, SelectHTMLAttributes } from 'react';
 
-export type SelectVariant = 'default' | 'dark' | 'light';
+export type SelectVariant = 'default' | 'ghost';
 export type SelectSize = 'sm' | 'md' | 'lg';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -17,11 +17,10 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, id, variant = 'dark', selectSize = 'md', className = '', options, children, ...props }, ref) => {
+  ({ label, error, id, variant = 'default', selectSize = 'md', className = '', options, children, ...props }, ref) => {
     const variantStyles: Record<SelectVariant, string> = {
-      default: 'bg-white border-gray-300 text-gray-900',
-      dark: 'bg-gray-900 border-gray-700 text-white',
-      light: 'bg-gray-50 border-gray-300 text-gray-900',
+      default: 'bg-neutral-900/50 border-crimson-900/30 text-neutral-100',
+      ghost: 'bg-transparent border-neutral-700 text-neutral-100',
     };
 
     const sizeStyles: Record<SelectSize, string> = {
@@ -30,14 +29,12 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       lg: 'px-5 py-4 text-lg',
     };
 
-    const labelColorClass = variant === 'dark' ? 'text-gray-300' : 'text-gray-700';
-
     return (
       <div className="w-full">
         {label && (
           <label
             htmlFor={id}
-            className={`block ${labelColorClass} mb-2 text-sm font-medium`}
+            className="block text-neutral-300 mb-2 text-sm font-medium"
           >
             {label}
           </label>
@@ -46,13 +43,13 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           id={id}
           ref={ref}
           className={`w-full border ${
-            error ? 'border-red-500' : variantStyles[variant]
-          } ${sizeStyles[selectSize]} rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 transition-colors ${className}`}
+            error ? 'border-crimson-500 focus:ring-crimson-500' : `${variantStyles[variant]} focus:ring-crimson-600 focus:border-crimson-600`
+          } ${sizeStyles[selectSize]} rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 cursor-pointer ${className}`}
           {...props}
         >
           {options ? (
             options.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option key={option.value} value={option.value} className="bg-neutral-900 text-neutral-100">
                 {option.label}
               </option>
             ))
@@ -61,8 +58,10 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           )}
         </select>
         {error && (
-          <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-            <span>⚠️</span>
+          <p className="text-crimson-400 text-sm mt-2 flex items-center gap-2">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
             <span>{error}</span>
           </p>
         )}

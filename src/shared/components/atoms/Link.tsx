@@ -1,6 +1,6 @@
 /**
  * Component: Link
- * Composant réutilisable pour les liens
+ * Composant réutilisable pour les liens - Style professionnel
  */
 
 import NextLink from 'next/link';
@@ -22,10 +22,10 @@ export default function Link({
   ...props
 }: LinkProps) {
   const variants = {
-    primary: 'text-red-500 hover:text-red-400 transition-colors',
-    secondary: 'text-gray-400 hover:text-gray-300 transition-colors',
-    danger: 'text-red-700 hover:text-red-600 transition-colors',
-    ghost: 'text-red-500 hover:text-red-400 underline transition-colors',
+    primary: 'text-crimson-400 hover:text-crimson-300 transition-all duration-200',
+    secondary: 'text-neutral-400 hover:text-neutral-300 transition-all duration-200',
+    danger: 'text-crimson-600 hover:text-crimson-500 transition-all duration-200',
+    ghost: 'text-crimson-400 hover:text-crimson-300 underline underline-offset-2 transition-all duration-200',
   };
 
   const linkClasses = `${variants[variant]} ${className}`;

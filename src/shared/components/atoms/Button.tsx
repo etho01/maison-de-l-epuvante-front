@@ -1,12 +1,13 @@
 /**
  * Component: Button
- * Composant réutilisable pour les boutons
+ * Composant réutilisable pour les boutons - Style professionnel
  */
 
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   children: ReactNode;
   fullWidth?: boolean;
@@ -14,6 +15,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function Button({
   variant = 'primary',
+  size = 'md',
   isLoading = false,
   children,
   fullWidth = false,
@@ -21,20 +23,27 @@ export default function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'font-bold py-3 px-6 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed';
+  const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-950 disabled:cursor-not-allowed disabled:opacity-50';
   
   const variants = {
-    primary: 'bg-red-700 hover:bg-red-600 text-white disabled:bg-red-900 focus:ring-red-600',
-    secondary: 'bg-gray-700 hover:bg-gray-600 text-white disabled:bg-gray-900 focus:ring-gray-600',
-    danger: 'bg-red-900 hover:bg-red-800 text-red-200 disabled:bg-red-950 focus:ring-red-800',
-    ghost: 'bg-transparent hover:bg-red-900/20 text-red-500 border border-red-700 disabled:opacity-50 focus:ring-red-600',
+    primary: 'bg-crimson-600 hover:bg-crimson-500 text-white shadow-crimson-sm hover:shadow-crimson-md hover:scale-105 focus:ring-crimson-600',
+    secondary: 'bg-neutral-800 hover:bg-neutral-700 text-white shadow-md hover:shadow-lg hover:scale-105 focus:ring-neutral-600',
+    danger: 'bg-crimson-800 hover:bg-crimson-700 text-crimson-100 shadow-crimson-sm hover:shadow-crimson-md hover:scale-105 focus:ring-crimson-700',
+    ghost: 'bg-transparent hover:bg-crimson-950/30 text-crimson-400 hover:text-crimson-300 focus:ring-crimson-600',
+    outline: 'bg-transparent border-2 border-crimson-700 hover:border-crimson-500 hover:bg-crimson-950/40 text-neutral-200 hover:text-white focus:ring-crimson-600',
+  };
+
+  const sizes = {
+    sm: 'text-sm px-4 py-2',
+    md: 'text-base px-6 py-3',
+    lg: 'text-lg px-8 py-4',
   };
 
   const widthClass = fullWidth ? 'w-full' : '';
 
   return (
     <button
-      className={`${baseStyles} ${variants[variant]} ${widthClass} ${className}`}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${widthClass} ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >

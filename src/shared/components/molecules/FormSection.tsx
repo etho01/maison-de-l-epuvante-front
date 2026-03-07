@@ -20,14 +20,14 @@ export const FormSection: React.FC<FormSectionProps> = ({
   className = '',
 }) => {
   return (
-    <fieldset className={`border border-gray-200 rounded-lg p-4 space-y-4 ${className}`}>
+    <fieldset className={`border border-crimson-900/30 rounded-xl p-4 space-y-4 glass-effect ${className}`}>
       {(title || description) && (
         <legend className="px-2">
           {title && (
-            <span className="text-sm font-semibold text-gray-700">{title}</span>
+            <span className="text-sm font-semibold text-neutral-100">{title}</span>
           )}
           {description && (
-            <p className="text-xs text-gray-500 mt-0.5">{description}</p>
+            <p className="text-xs text-neutral-400 mt-0.5">{description}</p>
           )}
         </legend>
       )}
