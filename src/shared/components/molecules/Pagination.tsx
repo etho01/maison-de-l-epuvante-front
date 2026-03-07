@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Pagination as PaginationType } from '@/src/shared/domain/Pagination';
+import { Button } from '@/src/shared/components/atoms';
 
 interface PaginationComponentProps  {
   pagination?: PaginationType;
@@ -74,23 +75,17 @@ export const PaginationComponent: React.FC<PaginationComponentProps> = ({
       {/* Contrôles de pagination */}
       <nav className="flex items-center gap-2" aria-label="Pagination">
         {/* Bouton Précédent */}
-        <button
+        <Button
           onClick={() => onPageChange(page - 1)}
           disabled={!hasPreviousPage}
-          className={`
-            px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-            ${
-              hasPreviousPage
-                ? 'glass-effect text-neutral-300 hover:text-crimson-400 hover:border-crimson-700 border border-crimson-900/30'
-                : 'bg-neutral-900/30 text-neutral-600 cursor-not-allowed border border-neutral-800'
-            }
-          `}
+          variant={hasPreviousPage ? 'secondary' : 'ghost'}
+          size="sm"
           aria-label="Page précédente"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-        </button>
+        </Button>
 
         {/* Numéros de pages */}
         <div className="flex items-center gap-1">
@@ -109,44 +104,32 @@ export const PaginationComponent: React.FC<PaginationComponentProps> = ({
             const isActive = pageNum === page;
 
             return (
-              <button
+              <Button
                 key={pageNum}
                 onClick={() => onPageChange(pageNum as number)}
-                className={`
-                  px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 min-w-10
-                  ${
-                    isActive
-                      ? 'bg-crimson-600 text-white border border-crimson-600 shadow-crimson-sm'
-                      : 'glass-effect text-neutral-300 hover:text-crimson-400 hover:border-crimson-700 border border-crimson-900/30'
-                  }
-                `}
+                variant={isActive ? 'primary' : 'ghost'}
+                size="sm"
                 aria-label={`Page ${pageNum}`}
                 aria-current={isActive ? 'page' : undefined}
               >
                 {pageNum}
-              </button>
+              </Button>
             );
           })}
         </div>
 
         {/* Bouton Suivant */}
-        <button
+        <Button
           onClick={() => onPageChange(page + 1)}
           disabled={!hasNextPage}
-          className={`
-            px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-            ${
-              hasNextPage
-                ? 'glass-effect text-neutral-300 hover:text-crimson-400 hover:border-crimson-700 border border-crimson-900/30'
-                : 'bg-neutral-900/30 text-neutral-600 cursor-not-allowed border border-neutral-800'
-            }
-          `}
+          variant={hasNextPage ? 'secondary' : 'ghost'}
+          size="sm"
           aria-label="Page suivante"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
-        </button>
+        </Button>
       </nav>
     </div>
   );

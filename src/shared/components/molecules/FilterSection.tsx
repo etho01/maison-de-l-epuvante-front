@@ -6,6 +6,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
+import { Button } from '@/src/shared/components/atoms';
 
 export interface FilterOption<T = any> {
   label: string;
@@ -46,29 +47,25 @@ export function FilterSection<T>({
       <h3 className="font-bold text-neutral-100 mb-3">{title}</h3>
       <div className="space-y-1">
         {allowClear && (
-          <button
+          <Button
             onClick={() => onChange(valueClearLabel)}
-            className={`block w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
-              selectedValue === undefined || isValueEqual(selectedValue, valueClearLabel) 
-                ? 'bg-crimson-600 text-white shadow-crimson-sm' 
-                : 'text-neutral-300 hover:bg-neutral-800/50 hover:text-crimson-400'
-            }`}
+            variant={selectedValue === undefined || isValueEqual(selectedValue, valueClearLabel) ? 'primary' : 'ghost'}
+            size="sm"
+            className="w-full justify-start"
           >
             {clearLabel}
-          </button>
+          </Button>
         )}
         {options.map((option, index) => (
-          <button
+          <Button
             key={index}
             onClick={() => onChange(option.value)}
-            className={`block w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
-              isValueEqual(selectedValue, option.value) 
-                ? 'bg-crimson-600 text-white shadow-crimson-sm' 
-                : 'text-neutral-300 hover:bg-neutral-800/50 hover:text-crimson-400'
-            }`}
+            variant={isValueEqual(selectedValue, option.value) ? 'primary' : 'ghost'}
+            size="sm"
+            className="w-full justify-start"
           >
             {option.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

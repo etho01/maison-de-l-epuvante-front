@@ -7,6 +7,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, ReactNode } from 'react';
+import { Button } from '@/src/shared/components/atoms';
 
 export interface ActionMenuItem {
   label: string;
@@ -47,13 +48,14 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
 
   return (
     <div ref={ref} className={`relative inline-block ${className}`}>
-      <button
-        type="button"
+      <Button
         onClick={() => setOpen((v) => !v)}
+        variant="ghost"
+        size="sm"
+        className="w-8 h-8 p-0"
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label={triggerLabel}
-        className="flex items-center justify-center w-8 h-8 rounded-lg text-neutral-400 hover:text-crimson-400 hover:bg-neutral-800/50 transition-all duration-200"
       >
         {/* Icône ⋮ */}
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -61,7 +63,7 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
           <circle cx="10" cy="10" r="1.5" />
           <circle cx="10" cy="16" r="1.5" />
         </svg>
-      </button>
+      </Button>
 
       {open && (
         <div

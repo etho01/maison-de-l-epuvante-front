@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, ReactNode } from 'react';
+import { Button } from '@/src/shared/components/atoms';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -79,15 +80,17 @@ export const Modal: React.FC<ModalProps> = ({
               <h3 className="text-xl font-bold text-neutral-100">{title}</h3>
             )}
             {showCloseButton && (
-              <button
+              <Button
                 onClick={onClose}
-                className="ml-auto text-neutral-400 hover:text-crimson-400 transition-colors p-1 rounded-lg hover:bg-neutral-800/50"
+                variant="ghost"
+                size="sm"
+                className="ml-auto"
                 aria-label="Fermer"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-              </button>
+              </Button>
             )}
           </div>
         )}
