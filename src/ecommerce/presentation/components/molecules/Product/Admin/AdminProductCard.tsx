@@ -4,6 +4,7 @@ import React from 'react';
 import { Product } from '../../../../../domain/entities/Product';
 import { ProductStockBadge } from '../../../atoms/Product/ProductStockBadge';
 import { ProductTypeBadge } from '../../../atoms/Product/ProductTypeBadge';
+import { Button } from '@/src/shared/components/atoms';
 
 interface AdminProductCardProps {
   product: Product;
@@ -46,20 +47,22 @@ export const AdminProductCard: React.FC<AdminProductCardProps> = ({ product, onE
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           {onEdit && (
-            <button
+            <Button
               onClick={() => onEdit(product)}
-              className="px-3 py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              variant="secondary"
+              size="sm"
             >
               Modifier
-            </button>
+            </Button>
           )}
           {onDelete && (
-            <button
+            <Button
               onClick={() => onDelete(product)}
-              className="px-3 py-1 text-sm bg-crimson-600 text-white rounded-lg hover:bg-crimson-700 transition-colors"
+              variant="danger"
+              size="sm"
             >
               Supprimer
-            </button>
+            </Button>
           )}
         </div>
       </div>

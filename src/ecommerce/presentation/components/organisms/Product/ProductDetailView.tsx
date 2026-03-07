@@ -74,19 +74,23 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
         {product.stock > 0 && (
           <div className="flex gap-4 mb-6">
             <div className="flex items-center border border-neutral-800 rounded-lg overflow-hidden">
-              <button
+              <Button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="px-4 py-2 hover:bg-neutral-900 text-neutral-100 transition-colors"
+                variant="ghost"
+                size="sm"
+                className="px-4 py-2"
               >
                 -
-              </button>
+              </Button>
               <span className="px-6 py-2 text-neutral-100">{quantity}</span>
-              <button
+              <Button
                 onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                className="px-4 py-2 hover:bg-neutral-900 text-neutral-100 transition-colors"
+                variant="ghost"
+                size="sm"
+                className="px-4 py-2"
               >
                 +
-              </button>
+              </Button>
             </div>
 
             <Button onClick={handleAddToCart} className="flex-1">

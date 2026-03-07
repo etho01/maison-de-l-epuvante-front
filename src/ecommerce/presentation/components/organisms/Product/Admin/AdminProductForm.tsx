@@ -250,8 +250,9 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
           type="submit"
           disabled={loading || isSubmitting}
           variant="primary"
+          isLoading={loading || isSubmitting}
         >
-          {loading || isSubmitting ? 'Enregistrement...' : product ? 'Mettre à jour' : 'Créer'}
+          {product ? 'Mettre à jour' : 'Créer'}
         </Button>
         {onCancel && (
           <Button
