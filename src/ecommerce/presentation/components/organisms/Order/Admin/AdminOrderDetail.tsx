@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useGetOrderByIdViewModel, useUpdateOrderViewModel } from '../../../../hooks/orders';
-import { Order, OrderStatus } from '../../../../../domain/entities/Order';
-import { OrderStatusBadge } from '../../../atoms/Order/OrderStatusBadge';
 import { Select, TextArea, Button } from '@/src/shared/components/atoms';
 import { ApiError } from '@/src/shared/domain/ApiError';
+import { OrderStatus, OrderStatusBadge } from '@/src/shared/components';
+import { useGetOrderByIdViewModel, useUpdateOrderStatusViewModel } from '@/src/ecommerce/presentation/hooks';
+import { OrderStatusEnum } from '@/src/ecommerce/domain/entities/Order';
+import { DeliveryStatus } from '@/src/ecommerce/domain/entities/Devivery';
 
 interface AdminOrderDetailProps {
   orderId: number;
@@ -13,21 +14,42 @@ interface AdminOrderDetailProps {
   onClose?: () => void;
 }
 
-const ORDER_STATUSES: OrderStatus[] = [
-  'pending',
-  'processing',
-  'paid',
-  'shipped',
-  'delivered',
-  'cancelled',
-  'refunded',
-];
+const ORDER_STATUSES = {
+  [OrderStatusEnum.PENDING]: 'En attente',
+  [OrderStatusEnum.PAID]: 'Payée',
+  [OrderStatusEnum.SHIPPED]: 'Expédiée',
+  [OrderStatusEnum.DELIVERED]: 'Livrée',
+  [OrderStatusEnum.CANCELLED]: 'Annulée',
+  [OrderStatusEnum.REFUNDED]: 'Remboursée',
+}
+
+const DELIVERY_STATUSES = {
+  [DeliveryStatus.PENDING]: 'En attente',
+  [DeliveryStatus.SHIPPED]: 'Expédiée',
+  [DeliveryStatus.DELIVERED]: 'Livrée',
+  [DeliveryStatus.CANCELLED]: 'Annulée',
+}
+
+const getDeliveryStatusStyle = (status: DeliveryStatus) => {
+  switch (status) {
+    case DeliveryStatus.PENDING:
+      return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30';
+    case DeliveryStatus.SHIPPED:
+      return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
+    case DeliveryStatus.DELIVERED:
+      return 'bg-green-500/10 text-green-400 border-green-500/30';
+    case DeliveryStatus.CANCELLED:
+      return 'bg-red-500/10 text-red-400 border-red-500/30';
+    default:
+      return 'bg-neutral-500/10 text-neutral-400 border-neutral-500/30';
+  }
+}
 
 export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onUpdate, onClose }) => {
   const getOrderViewModel = useGetOrderByIdViewModel();
-  const updateOrderViewModel = useUpdateOrderViewModel();
+  const updateOrderStatusViewModel = useUpdateOrderStatusViewModel();
   const { order, loading: getLoading } = getOrderViewModel.getState();
-  const { loading: updateLoading } = updateOrderViewModel.getState();
+  const { loading: updateLoading } = updateOrderStatusViewModel.getState();
   
   const loading = getLoading || updateLoading;
   const [error, setError] = useState<string | null>(null);
@@ -57,10 +79,7 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
     if (!order || !selectedStatus) return;
     
     setError(null);
-    updateOrderViewModel.updateOrder(order.id, {
-      status: selectedStatus,
-      adminNotes: adminNotes || undefined,
-    })
+    updateOrderStatusViewModel.updateStatus(order.id, selectedStatus)
       .then(() => {
         onUpdate?.();
       })
@@ -70,7 +89,7 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
   };
 
   if (loading && !order) {
-    return <div className="text-center py-8 text-neutral-400">Chargement...</div>;
+    return <div className="text-center py-8">Chargement...</div>;
   }
 
   if (!order) {
@@ -83,6 +102,7 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
       </div>
     );
   }
+  console.log('Order details:', order);
 
   return (
     <div className="glass-effect border border-crimson-900/30 p-6 rounded-xl shadow-crimson-md max-w-4xl mx-auto">
@@ -143,15 +163,61 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
         </div>
       </div>
 
+      {/* Delivery Info */}
+      {order.delivery && (
+        <div className="mb-6 p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="font-semibold text-neutral-100">Informations de livraison</h3>
+            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getDeliveryStatusStyle(order.delivery.status)}`}>
+              {DELIVERY_STATUSES[order.delivery.status]}
+            </span>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <h4 className="text-sm font-medium text-neutral-400 mb-2">Adresse de livraison</h4>
+              <p className="text-neutral-300">{order.delivery.shippingAddress.firstName} {order.delivery.shippingAddress.lastName}</p>
+              <p className="text-neutral-300">{order.delivery.shippingAddress.address}</p>
+              <p className="text-neutral-300">{order.delivery.shippingAddress.postalCode} {order.delivery.shippingAddress.city}</p>
+              <p className="text-neutral-300">{order.delivery.shippingAddress.country}</p>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-medium text-neutral-400 mb-2">Date de livraison</h4>
+              <p className="text-neutral-300">
+                {order.delivery.deliveredAt 
+                  ? new Date(order.delivery.deliveredAt).toLocaleString('fr-FR')
+                  : 'Non livrée'}
+              </p>
+            </div>
+          </div>
+
+          {order.delivery.items && order.delivery.items.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium text-neutral-400 mb-2">Articles livrés</h4>
+              <div className="space-y-2">
+                {order.delivery.items.map((item) => (
+                  <div key={item.id} className="flex justify-between items-center p-2 bg-neutral-900/50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-neutral-200">{item.name}</p>
+                      <p className="text-sm text-neutral-400">Quantité: {item.quantity}</p>
+                    </div>
+                    <p className="text-neutral-300">{item.price} €</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Addresses */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
-          <h3 className="font-semibold mb-2 text-neutral-100">Adresse de livraison</h3>
-          <p className="text-neutral-300">{order.shippingAddress.firstName} {order.shippingAddress.lastName}</p>
-          <p className="text-neutral-300">{order.shippingAddress.address}</p>
-          <p className="text-neutral-300">{order.shippingAddress.postalCode} {order.shippingAddress.city}</p>
-          <p className="text-neutral-300">{order.shippingAddress.country}</p>
-        </div>
+        {!order.delivery && (
+          <div className="p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50 flex items-center justify-center">
+            <span className="text-sm text-neutral-400">Pas de livraison (produits numériques uniquement)</span>
+          </div>
+        )}
 
         <div className="p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
           <h3 className="font-semibold mb-2 text-neutral-100">Adresse de facturation</h3>
@@ -191,11 +257,10 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
             <Select
               value={selectedStatus || ''}
               onChange={(e) => setSelectedStatus(e.target.value as OrderStatus)}
-              variant="dark"
             >
-              {ORDER_STATUSES.map((status) => (
+              {Object.entries(ORDER_STATUSES).map(([status, label]) => (
                 <option key={status} value={status}>
-                  {status}
+                  {label}
                 </option>
               ))}
             </Select>
@@ -209,7 +274,6 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
             value={adminNotes}
             onChange={(e) => setAdminNotes(e.target.value)}
             placeholder="Notes internes..."
-            variant="dark"
           />
         </div>
 

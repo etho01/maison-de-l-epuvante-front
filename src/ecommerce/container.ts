@@ -39,6 +39,7 @@ import {
   GetOrderByIdUseCase,
   CheckoutUseCase,
   UpdateOrderUseCase,
+  UpdateOrderStatusUseCase,
 } from './application/usecases/orders';
 
 import {
@@ -173,6 +174,11 @@ class EcommerceContainer {
   private _updateOrderUseCase?: UpdateOrderUseCase;
   get updateOrderUseCase() {
     return (this._updateOrderUseCase ??= new UpdateOrderUseCase(this.orderRepository));
+  }
+
+  private _updateOrderStatusUseCase?: UpdateOrderStatusUseCase;
+  get updateOrderStatusUseCase() {
+    return (this._updateOrderStatusUseCase ??= new UpdateOrderStatusUseCase(this.orderRepository));
   }
 
   // ─── Subscriptions ────────────────────────────────────────────────────────

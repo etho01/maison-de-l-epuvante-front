@@ -11,6 +11,15 @@ export type OrderStatus =
   | 'cancelled' 
   | 'refunded';
 
+export enum OrderStatusEnum {
+  PENDING = 'pending',
+  PAID = 'paid',
+  SHIPPED = 'shipped',
+  DELIVERED = 'delivered',
+  CANCELLED = 'cancelled',
+  REFUNDED = 'refunded',
+}
+
 export interface Address {
   firstName: string;
   lastName: string;
@@ -35,7 +44,6 @@ export interface Order {
   items: OrderItem[];
   totalAmount: string;
   status: OrderStatus;
-  shippingAddress: Address;
   billingAddress: Address;
   paymentMethod: string;
   customerNotes: string | null;

@@ -1,7 +1,7 @@
 
 import { GetOrderByIdUseCase } from '@/src/ecommerce/application/usecases';
+import { Order } from '@/src/ecommerce/domain/entities/Order';
 import { ApiError } from '@/src/shared/domain/ApiError';
-import { Order } from '@stripe/stripe-js';
 
 export class GetOrderByIdViewModel {
   private state = {

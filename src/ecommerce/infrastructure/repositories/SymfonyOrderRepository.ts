@@ -10,6 +10,7 @@ export class SymfonyOrderRepository implements IOrderRepository {
   }
 
   async getById(id: number): Promise<Order> {
+    console.log('Fetching order with id:', id);
     return await serverApiClient.get<Order>(`/orders/${id}`);
   }
 

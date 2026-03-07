@@ -4,7 +4,7 @@ import { SymfonyOrderRepository } from "@/src/ecommerce/infrastructure/repositor
 import { OrderDetail } from "@/src/ecommerce/presentation/components";
 import { AuthGuard } from "@/src/shared/components/AuthGuard";
 
-interface SuccessPageProps {
+interface CancelPageProps {
     searchParams: {
         session_id: string;
     };
@@ -14,15 +14,15 @@ const OrderRepository = new SymfonyOrderRepository();
 const getOrderByPaymentIntentIdUseCase = new GetOrderByPaymentIntentIdUseCase(OrderRepository);
 const updateOrderStatusUseCase = new UpdateOrderStatusUseCase(OrderRepository);
 
-export default async function SuccessPage({ searchParams }: SuccessPageProps) {
+export default async function CancelPage({ searchParams }: CancelPageProps) {
     const { session_id } = await searchParams;
 
     let order = undefined
     let error = null;
     try {
         order = await getOrderByPaymentIntentIdUseCase.execute(session_id);
-        await updateOrderStatusUseCase.execute(order.id, OrderStatusEnum.PAID);
-        order.status = OrderStatusEnum.PAID; // Met à jour le statut localement pour l'affichage
+        await updateOrderStatusUseCase.execute(order.id, OrderStatusEnum.CANCELLED);
+        order.status = OrderStatusEnum.CANCELLED; // Met à jour le statut localement pour l'affichage
     } catch (error) {
         error = error instanceof Error ? error.message : 'Commande non trouvée';
     }

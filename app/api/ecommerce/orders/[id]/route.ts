@@ -12,7 +12,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const order = await getOrderByIdUseCase.execute(parseInt(params.id));
+    const {id} = await params;
+    const order = await getOrderByIdUseCase.execute(parseInt(id));
     return NextResponse.json(order);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
