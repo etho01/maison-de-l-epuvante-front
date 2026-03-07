@@ -51,7 +51,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
   };
 
   if (loading && plans.length === 0) {
-    return <div className="text-center py-8">Chargement...</div>;
+    return <div className="text-center py-8 text-neutral-400">Chargement...</div>;
   }
 
   const formatInterval = (interval: string) => {
@@ -75,13 +75,16 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
   return (
     <div>
       {error && (
-        <div className="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg">
-          {error}
+        <div className="mb-4 p-4 glass-effect border border-crimson-700/50 text-crimson-200 rounded-xl flex items-start gap-3">
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          </svg>
+          <span>{error}</span>
         </div>
       )}
       
       {/* Filters */}
-      <div className="mb-6 bg-gray-900 p-4 rounded-lg shadow border border-gray-700">
+      <div className="mb-6 glass-effect p-4 rounded-xl shadow-crimson-md border border-crimson-900/30">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Input
             type="text"
@@ -123,41 +126,41 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
         {plans.map((plan: SubscriptionPlan) => (
           <div
             key={plan.id}
-            className="bg-gray-900 border border-gray-700 p-6 rounded-lg shadow hover:shadow-lg transition-shadow"
+            className="glass-effect border border-crimson-900/30 p-6 rounded-xl shadow-crimson-md hover:border-crimson-700/50 transition-all duration-200"
           >
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="text-xl font-bold text-white">{plan.name}</h3>
+                  <h3 className="text-xl font-bold text-neutral-100">{plan.name}</h3>
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${
                       plan.active
-                        ? 'bg-green-900 text-green-300 border border-green-700'
-                        : 'bg-red-900 text-red-300 border border-red-700'
+                        ? 'bg-green-950/50 text-green-300 border border-green-700/50'
+                        : 'bg-crimson-950/50 text-crimson-300 border border-crimson-700/50'
                     }`}
                   >
                     {plan.active ? 'Actif' : 'Inactif'}
                   </span>
                 </div>
                 
-                <p className="text-gray-400 mb-4">{plan.description}</p>
+                <p className="text-neutral-400 mb-4">{plan.description}</p>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-500 block">Prix</span>
-                    <span className="text-white font-semibold">{plan.price} €</span>
+                    <span className="text-neutral-400 block">Prix</span>
+                    <span className="text-neutral-100 font-semibold">{plan.price} €</span>
                   </div>
                   <div>
-                    <span className="text-gray-500 block">Intervalle</span>
-                    <span className="text-white font-semibold">{formatInterval(plan.billingInterval)}</span>
+                    <span className="text-neutral-400 block">Intervalle</span>
+                    <span className="text-neutral-100 font-semibold">{formatInterval(plan.billingInterval)}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500 block">Durée</span>
-                    <span className="text-white font-semibold">{plan.durationInMonths} mois</span>
+                    <span className="text-neutral-400 block">Durée</span>
+                    <span className="text-neutral-100 font-semibold">{plan.durationInMonths} mois</span>
                   </div>
                   <div>
-                    <span className="text-gray-500 block">Format</span>
-                    <span className="text-white font-semibold">{formatFormat(plan.format)}</span>
+                    <span className="text-neutral-400 block">Format</span>
+                    <span className="text-neutral-100 font-semibold">{formatFormat(plan.format)}</span>
                   </div>
                 </div>
               </div>
@@ -182,7 +185,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
       </div>
 
       {plans.length === 0 && (
-        <div className="text-center py-8 text-gray-500">Aucun plan d'abonnement trouvé</div>
+        <div className="text-center py-8 text-neutral-400">Aucun plan d'abonnement trouvé</div>
       )}
 
       <PaginationComponent

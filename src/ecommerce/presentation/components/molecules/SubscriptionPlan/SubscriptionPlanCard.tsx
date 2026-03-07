@@ -23,25 +23,25 @@ export const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
   return (
     <Card variant="default" padding="lg" hoverable>
       <div className="mb-4">
-        <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-        <p className="text-gray-600">{plan.description}</p>
+        <h3 className="text-2xl font-bold mb-2 text-neutral-100">{plan.name}</h3>
+        <p className="text-neutral-400">{plan.description}</p>
       </div>
 
       <div className="mb-4">
         <div className="flex items-baseline gap-2">
           <PriceDisplay price={plan.price} variant="emphasis" size="xl" />
-          <span className="text-gray-500">/ {BILLING_INTERVAL_LABELS[plan.billingInterval]}</span>
+          <span className="text-neutral-400">/ {BILLING_INTERVAL_LABELS[plan.billingInterval]}</span>
         </div>
       </div>
 
       <div className="space-y-2 mb-6">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Format:</span>
+          <span className="text-sm text-neutral-400">Format:</span>
           <Badge variant="info" size="sm">{SUBSCRIPTION_FORMAT_LABELS[plan.format]}</Badge>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Durée:</span>
-          <span className="font-medium">{plan.durationInMonths} mois</span>
+          <span className="text-sm text-neutral-400">Durée:</span>
+          <span className="font-medium text-neutral-100">{plan.durationInMonths} mois</span>
         </div>
       </div>
 
