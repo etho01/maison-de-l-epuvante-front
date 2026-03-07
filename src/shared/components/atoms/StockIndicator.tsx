@@ -18,6 +18,11 @@ export const StockIndicator: React.FC<StockIndicatorProps> = ({
   size = 'sm',
   className = '',
 }) => {
+  if (stock == -1)
+  {
+    return ;
+  }
+
   const sizeStyles = {
     sm: 'text-xs',
     md: 'text-sm',

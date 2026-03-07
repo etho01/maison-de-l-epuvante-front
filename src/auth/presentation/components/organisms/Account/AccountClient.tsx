@@ -65,7 +65,7 @@ export default function AccountClient({ initialUser }: AccountClientProps) {
 
           {/* Content */}
           <div className="p-6">
-            {activeTab === 'profile' && <EditProfileForm initialUser={initialUser} />}
+            {activeTab === 'profile' && <EditProfileForm user={initialUser} />}
             {activeTab === 'password' && <ChangePasswordForm />}
           </div>
         </div>

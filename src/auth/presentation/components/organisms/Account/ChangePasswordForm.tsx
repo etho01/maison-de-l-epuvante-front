@@ -81,14 +81,14 @@ export default function ChangePasswordForm() {
         />
 
         <div className="glass-effect border border-crimson-700/50 bg-crimson-950/30 rounded-xl p-4">
-          <p className="text-sm text-neutral-300">
+          <div className="text-sm text-neutral-300">
             <strong className="text-crimson-400">Exigences :</strong>
             <ul className="mt-2 space-y-1 list-disc list-inside">
               <li>Minimum 8 caractères</li>
               <li>Au moins 1 majuscule</li>
               <li>Au moins 1 chiffre</li>
             </ul>
-          </p>
+          </div>
         </div>
 
         <Button type="submit" isLoading={isSubmitting}>

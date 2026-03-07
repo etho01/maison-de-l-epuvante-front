@@ -54,14 +54,7 @@ export class ServerApiClient {
                 console.log(config, await errorData, response.status);
 
                 if (response.status === 401) {
-                    try 
-                    {
-                        TokenStorage.removeTokenClient();
-                        console.log(await response.json())
-                    } catch (error)
-                    {
-                        redirect('/api/auth/logout');
-                    }
+                    redirect('/api/auth/logout');
 
                 }
 

@@ -18,11 +18,8 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
   let product = null;
   try {
     product = await getProductBySlugUseCase.execute(slug);
-    console.log('Product found:', product);
   } catch (error) {
   }
-
-  console.log('Product:', product ? product : 'Not found');
 
   return (
     <div className="container mx-auto px-4 py-8">

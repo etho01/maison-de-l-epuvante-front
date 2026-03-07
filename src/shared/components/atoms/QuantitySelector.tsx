@@ -44,7 +44,12 @@ export const QuantitySelector: React.FC<QuantitySelectorProps> = ({
   };
 
   const canDecrease = quantity > min && !disabled;
-  const canIncrease = quantity < max && !disabled;
+  let canIncrease = quantity < max && !disabled;
+
+  if (max === -1)
+  {
+    canIncrease = true;
+  }
 
   return (
     <div className={`inline-flex items-center gap-1 glass-effect rounded-xl p-1 ${className}`}>

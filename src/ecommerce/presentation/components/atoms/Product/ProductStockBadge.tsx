@@ -13,6 +13,11 @@ export const ProductStockBadge: React.FC<ProductStockBadgeProps> = ({ stock }) =
     return { label: 'En stock', color: 'bg-green-950/50 text-green-300 border border-green-700/50' };
   };
 
+  if (stock == -1)
+  {
+    return ;
+  }
+
   const status = getStockStatus();
 
   return (

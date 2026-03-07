@@ -30,7 +30,6 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
   const [isInfiniteStock, setIsInfiniteStock] = useState<boolean>(
     product?.type === ProductType.DIGITAL && product?.stock === -1
   );
-  console.log(product)
 
   const {
     register,

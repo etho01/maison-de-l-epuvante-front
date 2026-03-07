@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useGetProductsViewModel, useDeleteProductViewModel } from '../../../../hooks/products';
-import { Product } from '../../../../../domain/entities/Product';
+import { Product, ProductType } from '../../../../../domain/entities/Product';
 import { AdminProductCard } from '../../../molecules/Product/Admin/AdminProductCard';
 import { Input, Select, Button } from '@/src/shared/components/atoms';
 import { ConfirmModal } from '@/src/shared/components/molecules';
@@ -82,9 +82,8 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
             variant="dark"
           >
             <option value="">Tous les types</option>
-            <option value="physical">Physique</option>
-            <option value="digital">Numérique</option>
-            <option value="subscription">Abonnement</option>
+            <option value={ProductType.PHYSICAL}>Physique</option>
+            <option value={ProductType.DIGITAL}>Numérique</option>
           </Select>
           
           <Select
