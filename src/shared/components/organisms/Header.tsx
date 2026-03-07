@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useAuth } from '@/src/auth/presentation/context/AuthContext';
 import { isAdmin } from '@/src/auth/utils/roleHelpers';
 import { useCart } from '@/src/ecommerce/presentation/context/CartContext';
+import { Button } from '@/src/shared/components/atoms';
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,9 +45,13 @@ export function Header() {
                         </Link>
 
                         <div className="relative group">
-                            <button className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-crimson-400 hover:bg-neutral-800/50 rounded-lg transition-all duration-200">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="px-4 py-2 text-sm font-medium"
+                            >
                                 Fanzine
-                            </button>
+                            </Button>
                             <div className="absolute top-full left-0 mt-2 w-56 glass-effect rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden">
                                 <Link href="/abonnements" className="block px-4 py-3 text-sm text-neutral-300 hover:bg-crimson-950/50 hover:text-crimson-400 transition-colors">
                                     S'abonner
@@ -108,12 +113,14 @@ export function Header() {
                                     {user?.firstName || 'Mon Compte'}
                                 </Link>
 
-                                <button
+                                <Button
                                     onClick={logout}
-                                    className="px-4 py-2 text-sm font-medium text-neutral-400 hover:text-crimson-500 hover:bg-neutral-800/50 rounded-lg transition-all duration-200"
+                                    variant="ghost"
+                                    size="sm"
+                                    className="px-4 py-2 text-sm font-medium text-neutral-400 hover:text-crimson-500"
                                 >
                                     Déconnexion
-                                </button>
+                                </Button>
                             </>
                         ) : (
                             <Link
@@ -138,9 +145,11 @@ export function Header() {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button
+                    <Button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="lg:hidden p-2 text-crimson-400 hover:text-crimson-300 hover:bg-neutral-800/50 rounded-lg transition-all"
+                        variant="ghost"
+                        size="sm"
+                        className="lg:hidden p-2"
                         aria-label="Menu"
                     >
                         <svg
@@ -158,7 +167,7 @@ export function Header() {
                                 <path d="M4 6h16M4 12h16M4 18h16" />
                             )}
                         </svg>
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Mobile Menu */}
@@ -249,15 +258,16 @@ export function Header() {
                                     {user?.firstName || 'Mon Compte'}
                                 </Link>
 
-                                <button
+                                <Button
                                     onClick={() => {
                                         logout();
                                         setIsMenuOpen(false);
                                     }}
-                                    className="block w-full text-left px-4 py-3 text-sm font-medium text-neutral-400 hover:text-crimson-500 hover:bg-neutral-800/50 rounded-lg transition-all"
+                                    variant="ghost"
+                                    className="w-full text-left px-4 py-3 text-sm font-medium text-neutral-400 hover:text-crimson-500 hover:bg-neutral-800/50 rounded-lg"
                                 >
                                     Déconnexion
-                                </button>
+                                </Button>
                             </>
                         ) : (
                             <Link
