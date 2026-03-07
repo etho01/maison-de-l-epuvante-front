@@ -55,17 +55,17 @@ const recentOrderColumns: Column<RecentOrder>[] = [
   {
     key: 'id',
     header: 'ID',
-    render: (o) => <span className="text-gray-300 font-mono">#{o.id}</span>,
+    render: (o) => <span className="text-neutral-300 font-mono">#{o.id}</span>,
   },
   {
     key: 'customer',
     header: 'Client',
-    render: (o) => <span className="text-gray-300">{o.customer}</span>,
+    render: (o) => <span className="text-neutral-300">{o.customer}</span>,
   },
   {
     key: 'amount',
     header: 'Montant',
-    render: (o) => <span className="text-gray-300">{o.amount.toFixed(2)} €</span>,
+    render: (o) => <span className="text-neutral-300">{o.amount.toFixed(2)} €</span>,
   },
   {
     key: 'status',
@@ -116,19 +116,19 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-white mb-6">Dashboard</h2>
+      <h2 className="text-2xl font-bold text-neutral-100 mb-6">Dashboard</h2>
 
       {/* Statistiques */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {statCards(stats).map((card) => (
           <div
             key={card.label}
-            className={`border rounded-lg p-6 ${card.bg}`}
+            className={`border border-crimson-900/30 rounded-xl p-6 glass-effect ${card.bg}`}
           >
             <div className="flex items-center justify-between">
               <div>
                 <p className={`text-sm ${card.text}`}>{card.label}</p>
-                <p className="text-2xl font-bold text-white">{card.value}</p>
+                <p className="text-2xl font-bold text-neutral-100">{card.value}</p>
               </div>
               <div className="text-4xl" aria-hidden="true">{card.emoji}</div>
             </div>
@@ -138,14 +138,14 @@ const AdminDashboard: React.FC = () => {
 
       {/* Commandes récentes */}
       <div>
-        <h3 className="text-xl font-bold text-white mb-4">Commandes récentes</h3>
-        <div className="bg-gray-950/50 rounded-lg overflow-hidden">
+        <h3 className="text-xl font-bold text-neutral-100 mb-4">Commandes récentes</h3>
+        <div className="bg-neutral-950/30 rounded-xl overflow-hidden">
           <DataTable
             columns={recentOrderColumns}
             data={stats.recentOrders}
             keyExtractor={(o) => o.id}
             caption="Commandes récentes"
-            className="border-gray-800"
+            className="border-crimson-900/30"
           />
         </div>
       </div>

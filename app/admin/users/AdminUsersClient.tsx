@@ -74,70 +74,70 @@ const AdminUsersClient: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-8 text-gray-400">Chargement...</div>;
+    return <div className="text-center py-8 text-neutral-400">Chargement...</div>;
   }
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-white">Gestion des utilisateurs</h2>
+        <h2 className="text-2xl font-bold text-neutral-100">Gestion des utilisateurs</h2>
         <div className="flex gap-4">
           <input
             type="text"
             placeholder="Rechercher..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-200 placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            className="px-4 py-2 bg-neutral-900/50 border border-crimson-900/30 text-neutral-200 placeholder-neutral-500 rounded-xl focus:ring-2 focus:ring-crimson-500 focus:border-transparent transition-all"
           />
         </div>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-800">
-          <thead className="bg-gray-800">
+        <table className="min-w-full divide-y divide-crimson-900/30">
+          <thead className="bg-neutral-900/50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Utilisateur
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Email
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Rôles
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Vérifié
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Inscrit le
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-gray-950/50 divide-y divide-gray-800">
+          <tbody className="bg-neutral-950/30 divide-y divide-crimson-900/20">
             {filteredUsers.map((user) => (
-              <tr key={user.id}>
+              <tr key={user.id} className="hover:bg-neutral-800/30 transition-colors">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-neutral-100">
                     {user.firstName} {user.lastName}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-300">{user.email}</div>
+                  <div className="text-sm text-neutral-300">{user.email}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex gap-1">
                     {user.roles.map((role) => (
                       <span
                         key={role}
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-md ${
                           role === 'ADMIN'
-                            ? 'bg-red-100 text-red-800'
+                            ? 'bg-crimson-950/50 text-crimson-400 border border-crimson-700/50'
                             : role === 'MODERATOR'
-                            ? 'bg-blue-100 text-blue-800'
-                            : 'bg-gray-100 text-gray-800'
+                            ? 'bg-blue-950/50 text-blue-400 border border-blue-700/50'
+                            : 'bg-neutral-800 text-neutral-300 border border-neutral-700'
                         }`}
                       >
                         {role}
@@ -147,28 +147,28 @@ const AdminUsersClient: React.FC = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-md ${
                       user.isVerified
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
+                        ? 'bg-green-950/50 text-green-400 border border-green-700/50'
+                        : 'bg-yellow-950/50 text-yellow-400 border border-yellow-700/50'
                     }`}
                   >
                     {user.isVerified ? 'Oui' : 'Non'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-400">
                   {user.createdAt?.toLocaleDateString('fr-FR')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button
                     onClick={() => handleRoleChange(user.id, 'ADMIN')}
-                    className="text-blue-400 hover:text-blue-300 mr-3"
+                    className="text-blue-400 hover:text-blue-300 mr-3 transition-colors"
                   >
                     Modifier
                   </button>
                   <button
                     onClick={() => handleDeleteUser(user.id)}
-                    className="text-red-400 hover:text-red-300"
+                    className="text-crimson-400 hover:text-crimson-300 transition-colors"
                   >
                     Supprimer
                   </button>
@@ -180,7 +180,7 @@ const AdminUsersClient: React.FC = () => {
       </div>
 
       {filteredUsers.length === 0 && (
-        <div className="text-center py-8 text-gray-400">
+        <div className="text-center py-8 text-neutral-400">
           Aucun utilisateur trouvé
         </div>
       )}
