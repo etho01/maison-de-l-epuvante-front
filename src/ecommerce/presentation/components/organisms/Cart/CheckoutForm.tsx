@@ -20,10 +20,9 @@ export const CheckoutForm: React.FC = () => {
   const { cart, clearCart } = useCart();
   const createOrderViewModel = useCreateOrderViewModel();
   const { user } = useAuth();
-  const [showPayment, setShowPayment] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { loading, clientSecret, orderId, orderNumber } = createOrderViewModel.getState();
+  const { loading } = createOrderViewModel.getState();
 
   const {
     register,
@@ -77,8 +76,9 @@ export const CheckoutForm: React.FC = () => {
       customerNotes: data.customerNotes || undefined,
       products,
     })
-      .then(() => {
-        setShowPayment(true);
+      .then((response) => {
+        clearCart();
+        router.push(response.stripeCheckout.url);
       })
       .catch((err: ApiError) => {
         let data = err.getData();
@@ -99,35 +99,10 @@ export const CheckoutForm: React.FC = () => {
       });
   };
 
-
-  const handlePaymentSuccess = () => {
-    clearCart();
-    router.push('/commandes?success=true');
-  };
-
-  const handlePaymentError = (error: string) => {
-    console.error('Payment error:', error);
-  };
-
   if (cart.items.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-neutral-400">Votre panier est vide</p>
-      </div>
-    );
-  }
-
-  // Afficher le formulaire de paiement Stripe après la création de la commande
-  if (showPayment && clientSecret && orderId && orderNumber) {
-    return (
-      <div className="max-w-2xl mx-auto">
-        <StripePaymentWrapper
-          clientSecret={clientSecret}
-          orderId={orderId}
-          orderNumber={orderNumber}
-          onSuccess={handlePaymentSuccess}
-          onError={handlePaymentError}
-        />
       </div>
     );
   }

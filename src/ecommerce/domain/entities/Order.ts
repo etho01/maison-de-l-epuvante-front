@@ -1,5 +1,6 @@
 import { User } from '@/src/auth/domain/entities/User';
 import { Product } from './Product';
+import { Delivery } from './Devivery';
 
 export type OrderStatus = 
   | 'pending' 
@@ -41,6 +42,7 @@ export interface Order {
   adminNotes: string | null;
   createdAt: string;
   updatedAt: string;
+  delivery?: Delivery;
 }
 
 export interface CheckoutData {
@@ -71,9 +73,9 @@ export interface CheckoutResponse {
     status: OrderStatus;
     totalAmount: number;
   };
-  stripePayment: {
-    paymentIntentId: string;
-    clientSecret: string;
+  stripeCheckout: {
+    sessionId: string;
+    url: string;
   };
 }
 

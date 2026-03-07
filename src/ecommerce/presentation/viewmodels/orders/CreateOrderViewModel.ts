@@ -5,7 +5,7 @@ import { ApiError } from '@/src/shared/domain/ApiError';
 interface CreateOrderState {
   loading: boolean;
   success: boolean;
-  clientSecret: string | null;
+  sessionId: string | null;
   orderId: number | null;
   orderNumber: string | null;
 }
@@ -14,7 +14,7 @@ export class CreateOrderViewModel {
   private state: CreateOrderState = {
     loading: false,
     success: false,
-    clientSecret: null,
+    sessionId: null,
     orderId: null,
     orderNumber: null,
   };
@@ -35,12 +35,12 @@ export class CreateOrderViewModel {
   checkout(data: CheckoutData): Promise<CheckoutResponse> {
     this.state.loading = true;
     this.state.success = false;
-    this.state.clientSecret = null;
+    this.state.sessionId = null;
     this.notify();
 
     return this.checkoutUseCase.execute(data)
       .then((response) => {
-        this.state.clientSecret = response.stripePayment.clientSecret;
+        this.state.sessionId = response.stripeCheckout.sessionId;
         this.state.orderId = response.order.id;
         this.state.orderNumber = response.order.orderNumber;
         this.state.success = true;
@@ -57,7 +57,7 @@ export class CreateOrderViewModel {
 
   resetState() {
     this.state.success = false;
-    this.state.clientSecret = null;
+    this.state.sessionId = null;
     this.state.orderId = null;
     this.state.orderNumber = null;
     this.notify();

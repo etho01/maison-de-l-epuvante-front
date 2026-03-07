@@ -16,7 +16,6 @@ export default async function ProduitsPage() {
       page: 1,
       type: [ProductType.PHYSICAL, ProductType.DIGITAL],
   });
-  console.log('Response from getProductUseCase:', resp);
 
   const pagination = resp.pagination
   const products = resp.member;

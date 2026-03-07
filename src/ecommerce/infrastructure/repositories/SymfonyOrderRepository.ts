@@ -13,6 +13,11 @@ export class SymfonyOrderRepository implements IOrderRepository {
     return await serverApiClient.get<Order>(`/orders/${id}`);
   }
 
+  async getByPaymentIntentId(paymentIntentId: string): Promise<Order> {
+    console.log('Fetching order with paymentIntentId:', paymentIntentId);
+    return await serverApiClient.get<Order>(`/orders/payment-intent/${paymentIntentId}`);
+  }
+
   async checkout(data: CheckoutData): Promise<CheckoutResponse> {
     return await serverApiClient.post<CheckoutResponse>('/orders/checkout', data);
   }
