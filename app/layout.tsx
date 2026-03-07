@@ -46,7 +46,7 @@ export default async function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-dark min-h-screen`}
       >
         <AuthProvider initialUser={initialUser}>
           <EcommerceProvider>
