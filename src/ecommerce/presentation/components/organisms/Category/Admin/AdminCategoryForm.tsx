@@ -9,15 +9,16 @@ import { Input, Select, TextArea, Button, ErrorMessage } from '@/src/shared/comp
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
 import { categorySchema, CategoryFormData } from '../../../../schemas/ecommerceSchemas';
 import { ApiError } from '@/src/shared/domain/ApiError';
+import { useRouter } from 'next/navigation';
 
 interface AdminCategoryFormProps {
   category?: Category;
   onSuccess?: () => void;
   onCancel?: () => void;
-  allCategories: Category[]; // Nécessaire pour la sélection de la catégorie parente
+  allCategories?: Category[]; // Nécessaire pour la sélection de la catégorie parente
 }
 
-export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, onSuccess, onCancel, allCategories }) => {
+export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, onSuccess, onCancel, allCategories = [] }) => {
   const createViewModel = useCreateCategoryViewModel();
   const updateViewModel = useUpdateCategoryViewModel();
   const { loading: createLoading } = createViewModel.getState();
@@ -25,6 +26,11 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
   
   const loading = createLoading || updateLoading;
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  const redirectToList = () => {
+    router.push('/admin/categories');
+  };
   
   // Exclure la catégorie courante si on est en modification (éviter boucle)
   const categories = allCategories.filter(c => !category || c.id !== category.id);
@@ -58,7 +64,11 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
 
     promise
       .then(() => {
-        onSuccess?.();
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          redirectToList();
+        }
       })
       .catch((err: ApiError) => {
         setError(err.message || 'Erreur lors de l\'enregistrement de la catégorie');
@@ -123,15 +133,13 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
         >
           {loading || isSubmitting ? 'Enregistrement...' : category ? 'Mettre à jour' : 'Créer'}
         </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            onClick={onCancel}
-            variant="secondary"
-          >
-            Annuler
-          </Button>
-        )}
+        <Button
+          type="button"
+          onClick={onCancel || redirectToList}
+          variant="secondary"
+        >
+          Annuler
+        </Button>
       </FormActions>
     </form>
   );
