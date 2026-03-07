@@ -4,6 +4,7 @@
  */
 
 import { z } from 'zod';
+import { ProductType } from '../../domain/entities/Product';
 
 /**
  * Schéma de validation pour la création/modification de produit
@@ -26,9 +27,8 @@ export const productSchema = z.object({
     .positive('Le prix doit être un nombre positif'),
   stock: z
     .number()
-    .int('Le stock doit être un nombre entier')
-    .min(0, 'Le stock ne peut pas être négatif'),
-  type: z.enum(['physical', 'digital', 'subscription'], {
+    .int('Le stock doit être un nombre entier'),
+  type: z.enum(ProductType, {
     message: 'Type de produit invalide',
   }),
   sku: z
@@ -44,6 +44,14 @@ export const productSchema = z.object({
     .number()
     .positive('Le poids doit être un nombre positif')
     .optional(),
+}).superRefine((data, ctx) => {
+  if (data.type !== ProductType.DIGITAL && data.stock < 0) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Le stock doit être un nombre positif',
+      path: ['stock'],
+    });
+  }
 });
 
 /**

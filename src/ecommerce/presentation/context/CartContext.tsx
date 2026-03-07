@@ -11,6 +11,7 @@ interface CartContextType {
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
   getItemQuantity: (productId: number) => number;
+  hasPhysicalProducts: () => boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -38,7 +39,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const calculateTotals = (items: CartItem[]) => {
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = items.reduce(
-      (sum, item) => sum + parseFloat(item.product.price) * item.quantity,
+      (sum, item) => sum + item.product.price * item.quantity,
       0
     );
     return { totalItems, totalPrice };
@@ -123,6 +124,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return item ? item.quantity : 0;
   };
 
+  const hasPhysicalProducts = () => cart.items.some((item) => item.product.type === 'physical');
+
   return (
     <CartContext.Provider
       value={{
@@ -132,6 +135,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         updateQuantity,
         clearCart,
         getItemQuantity,
+        hasPhysicalProducts,
       }}
     >
       {children}

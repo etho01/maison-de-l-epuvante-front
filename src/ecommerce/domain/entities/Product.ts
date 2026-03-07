@@ -3,7 +3,6 @@ import { Category } from './Category';
 export enum ProductType {
   PHYSICAL = 'physical',
   DIGITAL = 'digital',
-  SUBSCRIPTION = 'subscription'
 }
 
 export interface Product {

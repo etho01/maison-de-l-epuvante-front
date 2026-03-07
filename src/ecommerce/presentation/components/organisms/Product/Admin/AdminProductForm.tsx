@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateProductViewModel, useUpdateProductViewModel } from '../../../../hooks/products';
@@ -27,11 +27,16 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
   
   const loading = createLoading || updateLoading;
   const [error, setError] = useState<string | null>(null);
+  const [isInfiniteStock, setIsInfiniteStock] = useState<boolean>(
+    product?.type === ProductType.DIGITAL && product?.stock === -1
+  );
   console.log(product)
 
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -41,7 +46,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
       slug: product?.slug || '',
       price: product?.price ? Number(product.price) : 0,
       stock: product?.stock || 0,
-      type: product?.type || 'physical',
+      type: product?.type || ProductType.PHYSICAL,
       sku: product?.sku || '',
       categoryId: product?.category.id || 0,
       active: product?.active ?? true,
@@ -49,6 +54,31 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
       weight: product?.weight ? Number(product.weight) : undefined,
     },
   });
+
+  const productType = watch('type');
+  const isDigital = productType === ProductType.DIGITAL;
+
+  // Reset fields when product type changes
+  useEffect(() => {
+    if (isDigital) {
+      // Clear weight for digital products
+      setValue('weight', undefined);
+    } else {
+      // Reset infinite stock for physical products
+      setValue('stock', 0);
+      setIsInfiniteStock(false);
+    }
+  }, [isDigital, setValue]);
+
+  // When toggling infinite stock, update the stock value
+  const handleInfiniteStockChange = (checked: boolean) => {
+    setIsInfiniteStock(checked);
+    if (checked) {
+      setValue('stock', -1);
+    } else {
+      setValue('stock', 0);
+    }
+  };
 
   const onSubmit = (formData: ProductFormData) => {
     console.log('Form data submitted:', formData);
@@ -65,7 +95,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
       categoryId: formData.categoryId,
       active: formData.active,
       exclusiveOnline: formData.exclusiveOnline,
-      weight: formData.weight || undefined,
+      weight: formData.type === ProductType.DIGITAL ? undefined : (formData.weight || undefined),
     };
 
     const promise = product
@@ -156,33 +186,46 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
             {...register('price', { valueAsNumber: true })}
           />
 
-          <Input
-            label="Stock *"
-            type="number"
-            error={errors.stock?.message}
-            variant="dark"
-            {...register('stock', { valueAsNumber: true })}
-          />
-
           <Select
             label="Type *"
             error={errors.type?.message}
             variant="dark"
             {...register('type')}
           >
-            <option value="physical">Physique</option>
-            <option value="digital">Numérique</option>
-            <option value="subscription">Abonnement</option>
+            <option value={ProductType.PHYSICAL}>Physique</option>
+            <option value={ProductType.DIGITAL}>Numérique</option>
           </Select>
 
-          <Input
-            label="Poids (kg)"
-            type="number"
-            step="0.01"
-            error={errors.weight?.message}
-            variant="dark"
-            {...register('weight', { valueAsNumber: true })}
-          />
+          <>
+            {isDigital && (
+              <div className="mb-2">
+                <Checkbox
+                  label="Stock infini"
+                  checked={isInfiniteStock}
+                  onChange={(e) => handleInfiniteStockChange(e.target.checked)}
+                />
+              </div>
+            )}
+            {!(isDigital && isInfiniteStock) && (
+              <Input
+                label="Stock *"
+                type="number"
+                error={errors.stock?.message}
+                variant="dark"
+                {...register('stock', { valueAsNumber: true })}
+              />
+            )}
+          </>
+          {!isDigital && (
+            <Input
+              label="Poids (kg)"
+              type="number"
+              step="0.01"
+              error={errors.weight?.message}
+              variant="dark"
+              {...register('weight', { valueAsNumber: true })}
+            />
+          )}
         </div>
       </FormSection>
 
