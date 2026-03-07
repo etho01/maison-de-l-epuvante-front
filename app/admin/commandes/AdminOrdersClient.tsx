@@ -23,7 +23,7 @@ export default function AdminOrdersClient() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Gestion des Commandes</h1>
+      <h1 className="text-3xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Gestion des Commandes</h1>
 
       {selectedOrder ? (
         <AdminOrderDetail

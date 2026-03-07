@@ -26,7 +26,7 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
     <>
       <button
         onClick={() => router.push('/commandes')}
-        className="text-red-600 hover:underline mb-6 flex items-center gap-1 text-sm"
+        className="text-crimson-400 hover:text-crimson-300 mb-6 flex items-center gap-1 text-sm transition-colors"
       >
         ← Retour aux commandes
       </button>
@@ -37,7 +37,7 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
             <div>
               <CardTitle>Commande #{order.orderNumber}</CardTitle>
-              <p className="text-sm text-gray-500 mt-1">Passée le {orderDate}</p>
+              <p className="text-sm text-neutral-400 mt-1">Passée le {orderDate}</p>
             </div>
             <OrderStatusBadge status={order.status as OrderStatus} size="md" />
           </div>
@@ -46,21 +46,21 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
         <CardBody>
           {/* Articles */}
           <section className="mb-6">
-            <h2 className="text-base font-semibold text-gray-900 mb-3">Articles commandés</h2>
+            <h2 className="text-base font-semibold text-neutral-100 mb-3">Articles commandés</h2>
             <div className="space-y-3">
               {order.items.map((item: any) => (
-                <div key={item.id} className="flex justify-between border-b border-gray-100 pb-3 last:border-0">
+                <div key={item.id} className="flex justify-between border-b border-neutral-800/50 pb-3 last:border-0">
                   <div>
-                    <p className="font-medium text-gray-900">{item.product.name}</p>
-                    <p className="text-sm text-gray-500">Quantité : {item.quantity}</p>
-                    <p className="text-sm text-gray-500">Prix unitaire : <PriceDisplay price={item.unitPrice} size="sm" /></p>
+                    <p className="font-medium text-neutral-100">{item.product.name}</p>
+                    <p className="text-sm text-neutral-400">Quantité : {item.quantity}</p>
+                    <p className="text-sm text-neutral-400">Prix unitaire : <PriceDisplay price={item.unitPrice} size="sm" /></p>
                   </div>
                   <PriceDisplay price={item.totalPrice} variant="emphasis" size="md" />
                 </div>
               ))}
             </div>
-            <div className="flex justify-between items-center pt-4 border-t border-gray-200 mt-2">
-              <span className="font-semibold text-gray-900">Total</span>
+            <div className="flex justify-between items-center pt-4 border-t border-neutral-800/50 mt-2">
+              <span className="font-semibold text-neutral-100">Total</span>
               <PriceDisplay price={order.totalAmount} variant="emphasis" size="lg" />
             </div>
           </section>
@@ -72,8 +72,8 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
               { label: 'Adresse de facturation', addr: order.billingAddress },
             ].map(({ label, addr }) => (
               <div key={label}>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">{label}</h3>
-                <address className="not-italic text-sm text-gray-600 space-y-0.5">
+                <h3 className="text-sm font-semibold text-neutral-300 mb-2">{label}</h3>
+                <address className="not-italic text-sm text-neutral-400 space-y-0.5">
                   <p>{addr.firstName} {addr.lastName}</p>
                   <p>{addr.address}</p>
                   <p>{addr.postalCode} {addr.city}</p>
@@ -85,20 +85,20 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
 
           {/* Informations supplémentaires */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">Informations supplémentaires</h3>
-            <p className="text-sm text-gray-600">
-              Méthode de paiement : <span className="font-medium text-gray-900">{order.paymentMethod}</span>
+            <h3 className="text-sm font-semibold text-neutral-300 mb-2">Informations supplémentaires</h3>
+            <p className="text-sm text-neutral-400">
+              Méthode de paiement : <span className="font-medium text-neutral-100">{order.paymentMethod}</span>
             </p>
             {order.customerNotes && (
               <div className="mt-2">
-                <p className="text-sm font-medium text-gray-700">Notes du client</p>
-                <p className="text-sm text-gray-600 mt-0.5">{order.customerNotes}</p>
+                <p className="text-sm font-medium text-neutral-300">Notes du client</p>
+                <p className="text-sm text-neutral-400 mt-0.5">{order.customerNotes}</p>
               </div>
             )}
             {order.adminNotes && (
               <div className="mt-2">
-                <p className="text-sm font-medium text-gray-700">Notes de l'administration</p>
-                <p className="text-sm text-gray-600 mt-0.5">{order.adminNotes}</p>
+                <p className="text-sm font-medium text-neutral-300">Notes de l'administration</p>
+                <p className="text-sm text-neutral-400 mt-0.5">{order.adminNotes}</p>
               </div>
             )}
           </section>

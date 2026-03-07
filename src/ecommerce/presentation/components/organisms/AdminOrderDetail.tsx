@@ -74,101 +74,113 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ orderId, onU
   }
 
   if (!order) {
-    return <div className="text-center py-8 text-red-600">Commande introuvable</div>;
+    return (
+      <div className="text-center py-8 glass-effect border border-crimson-700/50 text-crimson-200 rounded-xl p-4 flex items-center justify-center gap-2">
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+        </svg>
+        Commande introuvable
+      </div>
+    );
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto">
+    <div className="glass-effect border border-crimson-900/30 p-6 rounded-xl shadow-crimson-md max-w-4xl mx-auto">
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Commande #{order.orderNumber}</h2>
-          <p className="text-gray-500">{new Date(order.createdAt).toLocaleString('fr-FR')}</p>
+          <h2 className="text-2xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Commande #{order.orderNumber}</h2>
+          <p className="text-neutral-400">{new Date(order.createdAt).toLocaleString('fr-FR')}</p>
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-neutral-400 hover:text-neutral-100 transition-colors"
           >
-            ✕
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         )}
       </div>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
+        <div className="glass-effect border border-crimson-700/50 text-crimson-200 px-4 py-3 rounded-xl mb-4 flex items-start gap-3">
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          </svg>
+          <span>{error}</span>
         </div>
       )}
 
       {/* Client Info */}
-      <div className="mb-6 p-4 bg-gray-50 rounded">
-        <h3 className="font-semibold mb-2">Client</h3>
-        <p>{order.user.firstName} {order.user.lastName}</p>
-        <p className="text-sm text-gray-600">{order.user.email}</p>
+      <div className="mb-6 p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
+        <h3 className="font-semibold mb-2 text-neutral-100">Client</h3>
+        <p className="text-neutral-300">{order.user.firstName} {order.user.lastName}</p>
+        <p className="text-sm text-neutral-400">{order.user.email}</p>
       </div>
 
       {/* Items */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-3">Articles</h3>
+        <h3 className="font-semibold mb-3 text-neutral-100">Articles</h3>
         <div className="space-y-2">
           {order.items.map((item: any) => (
-            <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+            <div key={item.id} className="flex justify-between items-center p-3 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
               <div>
-                <p className="font-medium">{item.product.name}</p>
-                <p className="text-sm text-gray-600">
+                <p className="font-medium text-neutral-100">{item.product.name}</p>
+                <p className="text-sm text-neutral-400">
                   Quantité: {item.quantity} × {item.unitPrice} €
                 </p>
               </div>
-              <p className="font-semibold">{item.totalPrice} €</p>
+              <p className="font-semibold text-neutral-100">{item.totalPrice} €</p>
             </div>
           ))}
         </div>
-        <div className="flex justify-between items-center mt-4 pt-4 border-t">
-          <span className="font-semibold text-lg">Total</span>
-          <span className="font-bold text-2xl">{order.totalAmount} €</span>
+        <div className="flex justify-between items-center mt-4 pt-4 border-t border-neutral-800/50">
+          <span className="font-semibold text-lg text-neutral-100">Total</span>
+          <span className="font-bold text-2xl bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">{order.totalAmount} €</span>
         </div>
       </div>
 
       {/* Addresses */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="p-4 bg-gray-50 rounded">
-          <h3 className="font-semibold mb-2">Adresse de livraison</h3>
-          <p>{order.shippingAddress.firstName} {order.shippingAddress.lastName}</p>
-          <p>{order.shippingAddress.address}</p>
-          <p>{order.shippingAddress.postalCode} {order.shippingAddress.city}</p>
-          <p>{order.shippingAddress.country}</p>
+        <div className="p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
+          <h3 className="font-semibold mb-2 text-neutral-100">Adresse de livraison</h3>
+          <p className="text-neutral-300">{order.shippingAddress.firstName} {order.shippingAddress.lastName}</p>
+          <p className="text-neutral-300">{order.shippingAddress.address}</p>
+          <p className="text-neutral-300">{order.shippingAddress.postalCode} {order.shippingAddress.city}</p>
+          <p className="text-neutral-300">{order.shippingAddress.country}</p>
         </div>
 
-        <div className="p-4 bg-gray-50 rounded">
-          <h3 className="font-semibold mb-2">Adresse de facturation</h3>
-          <p>{order.billingAddress.firstName} {order.billingAddress.lastName}</p>
-          <p>{order.billingAddress.address}</p>
-          <p>{order.billingAddress.postalCode} {order.billingAddress.city}</p>
-          <p>{order.billingAddress.country}</p>
+        <div className="p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
+          <h3 className="font-semibold mb-2 text-neutral-100">Adresse de facturation</h3>
+          <p className="text-neutral-300">{order.billingAddress.firstName} {order.billingAddress.lastName}</p>
+          <p className="text-neutral-300">{order.billingAddress.address}</p>
+          <p className="text-neutral-300">{order.billingAddress.postalCode} {order.billingAddress.city}</p>
+          <p className="text-neutral-300">{order.billingAddress.country}</p>
         </div>
       </div>
 
       {/* Payment */}
-      <div className="mb-6 p-4 bg-gray-50 rounded">
-        <h3 className="font-semibold mb-2">Paiement</h3>
-        <p>Méthode: {order.paymentMethod}</p>
+      <div className="mb-6 p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
+        <h3 className="font-semibold mb-2 text-neutral-100">Paiement</h3>
+        <p className="text-neutral-300">Méthode: {order.paymentMethod}</p>
       </div>
 
       {/* Customer Notes */}
       {order.customerNotes && (
-        <div className="mb-6 p-4 bg-gray-50 rounded">
-          <h3 className="font-semibold mb-2">Notes du client</h3>
-          <p>{order.customerNotes}</p>
+        <div className="mb-6 p-4 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
+          <h3 className="font-semibold mb-2 text-neutral-100">Notes du client</h3>
+          <p className="text-neutral-300">{order.customerNotes}</p>
         </div>
       )}
 
       {/* Status Update */}
-      <div className="border-t pt-6">
-        <h3 className="font-semibold mb-4">Gestion de la commande</h3>
+      <div className="border-t border-neutral-800/50 pt-6">
+        <h3 className="font-semibold mb-4 text-neutral-100">Gestion de la commande</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-neutral-300 mb-2">
               Statut actuel
             </label>
             <div className="mb-2">

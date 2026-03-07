@@ -23,9 +23,12 @@ export const OrderList: React.FC<OrderListProps> = ({ orders, loading }) => {
   if (orders.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg mb-4">Vous n'avez pas encore de commande</p>
-        <Link href="/produits" className="text-red-600 hover:underline">
-          Découvrir nos produits
+        <p className="text-neutral-400 text-lg mb-4">Vous n'avez pas encore de commande</p>
+        <Link href="/produits" className="text-crimson-400 hover:text-crimson-300 transition-colors flex items-center justify-center gap-2">
+          <span>Découvrir nos produits</span>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </Link>
       </div>
     );
