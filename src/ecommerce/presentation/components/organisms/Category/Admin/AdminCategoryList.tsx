@@ -53,8 +53,11 @@ export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit, in
   return (
     <div>
       {error && (
-        <div className="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg">
-          {error}
+        <div className="mb-4 p-4 glass-effect border border-crimson-700/50 bg-crimson-950/30 text-crimson-400 rounded-xl flex items-start gap-3">
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          </svg>
+          <div className="flex-1">{error}</div>
         </div>
       )}
       
@@ -77,7 +80,7 @@ export const AdminCategoryList: React.FC<AdminCategoryListProps> = ({ onEdit, in
 
 
       {categories.length === 0 && (
-        <div className="text-center py-8 text-gray-500">Aucune catégorie trouvée</div>
+        <div className="text-center py-8 text-neutral-400">Aucune catégorie trouvée</div>
       )}
 
       {/* Confirm Delete Modal */}
