@@ -7,17 +7,16 @@ import { AdminProductCard } from '../../../molecules/Product/Admin/AdminProductC
 import { Input, Select, Button } from '@/src/shared/components/atoms';
 import { ConfirmModal } from '@/src/shared/components/molecules';
 import { Pagination } from '@/src/shared/domain/Pagination';
-import { init } from 'next/dist/compiled/webpack/webpack';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 import { ApiError } from '@/src/shared/domain/ApiError';
+import { useRouter } from 'next/navigation';
 
 interface AdminProductListProps {
-  onEdit?: (product: Product) => void;
   initialProducts?: Product[];
   initialPagination?: Pagination;
 }
 
-export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, initialProducts, initialPagination }) => {
+export const AdminProductList: React.FC<AdminProductListProps> = ({ initialProducts, initialPagination }) => {
   const listViewModel = useGetProductsViewModel(initialProducts, initialPagination);
   const deleteViewModel = useDeleteProductViewModel();
   const { products, loading, pagination } = listViewModel.getState();
@@ -25,9 +24,18 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
 
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleDeleteClick = (product: Product) => {
     setProductToDelete(product);
+  };
+
+  const setShowForm = (product : Product | undefined) => {
+    if (product) {
+      router.push(`/admin/produits/${product.id}`);
+    } else {
+      router.push('/admin/produits/new');
+    }
   };
 
   const handleConfirmDelete = () => {
@@ -58,6 +66,19 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
 
   return (
     <div>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Gestion des Produits</h1>
+        <Button
+          onClick={() => setShowForm(undefined)}
+          variant="primary"
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Nouveau produit</span>
+        </Button>
+      </div>
+
       {error && (
         <div className="mb-4 p-4 glass-effect border border-crimson-700/50 bg-crimson-950/30 text-crimson-400 rounded-xl flex items-start gap-3">
           <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -110,7 +131,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
           <AdminProductCard
             key={product.id}
             product={product}
-            onEdit={onEdit}
+            onEdit={setShowForm}
             onDelete={handleDeleteClick}
           />
         ))}
@@ -121,7 +142,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
       )}
 
       <PaginationComponent
-        pagination={initialPagination}
+        pagination={pagination || undefined}
         onPageChange={(page: number) => listViewModel.setFilters({
           page
         })}

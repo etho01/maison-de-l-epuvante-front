@@ -11,6 +11,7 @@ import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/s
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
 import { productSchema, ProductFormData } from '../../../../schemas/ecommerceSchemas';
 import { ApiError } from '@/src/shared/domain/ApiError';
+import { useRouter } from 'next/navigation';
 
 interface AdminProductFormProps {
   product?: Product;
@@ -19,7 +20,7 @@ interface AdminProductFormProps {
   allCategories?: Category[]; // Nécessaire pour la sélection de la catégorie
 }
 
-export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onSuccess, onCancel, allCategories }) => {
+export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onSuccess, onCancel, allCategories = [] }) => {
   const createViewModel = useCreateProductViewModel();
   const updateViewModel = useUpdateProductViewModel();
   const { loading: createLoading } = createViewModel.getState();
@@ -30,6 +31,11 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
   const [isInfiniteStock, setIsInfiniteStock] = useState<boolean>(
     product?.type === ProductType.DIGITAL && product?.stock === -1
   );
+  const router = useRouter();
+
+  const redirectToList = () => {
+    router.push('/admin/produits');
+  };
 
   const {
     register,
@@ -103,7 +109,11 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
 
     promise
       .then(() => {
-        onSuccess?.();
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          redirectToList();
+        }
       })
       .catch((err: ApiError) => {
         setError(err.message || 'Erreur lors de l\'enregistrement du produit');
@@ -253,15 +263,13 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
         >
           {product ? 'Mettre à jour' : 'Créer'}
         </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            onClick={onCancel}
-            variant="secondary"
-          >
-            Annuler
-          </Button>
-        )}
+        <Button
+          type="button"
+          onClick={onCancel || redirectToList}
+          variant="secondary"
+        >
+          Annuler
+        </Button>
       </FormActions>
     </form>
   );
