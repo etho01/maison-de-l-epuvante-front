@@ -1,6 +1,7 @@
 'use client';
 
 import { User } from '@/src/auth/domain/entities/User';
+import { Button } from '@/src/shared/components/atoms';
 import React, { useEffect, useState } from 'react';
 
 const AdminUsersClient: React.FC = () => {
@@ -160,18 +161,22 @@ const AdminUsersClient: React.FC = () => {
                   {user.createdAt?.toLocaleDateString('fr-FR')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    onClick={() => handleRoleChange(user.id, 'ADMIN')}
-                    className="text-blue-400 hover:text-blue-300 mr-3 transition-colors"
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    onClick={() => handleDeleteUser(user.id)}
-                    className="text-crimson-400 hover:text-crimson-300 transition-colors"
-                  >
-                    Supprimer
-                  </button>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => handleRoleChange(user.id, 'ADMIN')}
+                      variant="secondary"
+                      size="sm"
+                    >
+                      Modifier
+                    </Button>
+                    <Button
+                      onClick={() => handleDeleteUser(user.id)}
+                      variant="danger"
+                      size="sm"
+                    >
+                      Supprimer
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
