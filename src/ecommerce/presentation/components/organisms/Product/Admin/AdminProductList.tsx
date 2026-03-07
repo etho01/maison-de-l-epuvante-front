@@ -59,13 +59,16 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
   return (
     <div>
       {error && (
-        <div className="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg">
-          {error}
+        <div className="mb-4 p-4 glass-effect border border-crimson-700/50 bg-crimson-950/30 text-crimson-400 rounded-xl flex items-start gap-3">
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          </svg>
+          <div className="flex-1">{error}</div>
         </div>
       )}
       
       {/* Filters */}
-      <div className="mb-6 bg-gray-900 p-4 rounded-lg shadow border border-gray-700">
+      <div className="mb-6 glass-effect p-4 rounded-xl shadow-crimson-md border border-crimson-900/30">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Input
             type="text"
@@ -115,7 +118,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ onEdit, init
       </div>
 
       {products.length === 0 && (
-        <div className="text-center py-8 text-gray-500">Aucun produit trouvé</div>
+        <div className="text-center py-8 text-neutral-400">Aucun produit trouvé</div>
       )}
 
       <PaginationComponent

@@ -33,57 +33,57 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
             className="w-full rounded-lg shadow-lg"
           />
         ) : (
-          <div className="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
-            <span className="text-gray-500">Pas d'image</span>
+          <div className="w-full h-96 bg-neutral-950/30 border border-neutral-800/50 rounded-lg flex items-center justify-center">
+            <span className="text-neutral-400">Pas d'image</span>
           </div>
         )}
       </div>
 
       {/* Détails */}
       <div>
-        <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+        <h1 className="text-4xl font-bold mb-4 bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">{product.name}</h1>
         
         {product.category && (
-          <p className="text-gray-600 mb-4">{product.category.name}</p>
+          <p className="text-neutral-400 mb-4">{product.category.name}</p>
         )}
 
         <div className="mb-6">
-          <span className="text-4xl font-bold text-red-600">{product.price} €</span>
+          <span className="text-4xl font-bold text-crimson-500">{product.price} €</span>
         </div>
 
         {product.stock > 0 ? (
-          <p className="text-green-600 mb-4">
+          <p className="text-green-400 mb-4">
             En stock ({product.stock} disponible{product.stock > 1 ? 's' : ''})
           </p>
         ) : (
-          <p className="text-red-600 mb-4">Rupture de stock</p>
+          <p className="text-crimson-400 mb-4">Rupture de stock</p>
         )}
 
         {product.exclusiveOnline && (
           <div className="mb-4">
-            <span className="inline-block bg-red-100 text-red-800 px-3 py-1 rounded">
+            <span className="inline-block bg-crimson-950/50 text-crimson-300 border border-crimson-700/50 px-3 py-1 rounded-lg">
               Exclusivité en ligne
             </span>
           </div>
         )}
 
         <div className="prose mb-6">
-          <p className="text-gray-700">{product.description}</p>
+          <p className="text-neutral-300">{product.description}</p>
         </div>
 
         {product.stock > 0 && (
           <div className="flex gap-4 mb-6">
-            <div className="flex items-center border rounded">
+            <div className="flex items-center border border-neutral-800 rounded-lg overflow-hidden">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="px-4 py-2 hover:bg-gray-100"
+                className="px-4 py-2 hover:bg-neutral-900 text-neutral-100 transition-colors"
               >
                 -
               </button>
-              <span className="px-6 py-2">{quantity}</span>
+              <span className="px-6 py-2 text-neutral-100">{quantity}</span>
               <button
                 onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                className="px-4 py-2 hover:bg-gray-100"
+                className="px-4 py-2 hover:bg-neutral-900 text-neutral-100 transition-colors"
               >
                 +
               </button>
@@ -96,7 +96,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
         )}
 
         {product.sku && (
-          <p className="text-sm text-gray-500">Référence: {product.sku}</p>
+          <p className="text-sm text-neutral-400">Référence: {product.sku}</p>
         )}
       </div>
     </div>

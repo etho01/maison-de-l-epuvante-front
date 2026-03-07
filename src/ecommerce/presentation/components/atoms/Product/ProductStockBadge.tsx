@@ -8,9 +8,9 @@ interface ProductStockBadgeProps {
 
 export const ProductStockBadge: React.FC<ProductStockBadgeProps> = ({ stock }) => {
   const getStockStatus = () => {
-    if (stock === 0) return { label: 'Rupture', color: 'bg-red-100 text-red-800' };
-    if (stock < 10) return { label: 'Stock faible', color: 'bg-yellow-100 text-yellow-800' };
-    return { label: 'En stock', color: 'bg-green-100 text-green-800' };
+    if (stock === 0) return { label: 'Rupture', color: 'bg-crimson-950/50 text-crimson-300 border border-crimson-700/50' };
+    if (stock < 10) return { label: 'Stock faible', color: 'bg-yellow-950/50 text-yellow-300 border border-yellow-700/50' };
+    return { label: 'En stock', color: 'bg-green-950/50 text-green-300 border border-green-700/50' };
   };
 
   const status = getStockStatus();

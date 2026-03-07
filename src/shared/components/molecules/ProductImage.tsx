@@ -38,13 +38,13 @@ export const ProductImage: React.FC<ProductImageProps> = ({
     landscape: 'aspect-[4/3]',
   };
 
-  const containerClasses = `${sizeStyles[size]} ${aspectStyles[aspectRatio]} relative overflow-hidden rounded ${className}`;
+  const containerClasses = `${sizeStyles[size]} ${aspectStyles[aspectRatio]} relative overflow-hidden rounded-xl border border-crimson-900/30 ${className}`;
 
   if (!src || error) {
     return (
-      <div className={`${containerClasses} bg-gray-200 flex items-center justify-center`}>
+      <div className={`${containerClasses} bg-neutral-900/50 flex items-center justify-center`}>
         <svg
-          className="w-1/2 h-1/2 text-gray-400"
+          className="w-1/2 h-1/2 text-neutral-600"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

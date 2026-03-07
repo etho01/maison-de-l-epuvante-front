@@ -34,14 +34,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       <div className="mb-2">
         <Link href={`/produits/${product.slug}`} className="hover:underline">
-          <h3 className="text-lg font-bold">{product.name}</h3>
+          <h3 className="text-lg font-bold text-neutral-100">{product.name}</h3>
         </Link>
         {product.category && (
-          <p className="text-sm text-gray-500">{product.category.name}</p>
+          <p className="text-sm text-neutral-400">{product.category.name}</p>
         )}
       </div>
 
-      <p className="text-sm text-gray-700 mb-3 line-clamp-2">{product.description}</p>
+      <p className="text-sm text-neutral-300 mb-3 line-clamp-2">{product.description}</p>
 
       <div className="flex items-center justify-between mb-3">
         <PriceDisplay price={product.price} variant="emphasis" size="xl" />
