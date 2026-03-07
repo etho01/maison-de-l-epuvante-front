@@ -9,6 +9,7 @@ import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/s
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
 import { subscriptionPlanSchema, SubscriptionPlanFormData } from '../../../../schemas/ecommerceSchemas';
 import { ApiError } from '@/src/shared/domain/ApiError';
+import { useRouter } from 'next/navigation';
 
 interface AdminSubscriptionPlanFormProps {
   plan?: SubscriptionPlan;
@@ -24,6 +25,11 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
   
   const loading = createLoading || updateLoading;
   const [error, setError] = React.useState<string | null>(null);
+  const router = useRouter();
+
+  const redirectToList = () => {
+    router.push('/admin/subscription-plans');
+  };
 
   const {
     register,
@@ -61,7 +67,11 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
 
     promise
       .then(() => {
-        onSuccess?.();
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          redirectToList();
+        }
       })
       .catch((err: ApiError) => {
         setError(err.message || 'Erreur lors de l\'enregistrement du plan d\'abonnement');
@@ -159,15 +169,13 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
         >
           {loading || isSubmitting ? 'Enregistrement...' : plan ? 'Mettre à jour' : 'Créer'}
         </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            onClick={onCancel}
-            variant="secondary"
-          >
-            Annuler
-          </Button>
-        )}
+        <Button
+          type="button"
+          onClick={onCancel || redirectToList}
+          variant="secondary"
+        >
+          Annuler
+        </Button>
       </FormActions>
     </form>
   );

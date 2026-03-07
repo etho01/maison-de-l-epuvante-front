@@ -8,14 +8,14 @@ import { ConfirmModal } from '@/src/shared/components/molecules';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 import { ApiError } from '@/src/shared/domain/ApiError';
+import { useRouter } from 'next/navigation';
 
 interface AdminSubscriptionPlanListProps {
-  onEdit?: (plan: SubscriptionPlan) => void;
   initialPlans?: SubscriptionPlan[];
   initialPagination?: Pagination;
 }
 
-export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps> = ({ onEdit, initialPlans, initialPagination }) => {
+export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps> = ({ initialPlans, initialPagination }) => {
   const listViewModel = useGetSubscriptionPlansViewModel(initialPlans, initialPagination);
   const deleteViewModel = useDeleteSubscriptionPlanViewModel();
   const { plans, loading, pagination } = listViewModel.getState();
@@ -23,6 +23,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
 
   const [planToDelete, setPlanToDelete] = useState<SubscriptionPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleDeleteClick = (plan: SubscriptionPlan) => {
     setPlanToDelete(plan);
@@ -72,8 +73,30 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
     return labels[format] || format;
   };
 
+  const setShowForm = (plan?: SubscriptionPlan) => {
+    if (plan) {
+      router.push(`/admin/subscription-plans/${plan.id}`);
+    } else {
+      router.push('/admin/subscription-plans/new');
+    }
+  }
+
+
   return (
     <div>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Gestion des Plans d'Abonnement</h1>
+        <Button
+          onClick={() => setShowForm(undefined)}
+          variant="primary"
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Nouveau plan</span>
+        </Button>
+      </div>
+
       {error && (
         <div className="mb-4 p-4 glass-effect border border-crimson-700/50 text-crimson-200 rounded-xl flex items-start gap-3">
           <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -167,7 +190,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
               
               <div className="flex gap-2 ml-4">
                 <Button
-                  onClick={() => onEdit?.(plan)}
+                  onClick={() => setShowForm(plan)}
                   variant="secondary"
                 >
                   Modifier
@@ -189,7 +212,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
       )}
 
       <PaginationComponent
-        pagination={initialPagination}
+        pagination={pagination || undefined}
         onPageChange={(page: number) => listViewModel.setFilters({
           page
         })}
