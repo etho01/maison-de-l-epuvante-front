@@ -4,8 +4,10 @@ import React, { useEffect } from 'react';
 import { useGetDeliveriesViewModel } from '../../../../hooks/deliveries';
 import { Delivery } from '../../../../../domain/entities/Devivery';
 import { Button } from '@/src/shared/components/atoms';
-import { DeliveryStatusBadge } from '@/src/shared/components';
 import { Pagination } from '@/src/shared/domain/Pagination';
+import { DeliveryStatusBadge } from '../../../atoms/Delivery/DeliveryStatusBadge';
+import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
+import { useRouter } from 'next/navigation';
 
 interface AdminDeliveryListProps {
   onView?: (delivery: Delivery) => void;
@@ -21,6 +23,8 @@ export const AdminDeliveryList: React.FC<AdminDeliveryListProps> = ({
   const viewModel = useGetDeliveriesViewModel(initialDeliveries, initialPagination);
   const { deliveries, loading, pagination, error } = viewModel.getState();
 
+  const router = useRouter();
+
   useEffect(() => {
     // Only load if no initial data was provided
     if (initialDeliveries.length === 0) {
@@ -31,7 +35,10 @@ export const AdminDeliveryList: React.FC<AdminDeliveryListProps> = ({
   if (loading && deliveries.length === 0) {
     return <div className="text-center py-8 text-neutral-400">Chargement...</div>;
   }
-  console.log(deliveries);
+
+  const showDelivery = (delivery: Delivery) => {
+    router.push(`/admin/livraisons/${delivery.id}`);
+  }
 
   return (
     <div>
@@ -76,7 +83,7 @@ export const AdminDeliveryList: React.FC<AdminDeliveryListProps> = ({
                 </td>
                 <td className="px-6 py-4 text-right">
                   <Button
-                    onClick={() => onView?.(delivery)}
+                    onClick={() => showDelivery(delivery)}
                     variant="secondary"
                     size="sm"
                   >
@@ -93,30 +100,12 @@ export const AdminDeliveryList: React.FC<AdminDeliveryListProps> = ({
         <div className="text-center py-8 text-neutral-400">Aucune livraison trouvée</div>
       )}
 
-      {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-6">
-          <Button
-            onClick={() => viewModel.loadDeliveries(Math.max(1, pagination.page - 1))}
-            disabled={!pagination.hasPreviousPage || loading}
-            variant="secondary"
-            size="sm"
-          >
-            Précédent
-          </Button>
-          <span className="px-4 py-2 text-neutral-300">
-            Page {pagination.page} / {pagination.totalPages}
-          </span>
-          <Button
-            onClick={() => viewModel.loadDeliveries(Math.min(pagination.totalPages, pagination.page + 1))}
-            disabled={!pagination.hasNextPage || loading}
-            variant="secondary"
-            size="sm"
-          >
-            Suivant
-          </Button>
-        </div>
-      )}
+      <PaginationComponent
+        pagination={pagination || undefined}
+        onPageChange={(page: number) => viewModel.loadDeliveries(
+          page
+        )}
+      />
     </div>
   );
 };

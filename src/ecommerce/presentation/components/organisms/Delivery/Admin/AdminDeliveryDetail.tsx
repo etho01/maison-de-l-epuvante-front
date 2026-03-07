@@ -3,37 +3,24 @@
 import React, { useState, useEffect } from 'react';
 import { Select, Button } from '@/src/shared/components/atoms';
 import { ApiError } from '@/src/shared/domain/ApiError';
-import { DeliveryStatusBadge } from '@/src/shared/components';
 import { useGetDeliveryByIdViewModel, useUpdateDeliveryStatusViewModel } from '@/src/ecommerce/presentation/hooks/deliveries';
-import { DeliveryStatus } from '@/src/ecommerce/domain/entities/Devivery';
+import { Delivery, DeliveryStatus } from '@/src/ecommerce/domain/entities/Devivery';
 import { DELIVERY_STATUS_LABELS } from '@/src/ecommerce/domain/constants/deliveryStatus';
+import { DeliveryStatusBadge } from '../../../atoms/Delivery/DeliveryStatusBadge';
+import { useRouter } from 'next/navigation';
 
 interface AdminDeliveryDetailProps {
-  deliveryId: number;
-  onUpdate?: () => void;
-  onClose?: () => void;
+  delivery : Delivery
 }
 
-export const AdminDeliveryDetail: React.FC<AdminDeliveryDetailProps> = ({ deliveryId, onUpdate, onClose }) => {
-  const getDeliveryViewModel = useGetDeliveryByIdViewModel();
+export const AdminDeliveryDetail: React.FC<AdminDeliveryDetailProps> = ({ delivery }) => {
   const updateDeliveryStatusViewModel = useUpdateDeliveryStatusViewModel();
-  const { delivery, loading: getLoading } = getDeliveryViewModel.getState();
   const { loading: updateLoading } = updateDeliveryStatusViewModel.getState();
   
-  const loading = getLoading || updateLoading;
+  const loading = updateLoading;
   const [error, setError] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<DeliveryStatus | null>(null);
-
-  useEffect(() => {
-    const loadDelivery = () => {
-      setError(null);
-      getDeliveryViewModel.loadDelivery(deliveryId)
-        .catch((err: ApiError) => {
-          setError(err.message || 'Erreur lors du chargement de la livraison');
-        });
-    };
-    loadDelivery();
-  }, [deliveryId]);
+  const router = useRouter();
 
   useEffect(() => {
     if (delivery) {
@@ -41,17 +28,8 @@ export const AdminDeliveryDetail: React.FC<AdminDeliveryDetailProps> = ({ delive
     }
   }, [delivery]);
 
-  const handleUpdateStatus = () => {
-    if (!delivery || !selectedStatus) return;
-    
-    setError(null);
-    updateDeliveryStatusViewModel.updateStatus(delivery.id, selectedStatus)
-      .then(() => {
-        onUpdate?.();
-      })
-      .catch((err: ApiError) => {
-        setError(err.message || 'Erreur lors de la mise à jour de la livraison');
-      });
+  const showList = () => {
+    router.push('/admin/livraisons');
   };
 
   if (loading && !delivery) {
@@ -80,9 +58,8 @@ export const AdminDeliveryDetail: React.FC<AdminDeliveryDetailProps> = ({ delive
           <h2 className="text-2xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Livraison #{delivery.id}</h2>
           <p className="text-neutral-400">Date de livraison: {delivery.deliveredAt ? new Date(delivery.deliveredAt).toLocaleString('fr-FR') : 'Non livrée'}</p>
         </div>
-        {onClose && (
           <Button
-            onClick={onClose}
+            onClick={showList}
             variant="ghost"
             size="sm"
             aria-label="Fermer"
@@ -91,7 +68,6 @@ export const AdminDeliveryDetail: React.FC<AdminDeliveryDetailProps> = ({ delive
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </Button>
-        )}
       </div>
 
       {error && (
