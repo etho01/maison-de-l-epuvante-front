@@ -47,50 +47,57 @@ export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ 
   }
 
   if (error) {
-    return <div className="text-red-600 py-8">{error}</div>;
+    return (
+      <div className="glass-effect border border-crimson-700/50 text-crimson-200 py-8 px-4 rounded-xl flex items-start justify-center gap-3">
+        <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+        </svg>
+        <span>{error}</span>
+      </div>
+    );
   }
 
   return (
     <div>
       {/* Administrators Table */}
-      <div className="bg-gray-900 border border-gray-700 rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-700">
-          <thead className="bg-gray-800">
+      <div className="glass-effect border border-crimson-900/30 rounded-xl overflow-hidden">
+        <table className="min-w-full divide-y divide-crimson-900/30">
+          <thead className="bg-neutral-900/50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Nom
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Email
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Rôles
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Statut
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-3 text-right text-xs font-medium text-neutral-400 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-gray-900 divide-y divide-gray-700">
+          <tbody className="bg-neutral-950/30 divide-y divide-crimson-900/20">
             {administrators.map((admin: Administrator) => (
-              <tr key={admin.id} className="hover:bg-gray-800">
+              <tr key={admin.id} className="hover:bg-neutral-800/30 transition-colors">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-neutral-100">
                     {admin.firstName} {admin.lastName}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-300">{admin.email}</div>
+                  <div className="text-sm text-neutral-300">{admin.email}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex gap-1">
                     {admin.roles.map((role, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-900 text-blue-300 border border-blue-700"
+                        className="px-2 py-1 text-xs font-semibold rounded-md bg-blue-950/50 text-blue-400 border border-blue-700/50"
                       >
                         {role.replace('ROLE_', '')}
                       </span>
@@ -99,10 +106,10 @@ export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ 
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    className={`px-3 py-1 rounded-md text-xs font-semibold ${
                       admin.isVerified
-                        ? 'bg-green-900 text-green-300 border border-green-700'
-                        : 'bg-yellow-900 text-yellow-300 border border-yellow-700'
+                        ? 'bg-green-950/50 text-green-400 border border-green-700/50'
+                        : 'bg-yellow-950/50 text-yellow-400 border border-yellow-700/50'
                     }`}
                   >
                     {admin.isVerified ? 'Vérifié' : 'Non vérifié'}
@@ -131,7 +138,7 @@ export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ 
       </div>
 
       {administrators.length === 0 && (
-        <div className="text-center py-8 text-gray-500">Aucun administrateur trouvé</div>
+        <div className="text-center py-8 text-neutral-400">Aucun administrateur trouvé</div>
       )}
 
       {/* Confirm Delete Modal */}

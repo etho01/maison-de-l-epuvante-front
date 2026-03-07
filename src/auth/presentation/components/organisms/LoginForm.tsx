@@ -47,11 +47,11 @@ export default function LoginForm({ redirectUrl }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-red-950 to-black px-4">
-      <div className="max-w-md w-full bg-black border-2 border-red-700 rounded-lg shadow-2xl shadow-red-900/50 p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-dark px-4">
+      <div className="max-w-md w-full glass-effect border border-crimson-900/30 rounded-2xl shadow-crimson-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-red-600 mb-2">Connexion</h1>
-          <p className="text-gray-400">Accédez à votre espace</p>
+          <h1 className="text-3xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent mb-2">Connexion</h1>
+          <p className="text-neutral-400">Accédez à votre espace</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -84,8 +84,8 @@ export default function LoginForm({ redirectUrl }: LoginFormProps) {
             Se connecter
           </Button>
 
-          <div className="text-center pt-4 border-t border-red-900">
-            <span className="text-gray-400 mr-2">Pas encore de compte ?</span>
+          <div className="text-center pt-4 border-t border-crimson-900/30">
+            <span className="text-neutral-400 mr-2">Pas encore de compte ?</span>
             <Link href="/auth/register" variant="primary">
               S'inscrire
             </Link>

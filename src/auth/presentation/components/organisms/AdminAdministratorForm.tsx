@@ -69,8 +69,8 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-gray-900 border border-gray-700 text-white p-6 rounded-lg shadow space-y-6">
-      <h2 className="text-2xl font-bold mb-4 text-red-500">
+    <form onSubmit={handleSubmit(onSubmit)} className="glass-effect border border-crimson-900/30 text-neutral-100 p-6 rounded-xl shadow-crimson-md space-y-6">
+      <h2 className="text-2xl font-bold mb-4 bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">
         {administrator ? 'Modifier l\'administrateur' : 'Nouvel administrateur'}
       </h2>
 
