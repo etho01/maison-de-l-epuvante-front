@@ -8,14 +8,13 @@ import { Administrator, CreateAdministratorData, UpdateAdministratorData } from 
 import { Input, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
 import { createAdministratorSchema, updateAdministratorSchema, CreateAdministratorFormData, UpdateAdministratorFormData } from '../../schemas/authSchemas';
+import { useRouter } from 'next/navigation';
 
 interface AdminAdministratorFormProps {
   administrator?: Administrator;
-  onSuccess?: () => void;
-  onCancel?: () => void;
 }
 
-export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ administrator, onSuccess, onCancel }) => {
+export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ administrator }) => {
   const createViewModel = useCreateAdministratorViewModel();
   const updateViewModel = useUpdateAdministratorViewModel();
   const { loading: createLoading, error: createError } = createViewModel.getState();
@@ -24,6 +23,12 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
   const loading = createLoading || updateLoading;
   const error = createError || updateError;
 
+  const router = useRouter();
+
+  const redirectToList = () => {
+    router.push('/admin/administrateurs');
+  };
+  
   const {
     register,
     handleSubmit,
@@ -63,7 +68,7 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
     promise
       .then((success) => {
         if (success) {
-          onSuccess?.();
+          redirectToList();
         }
       });
   };
@@ -133,15 +138,14 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
         >
           {loading || isSubmitting ? 'Enregistrement...' : administrator ? 'Mettre à jour' : 'Créer'}
         </Button>
-        {onCancel && (
+        
           <Button
             type="button"
-            onClick={onCancel}
+            onClick={redirectToList}
             variant="secondary"
           >
             Annuler
           </Button>
-        )}
       </FormActions>
     </form>
   );

@@ -5,13 +5,13 @@ import { useGetAllAdministratorsViewModel, useDeleteAdministratorViewModel } fro
 import { Administrator } from '../../../domain/entities/Administrator';
 import { Button } from '@/src/shared/components/atoms';
 import { ConfirmModal } from '@/src/shared/components/molecules';
+import { useRouter } from 'next/navigation';
 
 interface AdminAdministratorListProps {
-  onEdit?: (administrator: Administrator) => void;
   initialAdministrators?: Administrator[];
 }
 
-export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ onEdit, initialAdministrators }) => {
+export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ initialAdministrators }) => {
   const listViewModel = useGetAllAdministratorsViewModel(initialAdministrators);
   const deleteViewModel = useDeleteAdministratorViewModel();
   const { administrators, loading, error } = listViewModel.getState();
@@ -45,6 +45,12 @@ export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ 
   if (loading && administrators.length === 0) {
     return <div className="text-center py-8">Chargement...</div>;
   }
+
+  const routeur = useRouter();
+
+  const handleEdit = (admin: Administrator) => {
+    routeur.push(`/admin/administrateurs/${admin.id}`);
+  };
 
   if (error) {
     return (
@@ -118,7 +124,7 @@ export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ 
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex gap-2 justify-end">
                     <Button
-                      onClick={() => onEdit?.(admin)}
+                      onClick={() => handleEdit(admin)}
                       variant="secondary"
                     >
                       Modifier
