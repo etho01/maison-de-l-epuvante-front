@@ -64,9 +64,9 @@ export const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="border rounded-lg p-6 bg-white">
-        <h3 className="text-xl font-bold mb-4">Paiement</h3>
-        <p className="text-sm text-gray-600 mb-4">
+      <div className="border border-neutral-800 rounded-xl p-6 glass-effect">
+        <h3 className="text-xl font-bold mb-4 bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Paiement</h3>
+        <p className="text-sm text-neutral-400 mb-4">
           Commande #{orderNumber}
         </p>
         
@@ -84,7 +84,7 @@ export const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
           {loading ? 'Traitement du paiement...' : 'Payer maintenant'}
         </Button>
 
-        <p className="text-xs text-gray-500 text-center mt-4">
+        <p className="text-xs text-neutral-400 text-center mt-4">
           Paiement sécurisé par Stripe
         </p>
       </div>

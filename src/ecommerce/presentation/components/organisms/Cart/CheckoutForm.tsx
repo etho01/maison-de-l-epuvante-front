@@ -112,7 +112,7 @@ export const CheckoutForm: React.FC = () => {
   if (cart.items.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Votre panier est vide</p>
+        <p className="text-neutral-400">Votre panier est vide</p>
       </div>
     );
   }
@@ -227,36 +227,36 @@ export const CheckoutForm: React.FC = () => {
       </div>
 
       {/* Notes */}
-      <div className="border rounded-lg p-6">
-        <h3 className="text-xl font-bold mb-4">Notes (optionnel)</h3>
+      <div className="border border-neutral-800 rounded-lg p-6">
+        <h3 className="text-xl font-bold mb-4 text-neutral-100">Notes (optionnel)</h3>
         <textarea
-          className="w-full border rounded p-2"
+          className="w-full border border-neutral-800 bg-neutral-950/30 text-neutral-100 rounded-lg p-2 focus:border-crimson-600 focus:outline-none focus:ring-1 focus:ring-crimson-600"
           rows={4}
           placeholder="Instructions de livraison, remarques..."
           {...register('customerNotes')}
         />
         {errors.customerNotes && (
-          <p className="text-red-500 text-sm mt-1">{errors.customerNotes.message}</p>
+          <p className="text-crimson-400 text-sm mt-1">{errors.customerNotes.message}</p>
         )}
       </div>
 
       {/* Récapitulatif */}
-      <div className="border rounded-lg p-6 ">
-        <h3 className="text-xl font-bold mb-4">Récapitulatif</h3>
+      <div className="border border-neutral-800 rounded-lg p-6 ">
+        <h3 className="text-xl font-bold mb-4 text-neutral-100">Récapitulatif</h3>
         <div className="space-y-2 mb-4">
           {cart.items.map((item) => (
             <div key={item.product.id} className="flex justify-between text-sm">
-              <span>
+              <span className="text-neutral-300">
                 {item.product.name} x {item.quantity}
               </span>
-              <span>{(item.product.price * item.quantity).toFixed(2)} €</span>
+              <span className="text-neutral-300">{(item.product.price * item.quantity).toFixed(2)} €</span>
             </div>
           ))}
         </div>
-        <div className="border-t pt-4">
+        <div className="border-t border-neutral-800 pt-4">
           <div className="flex justify-between items-center">
-            <span className="text-xl font-bold">Total:</span>
-            <span className="text-2xl font-bold text-red-600">
+            <span className="text-xl font-bold text-neutral-100">Total:</span>
+            <span className="text-2xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">
               {cart.totalPrice.toFixed(2)} €
             </span>
           </div>

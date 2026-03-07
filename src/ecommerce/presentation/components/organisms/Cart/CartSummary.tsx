@@ -13,7 +13,7 @@ export const CartSummary: React.FC = () => {
   if (cart.items.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg mb-4">Votre panier est vide</p>
+        <p className="text-neutral-400 text-lg mb-4">Votre panier est vide</p>
         <Link href="/produits">
           <Button>Continuer mes achats</Button>
         </Link>
@@ -23,7 +23,7 @@ export const CartSummary: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6">Mon Panier ({cart.totalItems} article{cart.totalItems > 1 ? 's' : ''})</h2>
+      <h2 className="text-2xl font-bold text-neutral-100 mb-6">Mon Panier ({cart.totalItems} article{cart.totalItems > 1 ? 's' : ''})</h2>
 
       <div className="space-y-4 mb-6">
         {cart.items.map((item) => (
@@ -44,9 +44,9 @@ export const CartSummary: React.FC = () => {
         ))}
       </div>
 
-      <div className="border-t pt-4">
+      <div className="border-t border-crimson-900/30 pt-4">
         <div className="flex justify-between items-center mb-4">
-          <span className="text-xl font-bold">Total:</span>
+          <span className="text-xl font-bold text-neutral-100">Total:</span>
           <PriceDisplay price={cart.totalPrice.toFixed(2)} variant="emphasis" size="xl" />
         </div>
 

@@ -38,7 +38,7 @@ export const CartItem: React.FC<CartItemProps> = ({
   const subtotal = product.price * quantity;
 
   return (
-    <div className={`border rounded-lg p-4 flex gap-4 ${className}`}>
+    <div className={`border border-crimson-900/30 rounded-xl p-4 flex gap-4 glass-effect hover:border-crimson-700/50 transition-all duration-200 ${className}`}>
       <ProductImage
         src={product.images?.[0]}
         alt={product.name}
@@ -46,8 +46,8 @@ export const CartItem: React.FC<CartItemProps> = ({
       />
 
       <div className="flex-1">
-        <Link href={`/produits/${product.slug}`} className="hover:underline">
-          <h3 className="font-bold">{product.name}</h3>
+        <Link href={`/produits/${product.slug}`} className="hover:text-crimson-400 transition-colors">
+          <h3 className="font-bold text-neutral-100">{product.name}</h3>
         </Link>
         <div className="mt-2">
           <PriceDisplay price={product.price} variant="emphasis" />
@@ -57,9 +57,12 @@ export const CartItem: React.FC<CartItemProps> = ({
       <div className="flex flex-col justify-between items-end">
         <button
           onClick={onRemove}
-          className="text-red-600 hover:text-red-800 text-sm transition-colors"
+          className="text-crimson-400 hover:text-crimson-300 text-sm transition-colors flex items-center gap-1 group"
         >
-          Supprimer
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          <span>Supprimer</span>
         </button>
 
         <QuantitySelector

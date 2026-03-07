@@ -47,7 +47,7 @@ export const StripePaymentWrapper: React.FC<StripePaymentWrapperProps> = ({
   if (!options) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">Initialisation du paiement...</p>
+        <p className="text-neutral-400">Initialisation du paiement...</p>
       </div>
     );
   }
