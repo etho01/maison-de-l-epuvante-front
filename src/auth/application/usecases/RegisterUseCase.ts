@@ -25,6 +25,14 @@ export class RegisterUseCase {
       throw new Error('Le mot de passe doit contenir au moins 8 caractères');
     }
 
+    if (!data.firstName || data.firstName.trim() === '') {
+      throw new Error('Le prénom est requis');
+    }
+
+    if (!data.lastName || data.lastName.trim() === '') {
+      throw new Error('Le nom de famille est requis');
+    }
+
     return await this.authRepository.register(data);
   }
 }
