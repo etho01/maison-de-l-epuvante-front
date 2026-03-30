@@ -7,6 +7,9 @@
 [![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)](https://tailwindcss.com/)
 
+> [!WARNING]
+> **Projet en cours de développement** — Ce projet est actuellement en phase de développement actif. Certaines fonctionnalités ne sont pas encore complètement implémentées. Le projet est présenté ici comme démonstration de compétences en architecture logicielle (Clean Architecture, DDD, TypeScript) et bonnes pratiques de développement.
+
 ## 📋 Table des matières
 
 - [À propos](#à-propos)
