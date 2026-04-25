@@ -156,6 +156,21 @@ NODE_ENV=development
 
 Voir [.env.example](.env.example) pour la liste complète.
 
+### Variables d'environnement en production
+
+En production (Kubernetes), les variables d'environnement sont gérées par **Vault** et injectées automatiquement via **External Secrets Operator**.
+
+Voir la documentation complète :
+- [VAULT_ENV.md](VAULT_ENV.md) - Configuration des variables avec Vault
+- [CHANGELOG_VAULT.md](CHANGELOG_VAULT.md) - Changements et migration vers Vault
+- [k8s/README.md](k8s/README.md) - Guide de déploiement Kubernetes
+
+Pour configurer les secrets en production :
+
+```bash
+./update-vault-secrets.sh <VAULT_ROOT_TOKEN>
+```
+
 ## 🚀 Développement
 
 ### Démarrer le serveur de développement
@@ -242,9 +257,17 @@ Exemples de tests disponibles :
 
 ## 📚 Documentation
 
+### Architecture & Développement
 - [ARCHITECTURE.md](ARCHITECTURE.md) — Architecture détaillée, patterns et conventions
 - [PROJECT_SPECS.md](PROJECT_SPECS.md) — Spécifications fonctionnelles complètes
 - [HOOKS_ORGANIZATION.md](src/ecommerce/presentation/HOOKS_ORGANIZATION.md) — Organisation des hooks et viewmodels
+
+### Déploiement & Infrastructure
+- [DOCKER.md](DOCKER.md) — Build et exécution Docker
+- [k8s/README.md](k8s/README.md) — Déploiement Kubernetes
+- [VAULT_ENV.md](VAULT_ENV.md) — Configuration des variables avec Vault
+- [CHANGELOG_VAULT.md](CHANGELOG_VAULT.md) — Migration vers Vault
+- [.github/workflows/README.md](.github/workflows/README.md) — CI/CD GitHub Actions
 
 ## 🤝 Contribution
 

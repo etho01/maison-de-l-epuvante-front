@@ -1,0 +1,77 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Testing
+coverage
+__tests__
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+jest.config.js
+jest.setup.js
+
+# Next.js
+.next
+out
+dist
+build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+*.log
+
+# Local env files
+.env*.local
+.env.development
+.env.test
+.env.production
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+ARCHITECTURE.md
+PROJECT_SPECS.md
+
+# Kubernetes
+k8s
+*.yaml
+*.yml
+
+# Scripts
+scripts
+update-vault-secrets.sh
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Linting
+.eslintrc*
+.prettierrc*
+eslint.config.mjs
