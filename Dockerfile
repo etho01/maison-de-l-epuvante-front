@@ -9,8 +9,8 @@ WORKDIR /app
 # Copier les fichiers de dépendances
 COPY package.json package-lock.json* ./
 
-# Installer les dépendances de production uniquement
-RUN npm ci --only=production && npm cache clean --force
+# Installer toutes les dépendances (nécessaires pour le build)
+RUN npm ci && npm cache clean --force
 
 # Étape 2: Builder l'application
 FROM node:20-alpine AS builder
@@ -20,9 +20,6 @@ WORKDIR /app
 # Copier les dépendances depuis l'étape précédente
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json package-lock.json* ./
-
-# Installer toutes les dépendances (y compris devDependencies pour le build)
-RUN npm ci
 
 # Copier le code source
 COPY . .
