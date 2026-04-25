@@ -44,8 +44,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
 # Créer un utilisateur non-root
-RUN addgroup --system --gid 1000 nodejs && \
-    adduser --system --uid 1000 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 # Copier les fichiers nécessaires depuis le builder
 COPY --from=builder /app/public ./public
