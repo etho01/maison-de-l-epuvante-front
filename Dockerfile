@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 
 # Installer toutes les dépendances (nécessaires pour le build)
-RUN npm ci && npm cache clean --force
+RUN npm ci --legacy-peer-deps && npm cache clean --force
 
 # Étape 2: Builder l'application
 FROM node:20-alpine AS builder
