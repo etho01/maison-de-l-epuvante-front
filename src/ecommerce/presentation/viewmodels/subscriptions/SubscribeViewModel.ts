@@ -1,4 +1,5 @@
-import { SubscribeUseCase } from '../../application/usecases/subscriptions';
+import { SubscribeUseCase } from '../../../application/usecases/subscriptions';
+import { SubscribeData, Subscription } from '../../../domain/entities/Subscription';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class SubscribeViewModel {
@@ -19,7 +20,7 @@ export class SubscribeViewModel {
     this.listeners.forEach((listener) => listener());
   }
 
-  subscribeToPlan(data: SubscriptionCreateData): Promise<void> {
+  subscribeToPlan(data: SubscribeData): Promise<Subscription> {
     this.state.subscribing = true;
     this.notify();
 

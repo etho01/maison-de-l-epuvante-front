@@ -1,5 +1,5 @@
-import { Order, UpdateOrderData } from '../../domain/entities/Order';
-import { UpdateOrderUseCase } from '../../application/usecases/orders';
+import { Order, UpdateOrderData } from '../../../domain/entities/Order';
+import { UpdateOrderUseCase } from '../../../application/usecases/orders';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class UpdateOrderViewModel {

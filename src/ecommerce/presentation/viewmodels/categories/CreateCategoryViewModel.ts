@@ -1,5 +1,5 @@
-import { CreateCategoryData } from '../../domain/entities/Category';
-import { CreateCategoryUseCase } from '../../application/usecases/categories';
+import { CreateCategoryData } from '../../../domain/entities/Category';
+import { CreateCategoryUseCase } from '../../../application/usecases/categories';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class CreateCategoryViewModel {

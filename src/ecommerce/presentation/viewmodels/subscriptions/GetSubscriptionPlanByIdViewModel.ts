@@ -1,5 +1,6 @@
 import { SubscriptionPlan } from '../../../domain/entities/SubscriptionPlan';
 import { GetSubscriptionPlanByIdUseCase } from '../../../application/usecases/subscriptions';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetSubscriptionPlanByIdViewModel {
   private state = {

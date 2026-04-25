@@ -94,7 +94,7 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
           label="Nom *"
           type="text"
           error={errors.name?.message}
-          variant="dark"
+          variant="default"
           {...register('name')}
         />
 
@@ -102,7 +102,7 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
           label="Description *"
           rows={4}
           error={errors.description?.message}
-          variant="dark"
+          variant="default"
           {...register('description')}
         />
       </FormSection>
@@ -117,7 +117,7 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
             type="number"
             step="0.01"
             error={errors.price?.message}
-            variant="dark"
+            variant="default"
             {...register('price', { valueAsNumber: true })}
           />
 
@@ -125,14 +125,14 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
             label="Durée (mois) *"
             type="number"
             error={errors.durationInMonths?.message}
-            variant="dark"
+            variant="default"
             {...register('durationInMonths', { valueAsNumber: true })}
           />
 
           <Select
             label="Intervalle de facturation *"
             error={errors.billingInterval?.message}
-            variant="dark"
+            variant="default"
             {...register('billingInterval')}
           >
             <option value="monthly">Mensuel</option>
@@ -143,7 +143,7 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
           <Select
             label="Format *"
             error={errors.format?.message}
-            variant="dark"
+            variant="default"
             {...register('format')}
           >
             <option value="digital">Numérique</option>
@@ -156,7 +156,6 @@ export const AdminSubscriptionPlanForm: React.FC<AdminSubscriptionPlanFormProps>
       <FormSection title="Options">
         <Checkbox
           label="Actif"
-          variant="dark"
           {...register('active')}
         />
       </FormSection>

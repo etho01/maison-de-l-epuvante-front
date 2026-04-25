@@ -9,7 +9,7 @@ export class SymfonyProductRepository implements IProductRepository {
     
     if (filters) {
       if (filters.name) params.append('name', filters.name);
-      if (filters.type) params.append('type', filters.type);
+      if (filters.type) params.append('type', filters.type.join(','));
       if (filters['category.id']) params.append('category.id', filters['category.id'].toString());
       if (filters['price[gte]']) params.append('price[gte]', filters['price[gte]'].toString());
       if (filters['price[lte]']) params.append('price[lte]', filters['price[lte]'].toString());

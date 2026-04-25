@@ -1,5 +1,5 @@
-import { Category } from '../../domain/entities/Category';
-import { GetAllCategoriesUseCase } from '../../application/usecases/categories';
+import { Category } from '../../../domain/entities/Category';
+import { GetAllCategoriesUseCase } from '../../../application/usecases/categories';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetAllCategoriesViewModel {

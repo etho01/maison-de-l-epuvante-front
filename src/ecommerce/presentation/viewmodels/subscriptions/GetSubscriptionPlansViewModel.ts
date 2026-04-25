@@ -1,6 +1,7 @@
 import { SubscriptionPlan } from '../../../domain/entities/SubscriptionPlan';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { GetSubscriptionPlansUseCase, SubscriptionPlansFilters } from '../../../application/usecases/subscriptions';
+import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetSubscriptionPlansViewModel {
   private state = {

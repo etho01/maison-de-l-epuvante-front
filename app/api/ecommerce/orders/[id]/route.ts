@@ -9,7 +9,7 @@ const updateOrderUseCase = new UpdateOrderUseCase(orderRepository);
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const {id} = await params;
@@ -25,11 +25,12 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const data = await request.json();
-    const order = await updateOrderUseCase.execute(parseInt(params.id), data);
+    const { id } = await params;
+    const order = await updateOrderUseCase.execute(parseInt(id), data);
     return NextResponse.json(order);
   } catch (error: unknown) {
     if (error instanceof ApiError) {

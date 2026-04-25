@@ -89,7 +89,7 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
             label="Nom *"
             type="text"
             error={errors.name?.message}
-            variant="dark"
+            variant="default"
             {...register('name')}
           />
 
@@ -97,7 +97,7 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
             label="Slug *"
             type="text"
             error={errors.slug?.message}
-            variant="dark"
+            variant="default"
             {...register('slug')}
           />
         </div>
@@ -105,7 +105,7 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
         <Select
           label="Catégorie parente"
           error={errors.parentId?.message}
-          variant="dark"
+          variant="default"
           {...register('parentId')}
         >
           <option value="">Aucune (catégorie racine)</option>
@@ -120,7 +120,7 @@ export const AdminCategoryForm: React.FC<AdminCategoryFormProps> = ({ category, 
           label="Description"
           rows={4}
           error={errors.description?.message}
-          variant="dark"
+          variant="default"
           {...register('description')}
         />
       </FormSection>

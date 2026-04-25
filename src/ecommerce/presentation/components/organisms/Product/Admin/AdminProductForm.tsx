@@ -137,7 +137,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
             label="Nom *"
             type="text"
             error={errors.name?.message}
-            variant="dark"
+            variant="default"
             {...register('name')}
           />
 
@@ -145,7 +145,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
             label="Slug *"
             type="text"
             error={errors.slug?.message}
-            variant="dark"
+            variant="default"
             {...register('slug')}
           />
 
@@ -153,14 +153,14 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
             label="SKU *"
             type="text"
             error={errors.sku?.message}
-            variant="dark"
+            variant="default"
             {...register('sku')}
           />
 
           <Select
             label="Catégorie *"
             error={errors.categoryId?.message}
-            variant="dark"
+            variant="default"
             {...register('categoryId', { valueAsNumber: true })}
           >
             <option value="">Sélectionner une catégorie</option>
@@ -176,7 +176,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
           label="Description *"
           rows={4}
           error={errors.description?.message}
-          variant="dark"
+          variant="default"
           {...register('description')}
         />
       </FormSection>
@@ -191,14 +191,14 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
             type="number"
             step="0.01"
             error={errors.price?.message}
-            variant="dark"
+            variant="default"
             {...register('price', { valueAsNumber: true })}
           />
 
           <Select
             label="Type *"
             error={errors.type?.message}
-            variant="dark"
+            variant="default"
             {...register('type')}
           >
             <option value={ProductType.PHYSICAL}>Physique</option>
@@ -220,7 +220,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
                 label="Stock *"
                 type="number"
                 error={errors.stock?.message}
-                variant="dark"
+                variant="default"
                 {...register('stock', { valueAsNumber: true })}
               />
             )}
@@ -231,7 +231,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
               type="number"
               step="0.01"
               error={errors.weight?.message}
-              variant="dark"
+              variant="default"
               {...register('weight', { valueAsNumber: true })}
             />
           )}
@@ -242,13 +242,11 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
         <div className="flex gap-4">
           <Checkbox
             label="Actif"
-            variant="dark"
             {...register('active')}
           />
 
           <Checkbox
             label="Exclusivité en ligne"
-            variant="dark"
             {...register('exclusiveOnline')}
           />
         </div>

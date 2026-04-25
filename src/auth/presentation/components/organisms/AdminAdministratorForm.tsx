@@ -90,7 +90,7 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
             label="Prénom *"
             type="text"
             error={errors.firstName?.message}
-            variant="dark"
+            variant="default"
             {...register('firstName')}
           />
 
@@ -98,7 +98,7 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
             label="Nom *"
             type="text"
             error={errors.lastName?.message}
-            variant="dark"
+            variant="default"
             {...register('lastName')}
           />
         </div>
@@ -107,7 +107,7 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
           label="Email *"
           type="email"
           error={errors.email?.message}
-          variant="dark"
+          variant="default"
           {...register('email')}
         />
 
@@ -116,7 +116,7 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
             label="Mot de passe *"
             type="password"
             error={'password' in errors ? errors.password?.message : undefined}
-            variant="dark"
+            variant="default"
             {...register('password' as any)}
           />
         )}
@@ -125,7 +125,6 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
       <FormSection title="Options">
         <Checkbox
           label="Compte vérifié"
-          variant="dark"
           {...register('isVerified')}
         />
       </FormSection>

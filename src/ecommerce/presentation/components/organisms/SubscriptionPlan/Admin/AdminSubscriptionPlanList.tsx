@@ -113,12 +113,12 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
             type="text"
             placeholder="Rechercher par nom..."
             onChange={(e) => handleFilterChange('name', e.target.value || undefined)}
-            variant="dark"
+            variant="default"
           />
           
           <Select
             onChange={(e) => handleFilterChange('format', e.target.value || undefined)}
-            variant="dark"
+            variant="default"
           >
             <option value="">Tous les formats</option>
             <option value="paper">Papier</option>
@@ -128,7 +128,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
           
           <Select
             onChange={(e) => handleFilterChange('active', e.target.value === 'true' ? true : e.target.value === 'false' ? false : undefined)}
-            variant="dark"
+            variant="default"
           >
             <option value="">Tous les statuts</option>
             <option value="true">Actif</option>

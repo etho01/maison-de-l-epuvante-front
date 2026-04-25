@@ -8,15 +8,16 @@ const downloadDigitalContentUseCase = new DownloadDigitalContentUseCase(digitalC
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const blob = await downloadDigitalContentUseCase.execute(parseInt(params.id));
+    const { id } = await params;
+    const blob = await downloadDigitalContentUseCase.execute(parseInt(id));
     
     return new NextResponse(blob, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="fanzine-${params.id}.pdf"`,
+        'Content-Disposition': `attachment; filename="fanzine-${id}.pdf"`,
       },
     });
   } catch (error: unknown) {

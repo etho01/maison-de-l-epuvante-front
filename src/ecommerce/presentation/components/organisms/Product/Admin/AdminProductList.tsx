@@ -95,12 +95,12 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ initialProdu
             type="text"
             placeholder="Rechercher par nom..."
             onChange={(e) => handleFilterChange('name', e.target.value || undefined)}
-            variant="dark"
+            variant="default"
           />
           
           <Select
             onChange={(e) => handleFilterChange('type', e.target.value || undefined)}
-            variant="dark"
+            variant="default"
           >
             <option value="">Tous les types</option>
             <option value={ProductType.PHYSICAL}>Physique</option>
@@ -109,7 +109,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ initialProdu
           
           <Select
             onChange={(e) => handleFilterChange('active', e.target.value === 'true' ? true : e.target.value === 'false' ? false : undefined)}
-            variant="dark"
+            variant="default"
           >
             <option value="">Tous les statuts</option>
             <option value="true">Actif</option>

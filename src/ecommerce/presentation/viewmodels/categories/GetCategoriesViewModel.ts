@@ -1,7 +1,7 @@
-import { Category } from '../../domain/entities/Category';
-import { GetCategoriesUseCase } from '../../application/usecases/categories';
+import { Category } from '../../../domain/entities/Category';
+import { GetCategoriesUseCase } from '../../../application/usecases/categories';
 import { Pagination } from '@/src/shared/domain/Pagination';
-import { GetCategoriesFilter } from '../../application/usecases/categories/GetCategoriesUseCase';
+import { GetCategoriesFilter } from '../../../application/usecases/categories/GetCategoriesUseCase';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class GetCategoriesViewModel {

@@ -15,14 +15,13 @@ interface ProductTypeBadgeProps {
 const typeLabels: Record<ProductType, string> = {
   physical: 'Produit physique',
   digital: 'Produit numérique',
-  subscription: 'Abonnement',
 };
 
 export const ProductTypeBadge: React.FC<ProductTypeBadgeProps> = ({
   type,
   className = '',
 }) => {
-  const variant = type === 'digital' ? 'info' : type === 'subscription' ? 'secondary' : 'default';
+  const variant = type === 'digital' ? 'info' : 'default';
   
   return (
     <Badge variant={variant} size="sm" className={className}>

@@ -27,8 +27,11 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   const getDeliveryStatusLabel = (status: DeliveryStatus): string => {
     const labels: Record<DeliveryStatus, string> = {
       [DeliveryStatus.PENDING]: 'En attente',
+      [DeliveryStatus.PREPARING]: 'En préparation',
       [DeliveryStatus.SHIPPED]: 'Expédiée',
+      [DeliveryStatus.IN_TRANSIT]: 'En transit',
       [DeliveryStatus.DELIVERED]: 'Livrée',
+      [DeliveryStatus.FAILED]: 'Échec',
       [DeliveryStatus.CANCELLED]: 'Annulée',
     };
     return labels[status];
@@ -37,8 +40,11 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   const getDeliveryStatusColor = (status: DeliveryStatus): string => {
     const colors: Record<DeliveryStatus, string> = {
       [DeliveryStatus.PENDING]: 'text-yellow-400',
+      [DeliveryStatus.PREPARING]: 'text-orange-400',
       [DeliveryStatus.SHIPPED]: 'text-blue-400',
+      [DeliveryStatus.IN_TRANSIT]: 'text-cyan-400',
       [DeliveryStatus.DELIVERED]: 'text-green-400',
+      [DeliveryStatus.FAILED]: 'text-red-600',
       [DeliveryStatus.CANCELLED]: 'text-red-400',
     };
     return colors[status];

@@ -1,5 +1,5 @@
-import { UpdateCategoryData } from '../../domain/entities/Category';
-import { UpdateCategoryUseCase } from '../../application/usecases/categories';
+import { UpdateCategoryData } from '../../../domain/entities/Category';
+import { UpdateCategoryUseCase } from '../../../application/usecases/categories';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class UpdateCategoryViewModel {

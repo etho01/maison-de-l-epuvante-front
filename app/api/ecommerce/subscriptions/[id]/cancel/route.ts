@@ -8,10 +8,11 @@ const cancelSubscriptionUseCase = new CancelSubscriptionUseCase(subscriptionRepo
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const subscription = await cancelSubscriptionUseCase.execute(parseInt(params.id));
+    const { id } = await params;
+    const subscription = await cancelSubscriptionUseCase.execute(parseInt(id));
     return NextResponse.json(subscription);
   } catch (error: unknown) {
     if (error instanceof ApiError) {

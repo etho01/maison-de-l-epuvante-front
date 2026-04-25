@@ -4,7 +4,7 @@ import { useMemo, useEffect, useState } from 'react';
 import { GetCategoriesViewModel } from '../../viewmodels/categories/GetCategoriesViewModel';
 import { ecommerceContainer } from '@/src/ecommerce/container';
 import { Category } from '../../../domain/entities/Category';
-import { Pagination } from '@/src/shared/components/ui';
+import { Pagination } from '@/src/shared/domain/Pagination';
 
 
 export const useGetCategoriesViewModel = (initialCategories?: Category[], initialPagination?: Pagination) => {

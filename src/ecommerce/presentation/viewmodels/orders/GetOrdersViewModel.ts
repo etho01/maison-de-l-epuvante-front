@@ -1,6 +1,6 @@
-import { Order, OrderStatus } from '../../domain/entities/Order';
-import { GetOrdersUseCase } from '../../application/usecases/orders';
-import { OrderFilters } from '../../domain/repositories/IOrderRepository';
+import { Order, OrderStatus } from '../../../domain/entities/Order';
+import { GetOrdersUseCase } from '../../../application/usecases/orders';
+import { OrderFilters } from '../../../domain/repositories/IOrderRepository';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { ApiError } from '@/src/shared/domain/ApiError';
 

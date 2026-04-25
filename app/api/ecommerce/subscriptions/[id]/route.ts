@@ -8,10 +8,11 @@ const getSubscriptionByIdUseCase = new GetSubscriptionByIdUseCase(subscriptionRe
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const subscription = await getSubscriptionByIdUseCase.execute(parseInt(params.id));
+    const { id } = await params;
+    const subscription = await getSubscriptionByIdUseCase.execute(parseInt(id));
     return NextResponse.json(subscription);
   } catch (error: unknown) {
     if (error instanceof ApiError) {

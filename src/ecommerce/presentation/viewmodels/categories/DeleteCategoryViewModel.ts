@@ -1,4 +1,4 @@
-import { DeleteCategoryUseCase } from '../../application/usecases/categories';
+import { DeleteCategoryUseCase } from '../../../application/usecases/categories';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
 export class DeleteCategoryViewModel {

@@ -8,11 +8,12 @@ const renewSubscriptionUseCase = new RenewSubscriptionUseCase(subscriptionReposi
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const data = await request.json();
-    const subscription = await renewSubscriptionUseCase.execute(parseInt(params.id), data);
+    const { id } = await params;
+    const subscription = await renewSubscriptionUseCase.execute(parseInt(id), data);
     return NextResponse.json(subscription);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
