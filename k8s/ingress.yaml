@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: maison-epouvante-front
+  namespace: maison-epouvante-front
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: maison-epouvante-front-ratelimit@kubernetescrd,maison-epouvante-front-security-headers@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - maison-epouvante.nicolasbarbey.fr
+      secretName: maison-epouvante-front-tls
+  rules:
+    - host: maison-epouvante.nicolasbarbey.fr
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: maison-epouvante-front
+                port:
+                  number: 3000
