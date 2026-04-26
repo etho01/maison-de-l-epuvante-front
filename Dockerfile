@@ -28,7 +28,6 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Builder l'application Next.js
-# Note: Les variables NEXT_PUBLIC_* seront injectées au runtime depuis Vault
 RUN npm run build
 
 # Étape 3: Image de production
