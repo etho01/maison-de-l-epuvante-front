@@ -58,6 +58,15 @@ export class ServerApiClient {
 
                 }
 
+                console.error('Erreur API:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    url,
+                    method: config.method,
+                    body: config.body,
+                    errorData,
+                });
+
                 throw new ApiError(
                     response.status,
                     errorData.errors || [],
@@ -93,7 +102,6 @@ export class ServerApiClient {
     }
 
     async post<T>(endpoint: string, data?: any): Promise<T> {
-        console.log('POST request to:', endpoint, 'with data:', data);
         return this.request<T>(endpoint, {
             method: 'POST',
             body: data ? JSON.stringify(data) : undefined,
@@ -101,7 +109,6 @@ export class ServerApiClient {
     }
 
     async put<T>(endpoint: string, data?: any): Promise<T> {
-        console.log('PUT request to:', endpoint, 'with data:', data);
         return this.request<T>(endpoint, {
             method: 'PUT',
             body: data ? JSON.stringify(data) : undefined,
@@ -109,7 +116,6 @@ export class ServerApiClient {
     }
 
     async patch<T>(endpoint: string, data?: any): Promise<T> {
-        console.log('PATCH request to:', endpoint, 'with data:', data);
         return this.request<T>(endpoint, {
             method: 'PATCH',
             body: data ? JSON.stringify(data) : undefined,

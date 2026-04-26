@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: etho01/maison-epouvante-front
+  IMAGE_NAME: etho01/maison-de-l-epuvante-front
   NAMESPACE: maison-epouvante-front
   DEPLOYMENT_NAME: maison-epouvante-front
   CONTAINER_NAME: app

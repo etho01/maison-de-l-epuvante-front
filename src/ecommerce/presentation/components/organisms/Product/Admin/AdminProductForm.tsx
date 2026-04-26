@@ -86,7 +86,6 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
   };
 
   const onSubmit = (formData: ProductFormData) => {
-    console.log('Form data submitted:', formData);
     setError(null);
     
     const data: CreateProductData | UpdateProductData = {
