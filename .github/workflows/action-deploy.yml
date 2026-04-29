@@ -14,7 +14,28 @@ env:
 
 jobs:
 
+
+  code-quality:
+    uses: ./.github/workflows/code-quality.yml
+        
+  security-scan:
+    uses: ./.github/workflows/security-scan.yml
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+
+  test:
+    needs: [code-quality, security-scan]
+    uses: ./.github/workflows/test.yml
+
+  sonarqube:
+    needs: test
+    uses: ./.github/workflows/sonarqube.yml
+    secrets: inherit
+
   build-and-push:
+    needs: sonarqube
     runs-on: ubuntu-latest
     permissions:
       contents: read
