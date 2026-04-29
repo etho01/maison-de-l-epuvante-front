@@ -19,6 +19,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      security-events: write
 
     outputs:
       image_tag: ${{ steps.meta.outputs.image_tag }}
@@ -53,6 +54,77 @@ jobs:
           tags: |
             ghcr.io/etho01/maison-epouvante-front:${{ steps.meta.outputs.image_tag }}
             ghcr.io/etho01/maison-epouvante-front:latest
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/etho01/maison-epouvante-front:${{ steps.meta.outputs.image_tag }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+          exit-code: '0'
+          ignore-unfixed: false
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'trivy-image-scan'
+
+      - name: Run Trivy scan for JSON report
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/etho01/maison-epouvante-front:${{ steps.meta.outputs.image_tag }}
+          format: 'json'
+          output: 'trivy-image-results.json'
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+          exit-code: '0'
+
+      - name: Check for critical vulnerabilities
+        run: |
+          if [ -f trivy-image-results.json ]; then
+            CRITICAL=$(cat trivy-image-results.json | jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL")] | length')
+            HIGH=$(cat trivy-image-results.json | jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "HIGH")] | length')
+            
+            echo "### 🐳 Scan Trivy de l'Image Docker" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Image:** ghcr.io/etho01/maison-epouvante-front:${{ steps.meta.outputs.image_tag }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Sévérité | Nombre |" >> $GITHUB_STEP_SUMMARY
+            echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+            echo "| 🔴 Critical | $CRITICAL |" >> $GITHUB_STEP_SUMMARY
+            echo "| 🟠 High | $HIGH |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            if [ $(($CRITICAL + $HIGH)) -gt 0 ]; then
+              echo "⚠️ **Attention:** Des vulnérabilités critiques ou hautes ont été détectées dans l'image" >> $GITHUB_STEP_SUMMARY
+              echo "Consultez l'onglet **Security** → **Code scanning** pour plus de détails" >> $GITHUB_STEP_SUMMARY
+              
+              # Afficher les vulnérabilités critiques
+              if [ "$CRITICAL" -gt 0 ]; then
+                echo "" >> $GITHUB_STEP_SUMMARY
+                echo "**Vulnérabilités Critiques:**" >> $GITHUB_STEP_SUMMARY
+                cat trivy-image-results.json | jq -r '
+                  [.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL")] | 
+                  .[:5][] | 
+                  "- `" + .PkgName + "`: " + .VulnerabilityID + " - " + .Title
+                ' >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+              fi
+            else
+              echo "✅ **Aucune vulnérabilité critique ou haute détectée**" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+
+      - name: Upload Trivy scan results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trivy-image-scan
+          path: |
+            trivy-image-results.json
+            trivy-results.sarif
+          retention-days: 30
 
   deploy:
     needs: build-and-push

@@ -1,0 +1,81 @@
+name: SonarQube Analysis
+
+on:
+  workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        description: 'SonarQube authentication token'
+        required: true
+      SONAR_HOST_URL:
+        description: 'SonarQube server URL'
+        required: true
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Disable shallow clone for better analysis
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Create test environment file
+        run: |
+          cat > .env.test << 'EOF'
+          NEXT_PUBLIC_API_URL=http://localhost:8000
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_mock_key_for_ci
+          STRIPE_SECRET_KEY=sk_test_mock_key_for_ci
+          EOF
+      
+      - name: Run tests with coverage
+        run: npm run test:coverage -- --ci --maxWorkers=2
+      
+      - name: Display coverage summary
+        run: |
+          if [ -f coverage/lcov.info ]; then
+            echo "✅ Coverage report generated"
+            echo "Coverage data available in coverage/"
+          else
+            echo "⚠️ No coverage report found"
+          fi
+      
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=maison-de-lepouvante-front
+            -Dsonar.sources=src,app
+            -Dsonar.tests=__tests__
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.testExecutionReportPaths=coverage/test-report.xml
+            -Dsonar.exclusions=**/*.test.ts,**/*.test.tsx,**/node_modules/**,**/.next/**
+            -Dsonar.verbose=false
+      
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      
+      - name: Upload coverage artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: coverage/
+          retention-days: 7
