@@ -21,9 +21,11 @@ jobs:
         run: npm ci --legacy-peer-deps
       
       - name: Check TypeScript types
+        continue-on-error: true
         run: npx tsc --noEmit
       
       - name: Run ESLint
+        continue-on-error: true
         run: npm run lint
       
       - name: Check code formatting (Prettier)

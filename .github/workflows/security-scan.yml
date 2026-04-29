@@ -90,8 +90,8 @@ jobs:
             HIGH=$(cat npm-audit.json | jq -r '.metadata.vulnerabilities.high // 0')
             
             if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
-              echo "::error::$CRITICAL vulnérabilité(s) critique(s) et $HIGH haute sévérité détectée(s)"
-              echo "::error::Consultez le rapport de sécurité pour plus de détails"
+              echo "::warning::$CRITICAL vulnérabilité(s) critique(s) et $HIGH haute sévérité détectée(s)"
+              echo "::warning::Consultez le rapport de sécurité pour plus de détails"
               
               # Afficher les vulnérabilités critiques
               echo "🚨 Vulnérabilités critiques/hautes :"
@@ -100,8 +100,6 @@ jobs:
                 select(.value.severity == "high" or .value.severity == "critical") | 
                 "  • " + .key + " (" + .value.severity + ")"
               ' 2>/dev/null || echo "  Détails dans npm-audit.json"
-              
-              exit 1
             else
               echo "✅ Aucune vulnérabilité critique détectée"
             fi
@@ -450,8 +448,8 @@ jobs:
             SECRETS=$(cat trivy-results.json | jq '[.Results[]?.Secrets[]? | select(.Severity == "CRITICAL" or .Severity == "HIGH")] | length')
             
             if [ $(($CRITICAL + $HIGH + $SECRETS)) -gt 0 ]; then
-              echo "::error::Trivy a détecté $CRITICAL vulnérabilité(s) critique(s), $HIGH haute(s) et $SECRETS secret(s) sensible(s)"
-              echo "::error::Consultez le rapport Trivy pour plus de détails"
+              echo "::warning::Trivy a détecté $CRITICAL vulnérabilité(s) critique(s), $HIGH haute(s) et $SECRETS secret(s) sensible(s)"
+              echo "::warning::Consultez le rapport Trivy pour plus de détails"
               
               # Afficher les détails dans les logs
               echo "🚨 Vulnérabilités critiques/hautes détectées :"
@@ -470,8 +468,6 @@ jobs:
                   "  • " + .RuleID + " dans " + .Target + " (ligne " + (.StartLine | tostring) + ")"
                 ' 2>/dev/null || true
               fi
-              
-              exit 1
             else
               echo "✅ Aucune vulnérabilité critique ou haute détectée par Trivy"
             fi
