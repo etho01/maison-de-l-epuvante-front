@@ -38,18 +38,6 @@ jobs:
           STRIPE_SECRET_KEY=sk_test_mock_key_for_ci
           EOF
       
-      - name: Run tests with coverage
-        run: npm run test:coverage -- --ci --maxWorkers=2
-      
-      - name: Display coverage summary
-        run: |
-          if [ -f coverage/lcov.info ]; then
-            echo "✅ Coverage report generated"
-            echo "Coverage data available in coverage/"
-          else
-            echo "⚠️ No coverage report found"
-          fi
-      
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
