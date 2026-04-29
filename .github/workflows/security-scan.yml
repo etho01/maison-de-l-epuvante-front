@@ -27,7 +27,7 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci --audit=false
+        run: npm ci --legacy-peer-deps --audit=false
       
       - name: Run npm audit (Check vulnerabilities)
         id: npm-audit
@@ -205,7 +205,7 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       
       - name: Check outdated packages
         id: outdated
