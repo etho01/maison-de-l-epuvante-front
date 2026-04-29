@@ -95,9 +95,11 @@ jobs:
               
               # Afficher les vulnérabilités critiques
               echo "🚨 Vulnérabilités critiques/hautes :"
-              cat composer-audit.json | jq -r '.advisories[] | 
-                select(.severity == "high" or .severity == "critical") | 
-                "  • " + .packageName + " (" + .severity + ") - " + .title'
+              cat npm-audit.json | jq -r '
+                .vulnerabilities | to_entries[] | 
+                select(.value.severity == "high" or .value.severity == "critical") | 
+                "  • " + .key + " (" + .value.severity + ")"
+              ' 2>/dev/null || echo "  Détails dans npm-audit.json"
               
               exit 1
             else
