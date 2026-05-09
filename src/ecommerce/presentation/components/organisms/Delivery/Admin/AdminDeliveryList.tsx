@@ -10,13 +10,11 @@ import { PaginationComponent } from '@/src/shared/components/molecules/Paginatio
 import { useRouter } from 'next/navigation';
 
 interface AdminDeliveryListProps {
-  onView?: (delivery: Delivery) => void;
   initialDeliveries?: Delivery[];
   initialPagination?: Pagination;
 }
 
 export const AdminDeliveryList: React.FC<AdminDeliveryListProps> = ({ 
-  onView,
   initialDeliveries = [],
   initialPagination 
 }) => {
@@ -30,7 +28,7 @@ export const AdminDeliveryList: React.FC<AdminDeliveryListProps> = ({
     if (initialDeliveries.length === 0) {
       viewModel.loadDeliveries();
     }
-  }, []);
+  }, [viewModel, initialDeliveries.length]);
 
   if (loading && deliveries.length === 0) {
     return <div className="text-center py-8 text-neutral-400">Chargement...</div>;

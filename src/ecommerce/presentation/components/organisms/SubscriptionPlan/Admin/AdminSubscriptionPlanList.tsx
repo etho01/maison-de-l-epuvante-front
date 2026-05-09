@@ -9,6 +9,7 @@ import { Pagination } from '@/src/shared/domain/Pagination';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
 import { ApiError } from '@/src/shared/domain/ApiError';
 import { useRouter } from 'next/navigation';
+import { SubscriptionPlansFilters } from '@/src/ecommerce/application/usecases/subscriptions/GetSubscriptionPlansUseCase';
 
 interface AdminSubscriptionPlanListProps {
   initialPlans?: SubscriptionPlan[];
@@ -47,7 +48,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
     setPlanToDelete(null);
   };
 
-  const handleFilterChange = (key: string, value: any) => {
+  const handleFilterChange = <K extends keyof SubscriptionPlansFilters>(key: K, value: SubscriptionPlansFilters[K]) => {
     listViewModel.setFilters({ [key]: value });
   };
 
@@ -85,7 +86,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Gestion des Plans d'Abonnement</h1>
+        <h1 className="text-3xl font-bold bg-linear-to-r from-crimson-400 to-crimson-600 bg-clip-text text-transparent">Gestion des Plans d&apos;Abonnement</h1>
         <Button
           onClick={() => setShowForm(undefined)}
           variant="primary"
@@ -208,7 +209,7 @@ export const AdminSubscriptionPlanList: React.FC<AdminSubscriptionPlanListProps>
       </div>
 
       {plans.length === 0 && (
-        <div className="text-center py-8 text-neutral-400">Aucun plan d'abonnement trouvé</div>
+        <div className="text-center py-8 text-neutral-400">Aucun plan d&apos;abonnement trouvé</div>
       )}
 
       <PaginationComponent

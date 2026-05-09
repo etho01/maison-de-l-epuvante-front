@@ -5,15 +5,14 @@
 
 'use client';
 
-import React, { ReactNode } from 'react';
 import { Button } from '@/src/shared/components/atoms';
 
-export interface FilterOption<T = any> {
+export interface FilterOption<T> {
   label: string;
   value: T;
 }
 
-interface FilterSectionProps<T = any> {
+interface FilterSectionProps<T> {
   title: string;
   options: FilterOption<T>[];
   selectedValue?: T;

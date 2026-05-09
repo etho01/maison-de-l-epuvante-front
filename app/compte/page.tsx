@@ -9,16 +9,17 @@ import AccountClient from '@/src/auth/presentation/components/organisms/Account/
 
 export default async function AccountPage() {
   const authRepository = getServerAuthRepository();
-  
-  try {
-    const user = await authRepository.getCurrentUser();
-    
-    if (!user) {
-      redirect('/auth/login');
-    }
 
-    return <AccountClient initialUser={user} />;
-  } catch (error) {
+  let user;
+  try {
+    user = await authRepository.getCurrentUser();
+  } catch {
     redirect('/auth/login');
   }
+
+  if (!user) {
+    redirect('/auth/login');
+  }
+
+  return <AccountClient initialUser={user} />;
 }

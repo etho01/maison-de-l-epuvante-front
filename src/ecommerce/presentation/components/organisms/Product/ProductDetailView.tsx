@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/src/shared/components/ui';
 import { Product } from '@/src/ecommerce/domain/entities/Product';
 import { useCart } from '../../../context/CartContext';
+import Image from 'next/image';
 
 interface ProductDetailViewProps {
   product: Product
@@ -27,14 +28,14 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product })
       {/* Images */}
       <div>
         {product.images && product.images.length > 0 ? (
-          <img
+          <Image
             src={product.images[0]}
             alt={product.name}
             className="w-full rounded-lg shadow-lg"
           />
         ) : (
           <div className="w-full h-96 bg-neutral-950/30 border border-neutral-800/50 rounded-lg flex items-center justify-center">
-            <span className="text-neutral-400">Pas d'image</span>
+            <span className="text-neutral-400">Pas d&apos;image</span>
           </div>
         )}
       </div>

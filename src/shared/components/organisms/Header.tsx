@@ -30,7 +30,7 @@ export function Header() {
                                 La Petite Maison
                             </span>
                             <span className="text-xs md:text-sm text-crimson-500 tracking-wider font-medium">
-                                de l'Épouvante
+                                de l&apos;Épouvante
                             </span>
                         </div>
                     </Link>
@@ -54,7 +54,7 @@ export function Header() {
                             </Button>
                             <div className="absolute top-full left-0 mt-2 w-56 glass-effect rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden">
                                 <Link href="/abonnements" className="block px-4 py-3 text-sm text-neutral-300 hover:bg-crimson-950/50 hover:text-crimson-400 transition-colors">
-                                    S'abonner
+                                    S&apos;abonner
                                 </Link>
                                 <Link href="/fanzine/numeros" className="block px-4 py-3 text-sm text-neutral-300 hover:bg-crimson-950/50 hover:text-crimson-400 transition-colors">
                                     Numéros digitaux
@@ -188,7 +188,7 @@ export function Header() {
                                 className="block pl-8 pr-4 py-2 text-sm text-neutral-400 hover:text-crimson-400 hover:bg-neutral-800/30 rounded-lg transition-all"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                S'abonner
+                                S&apos;abonner
                             </Link>
                             <Link
                                 href="/fanzine/numeros"

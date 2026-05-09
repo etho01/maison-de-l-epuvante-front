@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ApiError } from '@/src/shared/domain/ApiError';
 import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
-import { ProductFilters } from '@/src/ecommerce/domain/entities/Product';
+import { ProductFilters, ProductType } from '@/src/ecommerce/domain/entities/Product';
 import { GetProductsUseCase } from '@/src/ecommerce/application/usecases/products';
 
 const productRepository = new SymfonyProductRepository();
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const filters: ProductFilters = {};
     
     if (searchParams.has('name')) filters.name = searchParams.get('name')!;
-    if (searchParams.has('type')) filters.type = searchParams.get('type') as any;
+    if (searchParams.has('type')) filters.type = searchParams.get('type') as unknown as ProductType[];
     if (searchParams.has('category.id')) filters['category.id'] = parseInt(searchParams.get('category.id')!);
     if (searchParams.has('price[gte]')) filters['price[gte]'] = parseFloat(searchParams.get('price[gte]')!);
     if (searchParams.has('price[lte]')) filters['price[lte]'] = parseFloat(searchParams.get('price[lte]')!);

@@ -65,7 +65,7 @@ export class GetProductsViewModel {
     this.loadProducts();
   }
 
-  setFilter(key: string, value: any) {
+  setFilter<K extends keyof ProductFilters>(key: K, value: ProductFilters[K]) {
     this.state.filters = {
       ...this.state.filters,
       [key]: value,

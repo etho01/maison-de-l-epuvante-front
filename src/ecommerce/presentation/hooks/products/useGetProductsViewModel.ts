@@ -14,7 +14,7 @@ export const useGetProductsViewModel = (initialProducts?: Product[], initialPagi
       initialProducts,
       initialPagination
     ),
-    []
+    [initialProducts, initialPagination]
   );
 
   const [, forceUpdate] = useState({});

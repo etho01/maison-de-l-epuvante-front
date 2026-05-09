@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { User } from '../../../domain/entities/User';
-import { Button, Input, Select } from '@/src/shared/components/atoms';
+import { Button, Input } from '@/src/shared/components/atoms';
 
 interface AdminUserFormProps {
   user?: User;

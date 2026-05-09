@@ -31,7 +31,7 @@ async function getCurrentUser(): Promise<User | null> {
   try {
     const user = await getCurrentUserUseCase.execute();
     return user;
-  } catch (error) {
+  } catch  {
     return null;
   }
 }

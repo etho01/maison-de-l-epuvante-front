@@ -1,6 +1,4 @@
-import React from 'react';
 import { AdminLayout } from '@/src/shared/components/organisms/AdminLayout';
-import { notFound } from 'next/navigation';
 import { GetDeliveryByIdUseCase } from '@/src/ecommerce/application/usecases/deliveries/GetDeliveryByIdUseCase';
 import { SymfonyDeliveryRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyDeliveryRepository';
 import { AdminDeliveryDetail } from '@/src/ecommerce/presentation/components/organisms/Delivery/Admin/AdminDeliveryDetail';
@@ -17,21 +15,26 @@ export default async function AdminDeliveryDetailPage({ params }: PageProps) {
   const { id } = await params;
   const deliveryId = parseInt(id, 10);
 
+  let delivery;
   try {
-    const delivery = await getDeliveryByIdUseCase.execute(deliveryId);
+    delivery = await getDeliveryByIdUseCase.execute(deliveryId);
+  } catch {
+    // delivery remains undefined
+  }
 
-    return (
-      <AdminLayout>
-        <AdminDeliveryDetail
-            delivery={delivery}
-        />
-      </AdminLayout>
-    );
-  } catch (error) {
+  if (!delivery) {
     return (
       <AdminLayout>
         <NotFound message="Livraison non trouvée" />
       </AdminLayout>
     );
   }
+
+  return (
+    <AdminLayout>
+      <AdminDeliveryDetail
+          delivery={delivery}
+      />
+    </AdminLayout>
+  );
 }

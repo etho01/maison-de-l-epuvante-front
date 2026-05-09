@@ -1,12 +1,11 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { Button } from '@/src/shared/components/ui';
 import { Card } from '@/src/shared/components/atoms/Card';
 import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
 import { Badge } from '@/src/shared/components/atoms/Badge';
-import { BillingInterval, SubscriptionFormat, SubscriptionPlan } from '@/src/ecommerce/domain/entities/SubscriptionPlan';
+import { SubscriptionPlan } from '@/src/ecommerce/domain/entities/SubscriptionPlan';
 import { BILLING_INTERVAL_LABELS, SUBSCRIPTION_FORMAT_LABELS } from '@/src/ecommerce/domain/constants/subscriptionPlan';
 
 interface SubscriptionPlanCardProps {

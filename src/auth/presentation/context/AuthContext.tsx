@@ -21,7 +21,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const { loginUseCase, registerUseCase, getCurrentUserUseCase, logoutUseCase, repository } = authContainer;
+const { loginUseCase, registerUseCase, getCurrentUserUseCase, logoutUseCase } = authContainer;
 
 export function AuthProvider({ 
   children,
@@ -33,6 +33,17 @@ export function AuthProvider({
   const [user, setUser] = useState<User | null>(initialUser);
   const [isLoading, setIsLoading] = useState(!initialUser);
 
+  const loadUser = async () => {
+    try {
+      const currentUser = await getCurrentUserUseCase.execute();
+      setUser(currentUser);
+    } catch  {
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Charger l'utilisateur au démarrage seulement si pas d'initialUser
   useEffect(() => {
     if (!initialUser) {
@@ -42,19 +53,8 @@ export function AuthProvider({
     }
   }, [initialUser]);
 
-  const loadUser = async () => {
-    try {
-      const currentUser = await getCurrentUserUseCase.execute();
-      setUser(currentUser);
-    } catch (error) {
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const login = async (email: string, password: string) => {
-    const response = await loginUseCase.execute({ email, password });
+    await loginUseCase.execute({ email, password });
     await refreshUser(); // Recharger les données de l'utilisateur après connexion
   };
 
@@ -64,13 +64,13 @@ export function AuthProvider({
     firstName?: string,
     lastName?: string
   ) => {
-    const response = await registerUseCase.execute({
+    await registerUseCase.execute({
       email,
       password,
       firstName,
       lastName,
     });
-    refreshUser(); // Recharger les données de l'utilisateur après inscription
+    await refreshUser(); // Recharger les données de l'utilisateur après inscription
   };
 
   const logout = async () => {

@@ -96,7 +96,7 @@ export const RegisterForm = () => {
           />
 
           <Button type="submit" isLoading={isSubmitting} fullWidth>
-            S'inscrire
+            S&apos;inscrire
           </Button>
 
           <div className="text-center pt-4 border-t border-crimson-900/30">

@@ -41,7 +41,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
     <AdminLayout>
       <div className="max-w-4xl">
         <h1 className="text-3xl font-bold text-neutral-100 mb-6">
-          Détails de l'utilisateur
+          Détails de l&apos;utilisateur
         </h1>
 
         <div className="space-y-6">

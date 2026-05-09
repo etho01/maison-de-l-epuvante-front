@@ -1,6 +1,5 @@
 import { AdminLayout } from '@/src/shared/components/organisms/AdminLayout';
 import { SymfonyCategoryRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyCategoryRepository';
-import { GetAllCategoriesUseCase } from '@/src/ecommerce/application/usecases/categories/GetAllCategoriesUseCase';
 import { GetCategoriesUseCase } from '@/src/ecommerce/application/usecases';
 import { AdminCategoryList } from '@/src/ecommerce/presentation/components';
 

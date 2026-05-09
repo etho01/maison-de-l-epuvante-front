@@ -6,7 +6,7 @@ import { GetCategoriesUseCase } from '@/src/ecommerce/application/usecases/categ
 const categoryRepository = new SymfonyCategoryRepository();
 const getCategoriesUseCase = new GetCategoriesUseCase(categoryRepository);
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const categories = await getCategoriesUseCase.execute();
     return NextResponse.json(categories);

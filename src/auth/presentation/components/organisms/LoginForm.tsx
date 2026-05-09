@@ -87,7 +87,7 @@ export default function LoginForm({ redirectUrl }: LoginFormProps) {
           <div className="text-center pt-4 border-t border-crimson-900/30">
             <span className="text-neutral-400 mr-2">Pas encore de compte ?</span>
             <Link href="/auth/register" variant="primary">
-              S'inscrire
+              S&apos;inscrire
             </Link>
           </div>
         </form>

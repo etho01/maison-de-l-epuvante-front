@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Select, Button } from '@/src/shared/components/atoms';
-import { ApiError } from '@/src/shared/domain/ApiError';
+import React, { useState } from 'react';
+import { Button } from '@/src/shared/components/atoms';
 import { useUpdateOrderStatusViewModel } from '@/src/ecommerce/presentation/hooks';
-import { Order, OrderStatus, OrderStatusEnum } from '@/src/ecommerce/domain/entities/Order';
+import { Order, OrderItem } from '@/src/ecommerce/domain/entities/Order';
 import { DeliveryStatusBadge } from '../../../atoms/Delivery/DeliveryStatusBadge';
 import { OrderStatusBadge } from '../../../atoms';
 import { useRouter } from 'next/navigation';
@@ -13,47 +12,18 @@ interface AdminOrderDetailProps {
   order: Order
 }
 
-const ORDER_STATUSES = {
-  [OrderStatusEnum.PENDING]: 'En attente',
-  [OrderStatusEnum.PAID]: 'Payée',
-  [OrderStatusEnum.SHIPPED]: 'Expédiée',
-  [OrderStatusEnum.DELIVERED]: 'Livrée',
-  [OrderStatusEnum.CANCELLED]: 'Annulée',
-  [OrderStatusEnum.REFUNDED]: 'Remboursée',
-}
-
 export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ order }) => {
   const updateOrderStatusViewModel = useUpdateOrderStatusViewModel();
   const { loading: updateLoading } = updateOrderStatusViewModel.getState();
 
   const loading = updateLoading;
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const router = useRouter();
 
-  const [selectedStatus, setSelectedStatus] = useState<OrderStatus | null>(null);
-
-  useEffect(() => {
-    if (order) {
-      setSelectedStatus(order.status);
-    }
-  }, [order]);
 
   const showList = () => {
     router.push('/admin/commandes');
   }
-
-  const handleUpdateOrder = () => {
-    if (!order || !selectedStatus) return;
-
-    setError(null);
-    updateOrderStatusViewModel.updateStatus(order.id, selectedStatus)
-      .then(() => {
-        showList();
-      })
-      .catch((err: ApiError) => {
-        setError(err.message || 'Erreur lors de la mise à jour de la commande');
-      });
-  };
 
   if (loading && !order) {
     return <div className="text-center py-8">Chargement...</div>;
@@ -112,7 +82,7 @@ export const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({ order }) => 
       <div className="mb-6">
         <h3 className="font-semibold mb-3 text-neutral-100">Articles</h3>
         <div className="space-y-2">
-          {order.items.map((item: any) => (
+          {order.items.map((item: OrderItem) => (
             <div key={item.id} className="flex justify-between items-center p-3 bg-neutral-950/30 rounded-xl border border-neutral-800/50">
               <div>
                 <p className="font-medium text-neutral-100">{item.product.name}</p>

@@ -14,7 +14,7 @@ export const useGetOrdersViewModel = (initialOrders?: Order[], initialPagination
       initialOrders,
       initialPagination
     ),
-    []
+    [initialOrders, initialPagination]
   );
 
   const [, forceUpdate] = useState({});

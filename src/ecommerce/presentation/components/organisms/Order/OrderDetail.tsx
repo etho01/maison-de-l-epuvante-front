@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Address, Order, OrderStatus } from '@/src/ecommerce/domain/entities/Order';
+import { Address, Order, OrderItem, OrderStatus } from '@/src/ecommerce/domain/entities/Order';
 import { DeliveryStatus } from '@/src/ecommerce/domain/entities/Devivery';
 import { Card, CardHeader, CardTitle, CardBody } from '@/src/shared/components/atoms/Card';
 import { PriceDisplay } from '@/src/shared/components/atoms/PriceDisplay';
@@ -50,7 +50,7 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
     return colors[status];
   };
 
-  let addressList: { label: string; addr: Address }[] = [];
+  const addressList: { label: string; addr: Address }[] = [];
 
   if (order.delivery?.shippingAddress) {
     addressList.push({ label: 'Adresse de livraison', addr: order.delivery.shippingAddress });
@@ -86,7 +86,7 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
           <section className="mb-6">
             <h2 className="text-base font-semibold text-neutral-100 mb-3">Articles commandés</h2>
             <div className="space-y-3">
-              {order.items.map((item: any) => (
+              {order.items.map((item: OrderItem) => (
                 <div key={item.id} className="flex justify-between border-b border-neutral-800/50 pb-3 last:border-0">
                   <div>
                     <p className="font-medium text-neutral-100">{item.product.name}</p>
@@ -174,7 +174,7 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
             )}
             {order.adminNotes && (
               <div className="mt-2">
-                <p className="text-sm font-medium text-neutral-300">Notes de l'administration</p>
+                <p className="text-sm font-medium text-neutral-300">Notes de l&apos;administration</p>
                 <p className="text-sm text-neutral-400 mt-0.5">{order.adminNotes}</p>
               </div>
             )}

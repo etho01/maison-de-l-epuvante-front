@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { useGetOrdersViewModel } from '../../../../hooks/orders';
-import { Order, OrderStatus, OrderStatusEnum } from '../../../../../domain/entities/Order';
+import { Order, OrderStatus } from '../../../../../domain/entities/Order';
 import { OrderCard } from '../../../molecules/OrderCard';
-import { Button, Select } from '@/src/shared/components/atoms';
+import { Select } from '@/src/shared/components/atoms';
 import { ORDER_STATUS_LABELS } from '@/src/ecommerce/domain/constants/orderStatus';
 import { Pagination } from '@/src/shared/domain/Pagination';
 import { PaginationComponent } from '@/src/shared/components/molecules/Pagination';
@@ -17,14 +17,14 @@ interface AdminOrderListProps {
 
 export const AdminOrderList: React.FC<AdminOrderListProps> = ({ initialOrders, initialPagination }) => {
   const viewModel = useGetOrdersViewModel(initialOrders, initialPagination);
-  const { orders, loading, pagination, currentStatus } = viewModel.getState();
+  const { orders, loading, currentStatus } = viewModel.getState();
   const [error, setError] = React.useState<string | null>(null);
   const router = useRouter();
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     const status = value === '' ? null : (value as OrderStatus);
-    viewModel.setStatus(status).catch((err) => {
+    viewModel.setStatus(status).catch(() => {
       setError('Erreur lors du filtrage des commandes');
     });
   };

@@ -1,13 +1,13 @@
 
-export class ApiError<T = any> extends Error {
+export class ApiError extends Error {
     code: number;
     errors: string[];
-    data?: T;
+    data?: unknown;
 
     constructor(
         code: number,
         errors: string[] = [],
-        data?: T,
+        data?: unknown,
         message: string = 'Une erreur est survenue',
     ) {
         super(message);
@@ -25,7 +25,7 @@ export class ApiError<T = any> extends Error {
         return this.errors.includes(error);
     }
 
-    getData(): T | undefined {
+    getData(): unknown | undefined {
         return this.data;
     }
 

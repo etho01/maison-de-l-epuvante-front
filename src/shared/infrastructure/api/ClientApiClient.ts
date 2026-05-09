@@ -5,6 +5,7 @@
  */
 
 import { ApiError } from "../../domain/ApiError";
+import { RequestParams } from "../types";
 
 export class ClientApiClient {
     private baseURL: string;
@@ -78,7 +79,7 @@ export class ClientApiClient {
     /**
      * Effectue une requête POST
      */
-    async post<T>(endpoint: string, data?: any): Promise<T> {
+    async post<T>(endpoint: string, data?: RequestParams): Promise<T> {
         return this.request<T>(endpoint, {
             method: 'POST',
             body: data ? JSON.stringify(data) : undefined,
@@ -88,7 +89,7 @@ export class ClientApiClient {
     /**
      * Effectue une requête PUT
      */
-    async put<T>(endpoint: string, data?: any): Promise<T> {
+    async put<T>(endpoint: string, data?: RequestParams): Promise<T> {
         return this.request<T>(endpoint, {
             method: 'PUT',
             body: data ? JSON.stringify(data) : undefined,
@@ -98,7 +99,7 @@ export class ClientApiClient {
     /**
      * Effectue une requête PATCH
      */
-    async patch<T>(endpoint: string, data?: any): Promise<T> {
+    async patch<T>(endpoint: string, data?: RequestParams): Promise<T> {
         return this.request<T>(endpoint, {
             method: 'PATCH',
             body: data ? JSON.stringify(data) : undefined,

@@ -14,7 +14,7 @@ export const useGetCategoriesViewModel = (initialCategories?: Category[], initia
       initialCategories,
       initialPagination
     ),
-    []
+    [initialCategories, initialPagination]
   );
 
   const [, forceUpdate] = useState({});

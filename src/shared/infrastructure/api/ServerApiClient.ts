@@ -7,6 +7,7 @@
 import { ApiError } from '@/src/shared/domain/ApiError';
 import { TokenStorage } from '@/src/auth/infrastructure/storage/TokenStorage';
 import { redirect } from 'next/navigation';
+import { RequestParams } from '../types';
 
 
 export class ServerApiClient {
@@ -79,7 +80,7 @@ export class ServerApiClient {
             if (response.status === 204) {
                 return null as T;
             }
-            let data = await response.json();
+            const data = await response.json();
 
             return data['data'] || data;
         } catch (error) {
@@ -101,21 +102,21 @@ export class ServerApiClient {
         });
     }
 
-    async post<T>(endpoint: string, data?: any): Promise<T> {
+    async post<T>(endpoint: string, data?: RequestParams): Promise<T> {
         return this.request<T>(endpoint, {
             method: 'POST',
             body: data ? JSON.stringify(data) : undefined,
         });
     }
 
-    async put<T>(endpoint: string, data?: any): Promise<T> {
+    async put<T>(endpoint: string, data?: RequestParams): Promise<T> {
         return this.request<T>(endpoint, {
             method: 'PUT',
             body: data ? JSON.stringify(data) : undefined,
         });
     }
 
-    async patch<T>(endpoint: string, data?: any): Promise<T> {
+    async patch<T>(endpoint: string, data?: RequestParams): Promise<T> {
         return this.request<T>(endpoint, {
             method: 'PATCH',
             body: data ? JSON.stringify(data) : undefined,

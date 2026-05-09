@@ -16,7 +16,7 @@ export const useGetDeliveriesViewModel = (
       initialDeliveries,
       initialPagination
     ),
-    []
+    [initialDeliveries, initialPagination]
   );
 
   const [, forceUpdate] = useState({});

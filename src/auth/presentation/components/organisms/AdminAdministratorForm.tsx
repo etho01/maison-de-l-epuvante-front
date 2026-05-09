@@ -4,7 +4,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateAdministratorViewModel, useUpdateAdministratorViewModel } from '../../hooks/administrators';
-import { Administrator, CreateAdministratorData, UpdateAdministratorData } from '../../../domain/entities/Administrator';
+import { Administrator, CreateAdministratorData } from '../../../domain/entities/Administrator';
 import { Input, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';
 import { FormSection, FormActions } from '@/src/shared/components/molecules';
 import { createAdministratorSchema, updateAdministratorSchema, CreateAdministratorFormData, UpdateAdministratorFormData } from '../../schemas/authSchemas';
@@ -117,7 +117,7 @@ export const AdminAdministratorForm: React.FC<AdminAdministratorFormProps> = ({ 
             type="password"
             error={'password' in errors ? errors.password?.message : undefined}
             variant="default"
-            {...register('password' as any)}
+            {...register('password')}
           />
         )}
       </FormSection>

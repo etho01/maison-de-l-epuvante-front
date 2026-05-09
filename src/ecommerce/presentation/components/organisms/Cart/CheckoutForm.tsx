@@ -12,7 +12,6 @@ import Input from '@/src/shared/components/atoms/Input';
 import Button from '@/src/shared/components/atoms/Button';
 import ErrorMessage from '@/src/shared/components/atoms/ErrorMessage';
 import { checkoutSchema, CheckoutFormData } from '../../../schemas/ecommerceSchemas';
-import { StripePaymentWrapper } from '../StripePaymentWrapper';
 import { ApiError } from '@/src/shared/domain/ApiError';
 
 export const CheckoutForm: React.FC = () => {
@@ -81,7 +80,7 @@ export const CheckoutForm: React.FC = () => {
         router.push(response.stripeCheckout.url);
       })
       .catch((err: ApiError) => {
-        let data = err.getData();
+        const data = err.getData();
         if (err.hasError(OrderError.INVALID_QUANTITY)) {
           if (data['quantity'] < 0)
           {
@@ -159,7 +158,7 @@ export const CheckoutForm: React.FC = () => {
               type="checkbox"
               {...register('useSameAddress')}
             />
-            <span className="text-sm">Identique à l'adresse de livraison</span>
+            <span className="text-sm">Identique à l&apos;adresse de livraison</span>
           </label>
         </div>
 

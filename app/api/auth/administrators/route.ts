@@ -7,7 +7,7 @@ const administratorRepository = new SymfonyAdministratorRepository();
 const getAllAdministratorsUseCase = new GetAllAdministratorsUseCase(administratorRepository);
 const createAdministratorUseCase = new CreateAdministratorUseCase(administratorRepository);
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const administrators = await getAllAdministratorsUseCase.execute();
     return NextResponse.json(administrators);

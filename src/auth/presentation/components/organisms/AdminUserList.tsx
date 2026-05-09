@@ -21,7 +21,7 @@ export const AdminUserList: React.FC<AdminUserListProps> = ({
     `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDelete = async (userId: string) => {
+  const handleDelete = async () => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       // TODO: Implémenter la suppression via API
       alert('Fonctionnalité à implémenter: suppression utilisateur');

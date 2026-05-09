@@ -19,7 +19,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
   let product = null;
   try {
     product = await getProductBySlugUseCase.execute(slug);
-  } catch (error) {
+  } catch {
   }
 
   return (

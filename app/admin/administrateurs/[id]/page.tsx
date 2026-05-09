@@ -1,8 +1,8 @@
-import React from 'react';
+
 import { AdminLayout } from '@/src/shared/components/organisms/AdminLayout';
 import { GetAdministratorByIdUseCase } from '@/src/auth/application/usecases/administrators/GetAdministratorByIdUseCase';
 import { SymfonyAdministratorRepository } from '@/src/auth/infrastructure/repositories/SymfonyAdministratorRepository';
-import { notFound } from 'next/navigation';
+
 import NotFound from '@/src/shared/components/atoms/NotFound';
 import { AdminAdministratorForm } from '@/src/auth/presentation/components/organisms/AdminAdministratorForm';
 
@@ -16,26 +16,30 @@ interface PageProps {
 export default async function AdminAdministratorDetailPage({ params }: PageProps) {
     const { id } = await params;
 
-
-    try {
-        if (id === 'new') {
-            return (
-                <AdminLayout>
-                    <AdminAdministratorForm />
-                </AdminLayout>
-            );
-        }
-        const administrator = await getAdministratorByIdUseCase.execute(parseInt(id));
-
+    if (id === 'new') {
         return (
             <AdminLayout>
-                <AdminAdministratorForm
-                    administrator={administrator}
-                />
+                <AdminAdministratorForm />
             </AdminLayout>
         );
+    }
+
+    let administrator;
+    try {
+        administrator = await getAdministratorByIdUseCase.execute(parseInt(id));
     } catch (error) {
         console.error('Erreur lors de la récupération de l’administrateur :', error);
+    }
+
+    if (!administrator) {
         return <NotFound message="Administrateur non trouvé" />;
     }
+
+    return (
+        <AdminLayout>
+            <AdminAdministratorForm
+                administrator={administrator}
+            />
+        </AdminLayout>
+    );
 }

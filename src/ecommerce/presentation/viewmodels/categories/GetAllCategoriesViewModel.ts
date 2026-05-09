@@ -26,7 +26,7 @@ export class GetAllCategoriesViewModel {
     this.notify();
 
     return this.getAllCategoriesUseCase.execute()
-      .then((categories: any) => {
+      .then((categories: Category[]) => {
         this.state.categories = categories;
       })
       .catch((error: ApiError) => {

@@ -17,7 +17,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ initialOrders, ini
   const viewModel = useGetOrdersViewModel(initialOrders, initialPagination);
   const { orders, loading } = viewModel.getState();
   const [showSuccess, setShowSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {

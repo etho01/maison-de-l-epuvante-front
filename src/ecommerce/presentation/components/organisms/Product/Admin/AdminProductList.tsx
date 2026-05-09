@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useGetProductsViewModel, useDeleteProductViewModel } from '../../../../hooks/products';
-import { Product, ProductType } from '../../../../../domain/entities/Product';
+import { Product, ProductFilters, ProductType } from '../../../../../domain/entities/Product';
 import { AdminProductCard } from '../../../molecules/Product/Admin/AdminProductCard';
 import { Input, Select, Button } from '@/src/shared/components/atoms';
 import { ConfirmModal } from '@/src/shared/components/molecules';
@@ -56,7 +56,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ initialProdu
     setProductToDelete(null);
   };
 
-  const handleFilterChange = (key: string, value: any) => {
+  const handleFilterChange = <K extends keyof ProductFilters>(key: K, value: ProductFilters[K]) => {
     listViewModel.setFilters({ [key]: value });
   };
 

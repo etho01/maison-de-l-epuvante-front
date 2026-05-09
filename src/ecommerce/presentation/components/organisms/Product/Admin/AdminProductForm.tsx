@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateProductViewModel, useUpdateProductViewModel } from '../../../../hooks/products';
-import { useGetAllCategoriesViewModel } from '../../../../hooks/categories';
 import { Product, CreateProductData, UpdateProductData, ProductType } from '../../../../../domain/entities/Product';
 import { Category } from '../../../../../domain/entities/Category';
 import { Input, Select, TextArea, Button, Checkbox, ErrorMessage } from '@/src/shared/components/atoms';

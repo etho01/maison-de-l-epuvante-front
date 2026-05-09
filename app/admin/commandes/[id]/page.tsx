@@ -15,20 +15,24 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
   const { id } = await params;
   const orderId = parseInt(id, 10);
 
-  try
-  {
-    const order = await getOrderByIdUseCase.execute(orderId);
+  let order;
+  try {
+    order = await getOrderByIdUseCase.execute(orderId);
+  } catch {
+    // order remains undefined
+  }
 
-    return (
-      <AdminLayout>
-        <AdminOrderDetail order={order} />
-      </AdminLayout>
-    );
-  } catch (error) {
+  if (!order) {
     return (
       <AdminLayout>
         <NotFound message="Commande non trouvée" />
       </AdminLayout>
     );
   }
+
+  return (
+    <AdminLayout>
+      <AdminOrderDetail order={order} />
+    </AdminLayout>
+  );
 }

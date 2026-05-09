@@ -1,10 +1,8 @@
-import React from 'react';
 import { AdminLayout } from '@/src/shared/components/organisms/AdminLayout';
 import { GetProductByIdUseCase } from '@/src/ecommerce/application/usecases/products/GetProductByIdUseCase';
 import { GetAllCategoriesUseCase } from '@/src/ecommerce/application/usecases/categories/GetAllCategoriesUseCase';
 import { SymfonyProductRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyProductRepository';
 import { SymfonyCategoryRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyCategoryRepository';
-import { notFound } from 'next/navigation';
 import NotFound from '@/src/shared/components/atoms/NotFound';
 import { AdminProductForm } from '@/src/ecommerce/presentation/components/organisms/Product/Admin/AdminProductForm';
 
@@ -20,32 +18,44 @@ interface PageProps {
 export default async function AdminProductDetailPage({ params }: PageProps) {
   const { id } = await params;
 
-
+  let allCategories;
   try {
-    const allCategories = await getAllCategoriesUseCase.execute();
+    allCategories = await getAllCategoriesUseCase.execute();
+  } catch (error) {
+    console.error('Erreur lors de la récupération du produit :', error);
+  }
 
-    if (id === 'new') {
-      return (
-        <AdminLayout>
-          <AdminProductForm
-            allCategories={allCategories}
-          />
-        </AdminLayout>
-      );
-    }
+  if (!allCategories) {
+    return <NotFound message="Produit non trouvé" />;
+  }
 
-    const product = await getProductByIdUseCase.execute(parseInt(id));
-
+  if (id === 'new') {
     return (
       <AdminLayout>
         <AdminProductForm
-          product={product}
           allCategories={allCategories}
         />
       </AdminLayout>
     );
+  }
+
+  let product;
+  try {
+    product = await getProductByIdUseCase.execute(parseInt(id));
   } catch (error) {
     console.error('Erreur lors de la récupération du produit :', error);
+  }
+
+  if (!product) {
     return <NotFound message="Produit non trouvé" />;
   }
+
+  return (
+    <AdminLayout>
+      <AdminProductForm
+        product={product}
+        allCategories={allCategories}
+      />
+    </AdminLayout>
+  );
 }

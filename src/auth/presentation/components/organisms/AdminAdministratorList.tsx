@@ -16,6 +16,7 @@ export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ 
   const deleteViewModel = useDeleteAdministratorViewModel();
   const { administrators, loading, error } = listViewModel.getState();
   const { loading: deleteLoading } = deleteViewModel.getState();
+  const routeur = useRouter();
 
   const [adminToDelete, setAdminToDelete] = useState<Administrator | null>(null);
 
@@ -46,7 +47,6 @@ export const AdminAdministratorList: React.FC<AdminAdministratorListProps> = ({ 
     return <div className="text-center py-8">Chargement...</div>;
   }
 
-  const routeur = useRouter();
 
   const handleEdit = (admin: Administrator) => {
     routeur.push(`/admin/administrateurs/${admin.id}`);

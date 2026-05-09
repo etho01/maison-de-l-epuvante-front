@@ -62,7 +62,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
 
   return (
     <div className={containerClasses}>
-      <img
+      <Image
         src={src}
         alt={alt}
         className="w-full h-full object-cover"

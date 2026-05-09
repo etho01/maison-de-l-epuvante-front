@@ -1,11 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Select, Button } from '@/src/shared/components/atoms';
-import { ApiError } from '@/src/shared/domain/ApiError';
-import { useGetDeliveryByIdViewModel, useUpdateDeliveryStatusViewModel } from '@/src/ecommerce/presentation/hooks/deliveries';
-import { Delivery, DeliveryStatus } from '@/src/ecommerce/domain/entities/Devivery';
-import { DELIVERY_STATUS_LABELS } from '@/src/ecommerce/domain/constants/deliveryStatus';
+import React, { useState } from 'react';
+import { Button } from '@/src/shared/components/atoms';
+import { useUpdateDeliveryStatusViewModel } from '@/src/ecommerce/presentation/hooks/deliveries';
+import { Delivery } from '@/src/ecommerce/domain/entities/Devivery';
 import { DeliveryStatusBadge } from '../../../atoms/Delivery/DeliveryStatusBadge';
 import { useRouter } from 'next/navigation';
 
@@ -18,15 +16,9 @@ export const AdminDeliveryDetail: React.FC<AdminDeliveryDetailProps> = ({ delive
   const { loading: updateLoading } = updateDeliveryStatusViewModel.getState();
   
   const loading = updateLoading;
-  const [error, setError] = useState<string | null>(null);
-  const [selectedStatus, setSelectedStatus] = useState<DeliveryStatus | null>(null);
+  const [error] = useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    if (delivery) {
-      setSelectedStatus(delivery.status);
-    }
-  }, [delivery]);
 
   const showList = () => {
     router.push('/admin/livraisons');

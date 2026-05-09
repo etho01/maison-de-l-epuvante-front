@@ -19,7 +19,7 @@ export interface Product {
   exclusiveOnline: boolean;
   images: string[];
   weight: number | null; // For physical products
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
 }
@@ -37,7 +37,7 @@ export interface CreateProductData {
   exclusiveOnline?: boolean;
   images?: string[];
   weight?: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface UpdateProductData {
@@ -53,7 +53,7 @@ export interface UpdateProductData {
   exclusiveOnline?: boolean;
   images?: string[];
   weight?: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ProductFilters {

@@ -3,6 +3,7 @@ import { AuthGuard } from '@/src/shared/components/AuthGuard';
 import { OrderDetail } from '@/src/ecommerce/presentation/components';
 import { GetOrderByIdUseCase } from '@/src/ecommerce/application/usecases/orders/GetOrderByIdUseCase';
 import { SymfonyOrderRepository } from '@/src/ecommerce/infrastructure/repositories/SymfonyOrderRepository';
+import Link from '@/src/shared/components/atoms/Link';
 
 interface OrderDetailPageProps {
   params: {
@@ -19,8 +20,8 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
   let error = null;
   try {
     order = await getOrderByIdUseCase.execute(id);
-  } catch (error) {
-    error = error instanceof Error ? error.message : 'Commande non trouvée';
+  } catch (errorInstance) {
+    error = errorInstance instanceof Error ? errorInstance.message : 'Commande non trouvée';
   }
 
   return (
@@ -32,12 +33,12 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <p className="text-crimson-400 text-lg mb-4">{error}</p>
-            <a href="/commandes" className="text-crimson-400 hover:text-crimson-300 transition-colors inline-flex items-center gap-2">
+            <Link href="/commandes" className="text-crimson-400 hover:text-crimson-300 transition-colors inline-flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               <span>Retour aux commandes</span>
-            </a>
+            </Link>
           </div>}
       </div>
     </AuthGuard>

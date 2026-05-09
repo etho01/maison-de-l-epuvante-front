@@ -7,7 +7,7 @@ const subscriptionPlanRepository = new SymfonySubscriptionPlanRepository();
 const getSubscriptionPlansUseCase = new GetSubscriptionPlansUseCase(subscriptionPlanRepository);
 const createSubscriptionPlanUseCase = new CreateSubscriptionPlanUseCase(subscriptionPlanRepository);
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const plans = await getSubscriptionPlansUseCase.execute();
     return NextResponse.json(plans);
