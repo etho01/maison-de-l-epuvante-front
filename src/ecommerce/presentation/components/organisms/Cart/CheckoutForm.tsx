@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCart } from '../../../context/CartContext';
 import { useRouter } from 'next/navigation';
@@ -26,7 +26,7 @@ export const CheckoutForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
@@ -52,7 +52,7 @@ export const CheckoutForm: React.FC = () => {
     },
   });
 
-  const useSameAddress = watch('useSameAddress');
+  const useSameAddress = useWatch({ control, name: 'useSameAddress' });
 
   const onSubmit = (data: CheckoutFormData) => {
     setError(null);

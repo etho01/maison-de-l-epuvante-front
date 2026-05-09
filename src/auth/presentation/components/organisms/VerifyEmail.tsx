@@ -12,17 +12,12 @@ import Link from 'next/link';
 export default function VerifyEmail() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [message, setMessage] = useState('');
+  const token = searchParams.get('token');
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(token ? 'loading' : 'error');
+  const [message, setMessage] = useState(token ? '' : 'Token de vérification manquant');
 
   useEffect(() => {
-    const token = searchParams.get('token');
-
-    if (!token) {
-      setStatus('error');
-      setMessage('Token de vérification manquant');
-      return;
-    }
+    if (!token) return;
 
     const verifyEmail = () => {
       fetch(`/api/auth/verify-email?token=${token}`)
@@ -50,7 +45,7 @@ export default function VerifyEmail() {
     };
 
     verifyEmail();
-  }, [searchParams, router]);
+  }, [token, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-dark px-4">

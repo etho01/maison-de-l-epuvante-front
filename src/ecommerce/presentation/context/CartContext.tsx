@@ -17,19 +17,13 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<Cart>({
-    items: [],
-    totalItems: 0,
-    totalPrice: 0,
-  });
-
-  // Charger le panier depuis le localStorage au démarrage
-  useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
+  const [cart, setCart] = useState<Cart>(() => {
+    if (typeof window === 'undefined') {
+      return { items: [], totalItems: 0, totalPrice: 0 };
     }
-  }, []);
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? (JSON.parse(savedCart) as Cart) : { items: [], totalItems: 0, totalPrice: 0 };
+  });
 
   // Sauvegarder le panier dans le localStorage à chaque modification
   useEffect(() => {

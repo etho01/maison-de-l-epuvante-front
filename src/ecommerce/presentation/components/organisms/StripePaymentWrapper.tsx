@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe, StripeElementsOptions } from '@stripe/stripe-js';
 import { StripePaymentForm } from './StripePaymentForm';
@@ -23,25 +23,22 @@ export const StripePaymentWrapper: React.FC<StripePaymentWrapperProps> = ({
   onSuccess,
   onError,
 }) => {
-  const [options, setOptions] = useState<StripeElementsOptions | null>(null);
-
-  useEffect(() => {
-    if (clientSecret) {
-      setOptions({
-        clientSecret,
-        appearance: {
-          theme: 'stripe',
-          variables: {
-            colorPrimary: '#dc2626',
-            colorBackground: '#ffffff',
-            colorText: '#1f2937',
-            colorDanger: '#ef4444',
-            fontFamily: 'system-ui, sans-serif',
-            borderRadius: '8px',
-          },
+  const options = useMemo<StripeElementsOptions | null>(() => {
+    if (!clientSecret) return null;
+    return {
+      clientSecret,
+      appearance: {
+        theme: 'stripe',
+        variables: {
+          colorPrimary: '#dc2626',
+          colorBackground: '#ffffff',
+          colorText: '#1f2937',
+          colorDanger: '#ef4444',
+          fontFamily: 'system-ui, sans-serif',
+          borderRadius: '8px',
         },
-      });
-    }
+      },
+    };
   }, [clientSecret]);
 
   if (!options) {

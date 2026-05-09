@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateProductViewModel, useUpdateProductViewModel } from '../../../../hooks/products';
 import { Product, CreateProductData, UpdateProductData, ProductType } from '../../../../../domain/entities/Product';
@@ -39,7 +39,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
@@ -59,7 +59,7 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
     },
   });
 
-  const productType = watch('type');
+  const productType = useWatch({ control, name: 'type' });
   const isDigital = productType === ProductType.DIGITAL;
 
   // Reset fields when product type changes
@@ -70,7 +70,6 @@ export const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onS
     } else {
       // Reset infinite stock for physical products
       setValue('stock', 0);
-      setIsInfiniteStock(false);
     }
   }, [isDigital, setValue]);
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { User } from '../../../domain/entities/User';
 import { Button, Input } from '@/src/shared/components/atoms';
 
@@ -18,26 +18,14 @@ const AVAILABLE_ROLES = [
 
 export const AdminUserForm: React.FC<AdminUserFormProps> = ({ user, onSuccess, onCancel }) => {
   const [formData, setFormData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-    roles: [] as string[],
-    isVerified: false,
+    email: user?.email || '',
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    roles: user?.roles || [] as string[],
+    isVerified: user?.isVerified || false,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        email: user.email,
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        roles: user.roles,
-        isVerified: user.isVerified,
-      });
-    }
-  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

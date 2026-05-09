@@ -46,11 +46,11 @@ export function AuthProvider({
 
   // Charger l'utilisateur au démarrage seulement si pas d'initialUser
   useEffect(() => {
-    if (!initialUser) {
-      loadUser();
-    } else {
-      setIsLoading(false);
-    }
+    if (initialUser) return;
+    getCurrentUserUseCase.execute()
+      .then(currentUser => setUser(currentUser))
+      .catch(() => setUser(null))
+      .finally(() => setIsLoading(false));
   }, [initialUser]);
 
   const login = async (email: string, password: string) => {
