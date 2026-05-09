@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const filters: OrderFilters = {};
     
     if (searchParams.has('page')) {
-      filters.page = parseInt(searchParams.get('page')!);
+      filters.page = Number.parseInt(searchParams.get('page')!);
     }
     
     if (searchParams.has('status')) {

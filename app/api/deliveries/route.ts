@@ -9,7 +9,7 @@ const getDeliveriesUseCase = new GetDeliveriesUseCase(deliveryRepository);
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const page = searchParams.has('page') ? parseInt(searchParams.get('page')!) : undefined;
+    const page = searchParams.has('page') ? Number.parseInt(searchParams.get('page')!) : undefined;
 
     const deliveries = await getDeliveriesUseCase.execute(page);
     return NextResponse.json(deliveries);

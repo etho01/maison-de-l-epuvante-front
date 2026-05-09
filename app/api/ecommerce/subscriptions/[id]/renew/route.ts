@@ -13,7 +13,7 @@ export async function PATCH(
   try {
     const data = await request.json();
     const { id } = await params;
-    const subscription = await renewSubscriptionUseCase.execute(parseInt(id), data);
+    const subscription = await renewSubscriptionUseCase.execute(Number.parseInt(id), data);
     return NextResponse.json(subscription);
   } catch (error: unknown) {
     if (error instanceof ApiError) {

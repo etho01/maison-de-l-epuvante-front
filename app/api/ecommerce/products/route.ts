@@ -15,12 +15,12 @@ export async function GET(request: NextRequest) {
     
     if (searchParams.has('name')) filters.name = searchParams.get('name')!;
     if (searchParams.has('type')) filters.type = searchParams.get('type') as unknown as ProductType[];
-    if (searchParams.has('category.id')) filters['category.id'] = parseInt(searchParams.get('category.id')!);
+    if (searchParams.has('category.id')) filters['category.id'] = Number.parseInt(searchParams.get('category.id')!);
     if (searchParams.has('price[gte]')) filters['price[gte]'] = parseFloat(searchParams.get('price[gte]')!);
     if (searchParams.has('price[lte]')) filters['price[lte]'] = parseFloat(searchParams.get('price[lte]')!);
     if (searchParams.has('active')) filters.active = searchParams.get('active') === 'true';
     if (searchParams.has('exclusiveOnline')) filters.exclusiveOnline = searchParams.get('exclusiveOnline') === 'true';
-    if (searchParams.has('page')) filters.page = parseInt(searchParams.get('page')!);
+    if (searchParams.has('page')) filters.page = Number.parseInt(searchParams.get('page')!);
 
     const products = await getProductsUseCase.execute(filters);
 

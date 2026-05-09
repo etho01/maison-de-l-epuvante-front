@@ -24,7 +24,7 @@ export default async function AdminSubscriptionPlanDetailPage({ params }: PagePr
 
   let plan;
   try {
-    plan = await getSubscriptionPlanByIdUseCase.execute(parseInt(id));
+    plan = await getSubscriptionPlanByIdUseCase.execute(Number.parseInt(id));
   } catch {
     return <NotFound message="Plan d'abonnement non trouvé" />;
   }

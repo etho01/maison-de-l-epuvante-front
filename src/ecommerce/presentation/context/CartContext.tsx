@@ -18,7 +18,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<Cart>(() => {
-    if (typeof window === 'undefined') {
+    if (typeof globalThis.window === 'undefined') {
       return { items: [], totalItems: 0, totalPrice: 0 };
     }
     const savedCart = localStorage.getItem('cart');

@@ -40,7 +40,7 @@ export default async function AdminCategoryDetailPage({ params }: PageProps) {
 
   let category;
   try {
-    category = await getCategoryByIdUseCase.execute(parseInt(id));
+    category = await getCategoryByIdUseCase.execute(Number.parseInt(id));
   } catch (error) {
     console.error('Erreur lors de la récupération de la catégorie :', error);
   }

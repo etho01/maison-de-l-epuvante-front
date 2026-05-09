@@ -12,7 +12,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const blob = await downloadDigitalContentUseCase.execute(parseInt(id));
+    const blob = await downloadDigitalContentUseCase.execute(Number.parseInt(id));
     
     return new NextResponse(blob, {
       headers: {

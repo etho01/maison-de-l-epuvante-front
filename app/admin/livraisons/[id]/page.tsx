@@ -13,7 +13,7 @@ const getDeliveryByIdUseCase = new GetDeliveryByIdUseCase(symphonyDeliveryReposi
 
 export default async function AdminDeliveryDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const deliveryId = parseInt(id, 10);
+  const deliveryId = Number.parseInt(id, 10);
 
   let delivery;
   try {

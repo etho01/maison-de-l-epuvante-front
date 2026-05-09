@@ -26,7 +26,7 @@ export default async function AdminAdministratorDetailPage({ params }: PageProps
 
     let administrator;
     try {
-        administrator = await getAdministratorByIdUseCase.execute(parseInt(id));
+        administrator = await getAdministratorByIdUseCase.execute(Number.parseInt(id));
     } catch (error) {
         console.error('Erreur lors de la récupération de l’administrateur :', error);
     }

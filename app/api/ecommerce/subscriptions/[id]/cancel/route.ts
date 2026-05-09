@@ -12,7 +12,7 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const subscription = await cancelSubscriptionUseCase.execute(parseInt(id));
+    const subscription = await cancelSubscriptionUseCase.execute(Number.parseInt(id));
     return NextResponse.json(subscription);
   } catch (error: unknown) {
     if (error instanceof ApiError) {

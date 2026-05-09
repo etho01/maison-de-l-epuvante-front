@@ -25,7 +25,7 @@ export class ApiError extends Error {
         return this.errors.includes(error);
     }
 
-    getData(): unknown | undefined {
+    getData(): unknown {
         return this.data;
     }
 

@@ -12,7 +12,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const subscription = await getSubscriptionByIdUseCase.execute(parseInt(id));
+    const subscription = await getSubscriptionByIdUseCase.execute(Number.parseInt(id));
     return NextResponse.json(subscription);
   } catch (error: unknown) {
     if (error instanceof ApiError) {

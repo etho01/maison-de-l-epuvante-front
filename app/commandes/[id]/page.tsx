@@ -20,8 +20,8 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
   let error = null;
   try {
     order = await getOrderByIdUseCase.execute(id);
-  } catch (errorInstance) {
-    error = errorInstance instanceof Error ? errorInstance.message : 'Commande non trouvée';
+  } catch (error_instance) {
+    error = error_instance instanceof Error ? error_instance.message : 'Commande non trouvée';
   }
 
   return (

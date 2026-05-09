@@ -41,7 +41,7 @@ export default async function AdminProductDetailPage({ params }: PageProps) {
 
   let product;
   try {
-    product = await getProductByIdUseCase.execute(parseInt(id));
+    product = await getProductByIdUseCase.execute(Number.parseInt(id));
   } catch (error) {
     console.error('Erreur lors de la récupération du produit :', error);
   }

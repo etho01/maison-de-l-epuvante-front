@@ -27,7 +27,7 @@ export const AdminUserForm: React.FC<AdminUserFormProps> = ({ user, onSuccess, o
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);

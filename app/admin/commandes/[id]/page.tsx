@@ -13,7 +13,7 @@ const getOrderByIdUseCase = new GetOrderByIdUseCase(symfonyOrderRepository);
 
 export default async function AdminOrderDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const orderId = parseInt(id, 10);
+  const orderId = Number.parseInt(id, 10);
 
   let order;
   try {

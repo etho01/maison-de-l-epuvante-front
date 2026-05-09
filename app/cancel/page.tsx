@@ -24,8 +24,8 @@ export default async function CancelPage({ searchParams }: CancelPageProps) {
         order = await getOrderByPaymentIntentIdUseCase.execute(session_id);
         await updateOrderStatusUseCase.execute(order.id, OrderStatusEnum.CANCELLED);
         order.status = OrderStatusEnum.CANCELLED; // Met à jour le statut localement pour l'affichage
-    } catch (errorInstance) {
-        error = errorInstance instanceof Error ? errorInstance.message : 'Commande non trouvée';
+    } catch (error_instance) {
+        error = error_instance instanceof Error ? error_instance.message : 'Commande non trouvée';
     }
 
     return (

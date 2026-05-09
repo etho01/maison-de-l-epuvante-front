@@ -14,7 +14,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const category = await getCategoryByIdUseCase.execute(parseInt(id));
+    const category = await getCategoryByIdUseCase.execute(Number.parseInt(id));
     return NextResponse.json(category);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
@@ -31,7 +31,7 @@ export async function PATCH(
   try {
     const data = await request.json();
     const { id } = await params
-    const category = await updateCategoryUseCase.execute(parseInt(id), data);
+    const category = await updateCategoryUseCase.execute(Number.parseInt(id), data);
     return NextResponse.json(category);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
@@ -47,7 +47,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    await deleteCategoryUseCase.execute(parseInt(id));
+    await deleteCategoryUseCase.execute(Number.parseInt(id));
     return new NextResponse(null, { status: 204 });
   } catch (error: unknown) {
     if (error instanceof ApiError) {

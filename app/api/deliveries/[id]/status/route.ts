@@ -23,7 +23,7 @@ export async function POST(
       );
     }
 
-    const delivery = await updateDeliveryStatusUseCase.execute(parseInt(id), status as DeliveryStatus);
+    const delivery = await updateDeliveryStatusUseCase.execute(Number.parseInt(id), status as DeliveryStatus);
     return NextResponse.json(delivery);
   } catch (error: unknown) {
     if (error instanceof ApiError) {

@@ -13,7 +13,7 @@ export async function GET(
 ) {
   try {
     const {id} = await params;
-    const order = await getOrderByIdUseCase.execute(parseInt(id));
+    const order = await getOrderByIdUseCase.execute(Number.parseInt(id));
     return NextResponse.json(order);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
@@ -30,7 +30,7 @@ export async function PATCH(
   try {
     const data = await request.json();
     const { id } = await params;
-    const order = await updateOrderUseCase.execute(parseInt(id), data);
+    const order = await updateOrderUseCase.execute(Number.parseInt(id), data);
     return NextResponse.json(order);
   } catch (error: unknown) {
     if (error instanceof ApiError) {

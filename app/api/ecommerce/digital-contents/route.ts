@@ -9,7 +9,7 @@ const getDigitalContentsUseCase = new GetDigitalContentsUseCase(digitalContentRe
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const page = searchParams.has('page') ? parseInt(searchParams.get('page')!) : undefined;
+    const page = searchParams.has('page') ? Number.parseInt(searchParams.get('page')!) : undefined;
 
     const contents = await getDigitalContentsUseCase.execute(page);
     return NextResponse.json(contents);

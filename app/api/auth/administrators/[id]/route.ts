@@ -14,7 +14,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const administrator = await getAdministratorByIdUseCase.execute(parseInt(id));
+    const administrator = await getAdministratorByIdUseCase.execute(Number.parseInt(id));
     return NextResponse.json(administrator);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
@@ -32,7 +32,7 @@ export async function PATCH(
     const data = await request.json();
     const { id } = await params;
     
-    const administrator = await updateAdministratorUseCase.execute(parseInt(id), data);
+    const administrator = await updateAdministratorUseCase.execute(Number.parseInt(id), data);
     return NextResponse.json(administrator);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
@@ -48,7 +48,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    await deleteAdministratorUseCase.execute(parseInt(id));
+    await deleteAdministratorUseCase.execute(Number.parseInt(id));
     return new NextResponse(null, { status: 204 });
   } catch (error: unknown) {
     if (error instanceof ApiError) {

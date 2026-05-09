@@ -9,7 +9,7 @@ const getSubscriptionsUseCase = new GetSubscriptionsUseCase(subscriptionReposito
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const page = searchParams.has('page') ? parseInt(searchParams.get('page')!) : undefined;
+    const page = searchParams.has('page') ? Number.parseInt(searchParams.get('page')!) : undefined;
 
     const subscriptions = await getSubscriptionsUseCase.execute(page);
     return NextResponse.json(subscriptions);
