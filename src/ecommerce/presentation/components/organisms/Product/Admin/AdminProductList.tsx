@@ -99,7 +99,7 @@ export const AdminProductList: React.FC<AdminProductListProps> = ({ initialProdu
           />
           
           <Select
-            onChange={(e) => handleFilterChange('type', e.target.value || undefined)}
+            onChange={(e) => handleFilterChange('type', e.target.value ? [e.target.value as ProductType] : undefined)}
             variant="default"
           >
             <option value="">Tous les types</option>

@@ -80,18 +80,18 @@ export const CheckoutForm: React.FC = () => {
         router.push(response.stripeCheckout.url);
       })
       .catch((err: ApiError) => {
-        const data = err.getData();
+        const data = err.getData() as { quantity?: number; productName?: string; availableStock?: number } | undefined;
         if (err.hasError(OrderError.INVALID_QUANTITY)) {
-          if (data['quantity'] < 0)
+          if (data && (data.quantity ?? 0) < 0)
           {
-            setError('La quantité du produit ' + data['productName'] + ' ne peut pas être négative.');
+            setError('La quantité du produit ' + data.productName + ' ne peut pas être négative.');
           }
-          else if (data['quantity'] >= data['availableStock']) 
+          else if (data && (data.quantity ?? 0) >= (data.availableStock ?? 0)) 
           {
-            setError('Le produit ' + data['productName'] + ' est en rupture de stock. Quantité disponible : ' + data['availableStock']);
+            setError('Le produit ' + data.productName + ' est en rupture de stock. Quantité disponible : ' + data.availableStock);
           }
         } else if (err.hasError(OrderError.ORDER_NOT_FOUND)) {
-          setError('Le produit ' + data?.['productName'] + ' n\'existe pas.');
+          setError('Le produit ' + data?.productName + ' n\'existe pas.');
         } else {
           setError(err.message || 'Erreur lors de la création de la commande');
         }

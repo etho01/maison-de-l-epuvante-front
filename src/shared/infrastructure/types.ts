@@ -2,7 +2,7 @@
  * Types pour les requêtes API
  */
 
-export type RequestParams = Record<string, string> | FormData | undefined;
+export type RequestParams = object | FormData | undefined;
 
 export type RequestHeaders = Record<string, string>;
 

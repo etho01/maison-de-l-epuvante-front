@@ -4,6 +4,9 @@ import { PaginatedResponse } from '@/src/shared/domain/Pagination';
 
 export interface SubscriptionPlansFilters {
   page?: number;
+  name?: string;
+  format?: string;
+  active?: boolean;
 }
 
 export class GetSubscriptionPlansUseCase {
