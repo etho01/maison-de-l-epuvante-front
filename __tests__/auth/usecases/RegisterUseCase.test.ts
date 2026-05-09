@@ -19,7 +19,7 @@ class MockAuthRepository implements Partial<IAuthRepository> {
         lastName: data.lastName,
         roles: ['ROLE_USER'],
         isVerified: false,
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(),
       } as User,
       token: 'fake-jwt-token',
     };

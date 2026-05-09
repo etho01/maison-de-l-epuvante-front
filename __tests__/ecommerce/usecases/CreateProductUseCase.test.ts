@@ -13,11 +13,13 @@ class MockProductRepository implements Partial<IProductRepository> {
     return {
       id: 1,
       ...data,
+      category: { id: data.categoryId, name: 'Test', slug: 'test' },
       images: data.images || [],
       metadata: data.metadata || {},
+      weight: data.weight ?? null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    } as Product;
+    } as unknown as Product;
   }
 }
 
@@ -68,7 +70,7 @@ describe('CreateProductUseCase', () => {
       const result = await useCase.execute({
         ...validProductData,
         type: ProductType.DIGITAL,
-        weight: null,
+        weight: undefined,
       });
 
       expect(result.type).toBe(ProductType.DIGITAL);

@@ -6,7 +6,7 @@
 import { GetProductsUseCase } from '@/src/ecommerce/application/usecases/products/GetProductsUseCase';
 import { IProductRepository } from '@/src/ecommerce/domain/repositories/IProductRepository';
 import { Product, ProductType } from '@/src/ecommerce/domain/entities/Product';
-import { PaginatedResponse } from '@/src/shared/domain/Pagination';
+import { PaginatedResponse, Pagination } from '@/src/shared/domain/Pagination';
 
 // Mock du repository
 class MockProductRepository implements Partial<IProductRepository> {
@@ -33,13 +33,14 @@ class MockProductRepository implements Partial<IProductRepository> {
         } as Product,
       ],
       totalItems: 1,
-      view: {
-        first: 1,
-        last: 1,
-        current: 1,
-        next: null,
-        previous: null,
-      },
+      pagination: new Pagination({
+        hasNextPage: false,
+        hasPreviousPage: false,
+        itemsPerPage: 10,
+        page: 1,
+        totalItems: 1,
+        totalPages: 1,
+      }),
     };
   }
 }
@@ -59,7 +60,7 @@ describe('GetProductsUseCase', () => {
 
       expect(result).toHaveProperty('member');
       expect(result).toHaveProperty('totalItems');
-      expect(result).toHaveProperty('view');
+      expect(result).toHaveProperty('pagination');
       expect(Array.isArray(result.member)).toBe(true);
       expect(result.totalItems).toBe(1);
     });
@@ -93,10 +94,10 @@ describe('GetProductsUseCase', () => {
     it('devrait retourner les informations de pagination', async () => {
       const result = await useCase.execute();
 
-      expect(result.view).toHaveProperty('first');
-      expect(result.view).toHaveProperty('last');
-      expect(result.view).toHaveProperty('current');
-      expect(result.view.current).toBe(1);
+      expect(result.pagination).toHaveProperty('page');
+      expect(result.pagination).toHaveProperty('totalPages');
+      expect(result.pagination).toHaveProperty('hasNextPage');
+      expect(result.pagination.page).toBe(1);
     });
   });
 

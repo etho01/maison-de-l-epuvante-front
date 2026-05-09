@@ -11,11 +11,18 @@ import { CheckoutData, CheckoutResponse, OrderStatusEnum } from '@/src/ecommerce
 class MockOrderRepository implements Partial<IOrderRepository> {
   async checkout(data: CheckoutData): Promise<CheckoutResponse> {
     return {
-      orderId: 1,
-      status: OrderStatusEnum.PENDING,
-      totalAmount: data.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-      paymentUrl: 'https://stripe.com/payment/session_123',
       message: 'Order created successfully',
+      id: 1,
+      order: {
+        id: 1,
+        orderNumber: 'ORD-001',
+        status: OrderStatusEnum.PENDING,
+        totalAmount: data.products.reduce((sum, item) => sum + item.price * item.quantity, 0),
+      },
+      stripeCheckout: {
+        sessionId: 'session_123',
+        url: 'https://stripe.com/payment/session_123',
+      },
     };
   }
 }
@@ -30,25 +37,27 @@ describe('CheckoutUseCase', () => {
   });
 
   const validCheckoutData: CheckoutData = {
-    items: [
-      {
-        productId: 1,
-        quantity: 2,
-        price: 29.99,
-      },
-      {
-        productId: 2,
-        quantity: 1,
-        price: 19.99,
-      },
+    products: [
+      { id: 1, name: 'Produit 1', quantity: 2, price: 29.99 },
+      { id: 2, name: 'Produit 2', quantity: 1, price: 19.99 },
     ],
     shippingAddress: {
-      street: '123 Rue de l\'Horreur',
+      firstName: 'John',
+      lastName: 'Doe',
+      address: '123 Rue de l\'Horreur',
       city: 'Paris',
       postalCode: '75001',
       country: 'France',
     },
-    paymentMethodId: 'pm_card_visa',
+    billingAddress: {
+      firstName: 'John',
+      lastName: 'Doe',
+      address: '123 Rue de l\'Horreur',
+      city: 'Paris',
+      postalCode: '75001',
+      country: 'France',
+    },
+    paymentMethod: 'card',
   };
 
   describe('Passage de commande', () => {
@@ -56,39 +65,39 @@ describe('CheckoutUseCase', () => {
       const result = await useCase.execute(validCheckoutData);
 
       expect(result).toBeDefined();
-      expect(result).toHaveProperty('orderId');
-      expect(result).toHaveProperty('status');
-      expect(result).toHaveProperty('totalAmount');
-      expect(result).toHaveProperty('paymentUrl');
+      expect(result).toHaveProperty('order');
+      expect(result.order).toHaveProperty('status');
+      expect(result.order).toHaveProperty('totalAmount');
+      expect(result.stripeCheckout).toHaveProperty('url');
     });
 
     it('devrait retourner un ID de commande', async () => {
       const result = await useCase.execute(validCheckoutData);
 
-      expect(result.orderId).toBeDefined();
-      expect(typeof result.orderId).toBe('number');
-      expect(result.orderId).toBeGreaterThan(0);
+      expect(result.order.id).toBeDefined();
+      expect(typeof result.order.id).toBe('number');
+      expect(result.order.id).toBeGreaterThan(0);
     });
 
     it('devrait calculer le montant total correct', async () => {
       const result = await useCase.execute(validCheckoutData);
 
       // 2 * 29.99 + 1 * 19.99 = 79.97
-      expect(result.totalAmount).toBe(79.97);
+      expect(result.order.totalAmount).toBe(79.97);
     });
 
     it('devrait retourner une URL de paiement', async () => {
       const result = await useCase.execute(validCheckoutData);
 
-      expect(result.paymentUrl).toBeDefined();
-      expect(typeof result.paymentUrl).toBe('string');
-      expect(result.paymentUrl).toContain('stripe.com');
+      expect(result.stripeCheckout.url).toBeDefined();
+      expect(typeof result.stripeCheckout.url).toBe('string');
+      expect(result.stripeCheckout.url).toContain('stripe.com');
     });
 
     it('devrait retourner un statut PENDING', async () => {
       const result = await useCase.execute(validCheckoutData);
 
-      expect(result.status).toBe(OrderStatusEnum.PENDING);
+      expect(result.order.status).toBe(OrderStatusEnum.PENDING);
     });
   });
 
@@ -96,23 +105,23 @@ describe('CheckoutUseCase', () => {
     it('devrait accepter une commande avec un seul article', async () => {
       const singleItemData: CheckoutData = {
         ...validCheckoutData,
-        items: [{ productId: 1, quantity: 1, price: 29.99 }],
+        products: [{ id: 1, name: 'Produit 1', quantity: 1, price: 29.99 }],
       };
 
       const result = await useCase.execute(singleItemData);
 
-      expect(result.totalAmount).toBe(29.99);
+      expect(result.order.totalAmount).toBe(29.99);
     });
 
     it('devrait accepter une commande avec plusieurs quantités', async () => {
       const multiQuantityData: CheckoutData = {
         ...validCheckoutData,
-        items: [{ productId: 1, quantity: 5, price: 10.0 }],
+        products: [{ id: 1, name: 'Produit 1', quantity: 5, price: 10.0 }],
       };
 
       const result = await useCase.execute(multiQuantityData);
 
-      expect(result.totalAmount).toBe(50.0);
+      expect(result.order.totalAmount).toBe(50.0);
     });
   });
 
