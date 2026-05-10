@@ -21,32 +21,16 @@ jobs:
           # Disable shallow clone for better analysis
           fetch-depth: 0
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-      
-      - name: Create test environment file
-        run: |
-          cat > .env.test << 'EOF'
-          NEXT_PUBLIC_API_URL=http://localhost:8000
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_mock_key_for_ci
-          STRIPE_SECRET_KEY=sk_test_mock_key_for_ci
-          EOF
-      
-      - name: Run tests with coverage
-        continue-on-error: true
-        run: npm run test:coverage -- --ci --maxWorkers=2
+          name: coverage-reports
+          path: coverage/
       
       - name: Display coverage summary
         run: |
           if [ -f coverage/lcov.info ]; then
-            echo "✅ Coverage report generated"
-            echo "Coverage data available in coverage/"
+            echo "✅ Coverage report available"
           else
             echo "⚠️ No coverage report found"
           fi
@@ -71,11 +55,3 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      
-      - name: Upload coverage artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-reports
-          path: coverage/
-          retention-days: 7

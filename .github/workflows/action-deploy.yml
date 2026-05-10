@@ -74,7 +74,6 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.image_tag }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.36.0
@@ -118,20 +117,20 @@ jobs:
             echo "| 🟠 High | $HIGH |" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             
-            if [ $(($CRITICAL + $HIGH)) -gt 0 ]; then
-              echo "⚠️ **Attention:** Des vulnérabilités critiques ou hautes ont été détectées dans l'image" >> $GITHUB_STEP_SUMMARY
+            if [ "$CRITICAL" -gt 0 ]; then
+              echo "⚠️ **Attention:** Des vulnérabilités critiques ont été détectées dans l'image" >> $GITHUB_STEP_SUMMARY
               echo "Consultez l'onglet **Security** → **Code scanning** pour plus de détails" >> $GITHUB_STEP_SUMMARY
-              
-              # Afficher les vulnérabilités critiques
-              if [ "$CRITICAL" -gt 0 ]; then
-                echo "" >> $GITHUB_STEP_SUMMARY
-                echo "**Vulnérabilités Critiques:**" >> $GITHUB_STEP_SUMMARY
-                cat trivy-image-results.json | jq -r '
-                  [.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL")] | 
-                  .[:5][] | 
-                  "- `" + .PkgName + "`: " + .VulnerabilityID + " - " + .Title
-                ' >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
-              fi
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Vulnérabilités Critiques:**" >> $GITHUB_STEP_SUMMARY
+              cat trivy-image-results.json | jq -r '
+                [.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL")] | 
+                .[:5][] | 
+                "- `" + .PkgName + "`: " + .VulnerabilityID + " - " + .Title
+              ' >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+              exit 1
+            elif [ "$HIGH" -gt 0 ]; then
+              echo "⚠️ **Attention:** $HIGH vulnérabilité(s) haute(s) détectée(s)" >> $GITHUB_STEP_SUMMARY
+              echo "Consultez l'onglet **Security** → **Code scanning** pour plus de détails" >> $GITHUB_STEP_SUMMARY
             else
               echo "✅ **Aucune vulnérabilité critique ou haute détectée**" >> $GITHUB_STEP_SUMMARY
             fi
@@ -284,8 +283,6 @@ jobs:
 
       - name: Apply manifests
         run: |
-          kubectl apply -f k8s/namespace.yaml
-          
           # Créer le secret pour puller les images du registry privé
           kubectl create secret docker-registry ghcr-secret \
             --docker-server=ghcr.io \

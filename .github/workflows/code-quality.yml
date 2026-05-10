@@ -25,12 +25,3 @@ jobs:
       
       - name: Run ESLint
         run: npm run lint
-      
-      - name: Check code formatting (Prettier)
-        continue-on-error: true
-        run: |
-          if [ -f ".prettierrc" ] || [ -f ".prettierrc.json" ] || grep -q "prettier" package.json; then
-            npx prettier --check .
-          else
-            echo "Prettier not configured, skipping"
-          fi

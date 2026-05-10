@@ -28,11 +28,7 @@ jobs:
           STRIPE_SECRET_KEY=sk_test_mock_key_for_ci
           EOF
       
-      - name: Run Jest tests
-        run: npm test -- --ci --maxWorkers=2
-      
       - name: Run Jest tests with coverage
-        if: github.event_name == 'pull_request'
         run: npm run test:coverage -- --ci --maxWorkers=2
       
       - name: Upload coverage to Codecov
@@ -44,12 +40,10 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
       
-      - name: Upload test results
-        if: always()
+      - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
-          name: jest-results
+          name: coverage-reports
           path: coverage/
-          if-no-files-found: ignore
 
 
