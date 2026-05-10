@@ -26,7 +26,7 @@ export class ApiError extends Error {
     }
 
     getData(): unknown {
-        return this.data; 
+        return this.data;
     }
 
     getError() {
